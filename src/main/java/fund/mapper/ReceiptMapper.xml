@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+             "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="fund.mapper.ReceiptMapper">
+
+<select id="selectById" resultType="fund.dto.Receipt">
+SELECT * FROM [Receipt] WHERE id = #{id}
+</select>
+
+<select id="selectPage" resultType="hashmap">
+<![CDATA[
+DECLARE @nm NVARCHAR(50), @sd VARCHAR(50), @ed VARCHAR(50), @currentPage INT, @pageSize INT, @corporateId INT
+SET @nm = #{srchText}
+SET @sd = #{sd}
+SET @ed = #{ed}
+SET @currentPage = #{currentPage}
+SET @pageSize = #{pageSize}
+SET @corporateId = #{corporateId}
+
+SELECT *
+FROM ( 
+  SELECT r.*, s.name, s.sponsorNo, s.mobilePhone,
+    ROW_NUMBER() OVER (ORDER BY r.id DESC) 행번호, 
+    (SELECT SUM(CAST(p.amount AS BIGINT)) FROM payment p WHERE p.receiptId = r.id) amount
+  FROM Receipt r 
+    LEFT JOIN [Sponsor] s ON r.sponsorId = s.id
+  WHERE (@nm = '' OR @nm IS NULL OR CHARINDEX(@nm, s.name) = 1) 
+  AND (@sd = '' OR @sd IS NULL OR r.createDate BETWEEN @sd AND @ed)
+  AND (@corporateId = 0 OR
+        (@corporateId = (SELECT corporateId FROM donationPurpose dp WHERE dp.id = 
+                          (SELECT TOP 1 donationPurposeId FROM Payment p WHERE p.receiptId = r.id))))
+) subquery
+WHERE 
+  행번호 > (@currentPage - 1) * @pageSize AND
+  행번호 <= @currentPage * @pageSize
+ORDER BY 행번호
+]]>
+</select>
+
+<select id="selectCount" resultType="int">
+DECLARE @nm NVARCHAR(50), @sd VARCHAR(50), @ed VARCHAR(50), @currentPage INT, @pageSize INT, @corporateId INT
+SET @nm = #{srchText}
+SET @sd = #{sd}
+SET @ed = #{ed}
+SET @corporateId = #{corporateId}
+
+SELECT COUNT(*)
+FROM [Receipt] r 
+  LEFT JOIN Sponsor s ON r.sponsorId = s.id
+WHERE (@nm = '' OR @nm IS NULL OR CHARINDEX(@nm, s.name) = 1) 
+AND (@sd = '' OR @sd IS NULL OR r.createDate BETWEEN @sd AND @ed)
+AND (@corporateId = 0 OR
+      (@corporateId = (SELECT corporateId FROM donationPurpose dp WHERE dp.id = 
+                        (SELECT TOP 1 donationPurposeId FROM Payment p WHERE p.receiptId = r.id))))
+</select>
+
+<select id="generateReceiptNo" resultType="java.lang.String">
+DECLARE @n INT, @year CHAR(4)
+SET @year = SUBSTRING(#{createDate}, 1, 4)
+SET @n = (
+  SELECT MAX(CONVERT(INT, RIGHT([no],4)))
+  FROM receipt
+  WHERE CHARINDEX(@year, [no]) = 1 AND LEN([no]) = 9
+  AND ISNUMERIC(RIGHT([no], 4)) = 1)
+SET @n = ISNULL(@n,0) + 1
+SELECT @year + '-' + REPLACE(STR(@n, 4), ' ', '0')
+</select>
+
+<select id="selectSum" resultType="hashmap">
+<![CDATA[
+DECLARE @startDate DATE, @endDate DATE, @key1 VARCHAR(50)
+SET @startDate = CONVERT(DATE, #{startDate})
+SET @endDAte = CONVERT(DATE, #{endDate})
+SET @key1 = ${key1};
+
+WITH sponsorDecrypted AS (
+    SELECT *,
+      CASE WHEN LEN(juminNo) BETWEEN 10 AND 12 THEN '법인'
+      ELSE '개인' END gubun
+    FROM (
+      SELECT *, CONVERT(VARCHAR, DECRYPTBYPASSPHRASE(CONVERT(VARCHAR, @key1), juminNo_encrypted)) juminNo 
+      FROM sponsor
+    ) s
+)
+SELECT d.corporateId,
+  (SELECT name FROM corporate t WHERE t.id = d.corporateId) name,
+  s.gubun, COUNT(p.id) count, SUM(p.amount) amount
+FROM receipt r
+  JOIN payment p 
+    ON p.receiptId = r.id
+  JOIN donationPurpose d
+    ON p.donationPurposeId = d.id
+  JOIN sponsorDecrypted s
+    ON s.id = p.sponsorId
+WHERE 
+   @startDate IS NULL
+OR @startDate < '2000-01-01'
+OR createDate BETWEEN @startDate AND @endDate
+GROUP BY d.corporateId, s.gubun
+]]>
+</select>
+
+<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+INSERT INTO Receipt (sponsorId, createDate, [no])
+VALUES( #{sponsorId},#{createDate},#{no})
+</insert>
+
+<delete id="delete">
+DELETE FROM [Receipt] WHERE id = #{id}
+</delete>
+    
+</mapper>

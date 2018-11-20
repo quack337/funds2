@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+             
+<mapper namespace="fund.mapper.PaymentMapper">
+
+<sql id="select1">
+  SELECT p.*,
+    co.shortName corporateName, og.codeName organizationName, dp.name donationPurposeName, me.codeName paymentMethodName,
+    c.commitmentNo, c.accountNo, c.accountHolder,
+    bk.codeName bankName
+  FROM payment p
+    LEFT JOIN code me ON me.id = p.paymentMethodId 
+    LEFT JOIN donationPurpose dp ON p.donationPurposeId = dp.id
+    LEFT JOIN code og ON og.id = dp.organizationId 
+    LEFT JOIN corporate co ON dp.corporateId = co.id
+    LEFT JOIN commitment c ON p.commitmentId = c.id
+    LEFT JOIN code bk ON bk.id = c.bankId
+</sql>
+
+<select id="selectById" resultType="fund.dto.Payment">
+  <include refid="select1"></include>
+  WHERE p.id = #{id}
+</select>
+
+<select id="selectPaymentList1" resultType="hashmap">  
+  <include refid="select1"></include>
+  <![CDATA[
+  WHERE ((p.commitmentId = #{commitmentId}) OR
+         (#{commitmentId} = 0 AND p.sponsorId = #{sponsorId} AND p.commitmentId <> 0))
+  AND me.codeGroupId = 3         
+  ORDER BY p.paymentDate DESC
+  ]]>
+</select>
+
+<select id="selectPaymentList2" resultType="hashmap">
+  <include refid="select1"></include>
+  <![CDATA[
+  WHERE p.sponsorId = #{sponsorId}
+  AND me.codeGroupId = 4
+  AND p.paymentMethodId <> 14 /*현물제외*/
+  ORDER BY p.paymentDate DESC
+  ]]>
+</select>
+
+<select id="selectPaymentList3" resultType="hashmap">
+  <include refid="select1"></include>
+  <![CDATA[
+  WHERE p.sponsorId = #{sponsorId}
+  AND me.codeGroupId = 4
+  AND p.paymentMethodId = 14 /*현물만*/
+  ORDER BY p.paymentDate DESC
+  ]]>
+</select>
+
+<update id="update">    
+  UPDATE Payment
+    SET 
+      receiptId = #{receiptId},
+      amount = #{amount}, 
+      paymentDate = #{paymentDate}, 
+      donationPurposeId = #{donationPurposeId}, 
+      paymentMethodId = #{paymentMethodId},
+      etc = #{etc}
+  FROM Payment
+  WHERE id = #{id}
+</update>
+
+<update id="updateDonationPurposeId">
+  UPDATE Payment
+    SET donationPurposeId = #{donationPurposeId} 
+  FROM Payment
+  WHERE commitmentID = #{id}
+  AND paymentDate BETWEEN #{startDate} AND #{endDate} 
+</update>
+
+<update id="updateDonationPurposeId2">
+  UPDATE Payment
+    SET donationPurposeId = #{donationPurposeId} 
+  FROM Payment
+  WHERE sponsorId = #{sponsorId}
+  AND paymentDate BETWEEN #{startDate} AND #{endDate}
+  AND (select top 1 codeGroupId FROM code c WHERE c.id = paymentMethodId) = 4  
+</update>
+
+<delete id="delete">
+  DELETE FROM Payment WHERE id = #{id}
+</delete>
+
+<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+  INSERT payment(sponsorId, commitmentId, amount, paymentDate, etc, receiptId, donationPurposeId, paymentMethodId)
+  VALUES (#{sponsorId}, #{commitmentId}, #{amount}, #{paymentDate}, #{etc}, #{receiptId}, #{donationPurposeId}, #{paymentMethodId})
+</insert>
+
+<select id="selectForReceiptCreation1" resultType="hashmap">
+DECLARE @srchText NVARCHAR(50), @startDate DATE, @endDate DATE, @corporateId INT
+SET @srchText = #{srchText}
+SET @startDate = #{startDate}
+SET @endDate = #{endDate}
+SET @corporateId = #{corporateId}
+SELECT p.*, s.sponsorNo, s.name, r.[no] 'receiptNo'
+FROM Payment p 
+  LEFT JOIN Sponsor s ON p.sponsorId = s.id 
+  LEFT JOIN Receipt r ON p.receiptId = r.id
+WHERE p.paymentDate BETWEEN @startDate AND @endDate
+AND p.sponsorId IN (SELECT id FROM [sponsor] WHERE name = @srchText)
+AND p.donationPurposeId IN (SELECT id FROM donationPurpose WHERE @corporateId = 0 OR corporateId = @corporateId)
+AND LEN(REPLACE(CONVERT(VARCHAR, DECRYPTBYPASSPHRASE(CONVERT(VARCHAR, ${key1}), juminNo_encrypted)), '-', '')) IN (13, 10)
+ORDER BY p.paymentDate DESC
+</select>
+
+<select id="selectForReceiptCreation2" resultType="fund.dto.Payment">
+DECLARE @startDate DATE, @endDate DATE
+SET @startDate = #{startDate}
+SET @endDate = #{endDate}
+
+SELECT p.*, d.corporateId
+FROM Payment p 
+  JOIN donationPurpose d ON d.id = p.donationPurposeId
+  JOIN sponsor s ON s.id = p.sponsorId
+WHERE p.paymentDate BETWEEN @startDate AND @endDate
+AND p.receiptId IS NULL
+AND LEN(REPLACE(CONVERT(VARCHAR, DECRYPTBYPASSPHRASE(CONVERT(VARCHAR, ${key1}), juminNo_encrypted)), '-', '')) IN (13, 10)
+ORDER BY p.sponsorId, d.corporateId
+</select>    
+
+<select id="selectByReceiptId" resultType="fund.dto.Payment">
+SELECT * FROM payment WHERE receiptId = #{receiptId}
+</select>
+
+<select id="getSumByReceiptId" resultType="hashmap">
+SELECT SUM(amount) amount, MIN(paymentDate) startDate, MAX(paymentDate) endDate
+FROM payment 
+WHERE receiptId = #{receiptId}
+</select>
+
+<select id="selectForTaxData" resultType="hashmap">
+<![CDATA[
+DECLARE @startDate DATE, @endDate DATE, @corporateId INT
+SET @startDate = #{startDate}
+SET @endDate = #{endDate}
+SET @corporateId = #{corporateId}
+
+SELECT *
+FROM (
+  SELECT p.*, s.sponsorNo, s.name sponsorName, 
+    CONVERT(VARCHAR, DECRYPTBYPASSPHRASE(CONVERT(VARCHAR, ${key1}), juminNo_encrypted)) juminNo
+  FROM payment p 
+    LEFT JOIN sponsor s ON s.id = p.sponsorId
+    LEFT JOIN donationPurpose d ON d.id = p.donationPurposeId
+  WHERE paymentDate BETWEEN @startDate AND @endDate
+  AND corporateId = @corporateId
+  AND receiptId IS NOT NULL
+  AND p.paymentMethodId <> 14 /*현물제외*/
+) t
+WHERE LEN(REPLACE(juminNo, '-', '')) = 13
+]]>
+</select>
+
+<select id="selectReport1a" resultType="hashmap">
+<![CDATA[
+DECLARE @regular INT, @churchId INT, @startDate DATE, @endDate DATE, @paymentMethodId INT, @donationPurposeId INT, 
+  @sponsorType2Id INT, @sponsorName NVARCHAR(50), @sponsorNo VARCHAR(50), @corporateId INT, @amount INT,
+  @commitmentNo VARCHAR(50), @today DATE
+SET @regular = #{regular}
+SET @churchId = #{churchId}
+SET @startDate = #{startDate}
+SET @endDate = #{endDate}
+SET @paymentMethodId = #{paymentMethodId}
+SET @donationPurposeId = #{donationPurposeId}
+SET @sponsorType2Id = #{sponsorType2Id}
+SET @sponsorName = #{sponsorName}
+SET @sponsorNo = #{sponsorNo}
+SET @corporateId = #{corporateId}
+SET @amount = #{amount}
+SET @commitmentNo = #{commitmentNo}
+SET @today = GETDATE()
+
+SELECT s.sponsorNo, s.name, 
+  (SELECT codeName FROM code c WHERE c.id = s.sponsorType2Id) sponsorType2Name,
+  (SELECT codeName FROM code c WHERE c.id = s.churchId) churchName,
+  (CASE WHEN p.commitmentId IS NULL THEN '비정기' ELSE '정기' END) regular,
+  (SELECT codeName FROM code c WHERE c.id = p.paymentMethodId) paymentMethodName,
+  p.paymentDate, p.amount, c.id commitmentId, d.name donationPurposeName, 
+  co.shortName corporateName, og.codeName organizationName,
+  c.commitmentNo, c.startDate, c.endDate, c.amountPerMonth, 
+  CASE WHEN c.id IS NULL THEN ''
+       WHEN @today < startDate THEN '시작전' 
+       WHEN @today >= endDate THEN '종료'
+       ELSE '진행' END [state]  
+FROM payment p 
+  LEFT JOIN commitment c ON c.id = p.commitmentId
+  LEFT JOIN sponsor s ON s.id = p.sponsorId
+  LEFT JOIN donationPurpose d ON d.id = p.donationPurposeId
+  LEFT JOIN corporate co ON d.corporateId = co.id
+  LEFT JOIN code og ON og.id = d.organizationId   
+WHERE 
+    (@regular IS NULL OR @regular = -1 OR (@regular = 1 AND p.commitmentId IS NOT NULL) OR (@regular = 0 AND p.commitmentId IS NULL))
+AND (@churchId IS NULL OR @churchId = '' OR @churchId = s.churchId)
+AND (@startDate IS NULL OR @startDate = '' OR p.paymentDate BETWEEN @startDate AND @endDate)
+AND (@paymentMethodId IS NULL OR @paymentMethodId = '' OR @paymentMethodId = p.paymentMethodId)
+AND (@donationPurposeId IS NULL OR @donationPurposeId = '' OR @donationPurposeId = p.donationPurposeId)
+AND (@sponsorType2Id IS NULL OR @sponsorType2Id = '' OR @sponsorType2Id = s.sponsorType2Id)
+AND (@sponsorName IS NULL OR @sponsorName = '' OR @sponsorName = s.name)
+AND (@sponsorNo IS NULL OR @sponsorNo = '' OR @sponsorNo = s.sponsorNo)
+AND (@corporateId IS NULL OR @corporateId = '' OR @corporateId = d.corporateId)
+AND (@amount = 0 OR @amount = p.amount)
+AND (@commitmentNo IS NULL OR @commitmentNo = '' OR @commitmentNo = c.commitmentNo)
+${ orderBy }
+]]>
+</select>
+
+<select id="selectReport1b" resultType="hashmap">
+DECLARE @regular INT, @churchId INT, @startDate DATE, @endDate DATE, @paymentMethodId INT, @donationPurposeId INT, 
+  @sponsorType2Id INT, @sponsorName NVARCHAR(50), @sponsorNo VARCHAR(50), @corporateId INT
+SET @regular = #{regular}
+SET @churchId = #{churchId}
+SET @startDate = #{startDate}
+SET @endDate = #{endDate}
+SET @paymentMethodId = #{paymentMethodId}
+SET @donationPurposeId = #{donationPurposeId}
+SET @sponsorType2Id = #{sponsorType2Id}
+SET @sponsorName = #{sponsorName}
+SET @sponsorNo = #{sponsorNo}
+SET @corporateId = #{corporateId}
+
+SELECT t.*, s.sponsorNo, s.name,
+  (SELECT codeName FROM code c WHERE c.id = s.sponsorType2Id) sponsorType2Name,
+  (SELECT codeName FROM code c WHERE c.id = s.churchId) churchName
+FROM 
+( SELECT s.id, SUM(CONVERT(BIGINT,p.amount)) amount, COUNT(p.id) [count]
+  FROM payment p 
+    LEFT JOIN sponsor s ON s.id = p.sponsorId
+    LEFT JOIN donationPurpose d ON d.id = p.donationPurposeId
+  WHERE 
+    (@regular IS NULL OR @regular = -1 OR (@regular = 1 AND p.commitmentId IS NOT NULL) OR (@regular = 0 AND p.commitmentId IS NULL))
+  AND (@churchId IS NULL OR @churchId = '' OR @churchId = s.churchId)
+  AND (@startDate IS NULL OR @startDate = '' OR p.paymentDate BETWEEN @startDate AND @endDate)
+  AND (@paymentMethodId IS NULL OR @paymentMethodId = '' OR @paymentMethodId = p.paymentMethodId)
+  AND (@donationPurposeId IS NULL OR @donationPurposeId = '' OR @donationPurposeId = p.donationPurposeId)
+  AND (@sponsorType2Id IS NULL OR @sponsorType2Id = '' OR @sponsorType2Id = s.sponsorType2Id)
+  AND (@sponsorName IS NULL OR @sponsorName = '' OR @sponsorName = s.name)
+  AND (@sponsorNo IS NULL OR @sponsorNo = '' OR @sponsorNo = s.sponsorNo)
+  AND (@corporateId IS NULL OR @corporateId = '' OR @corporateId = d.corporateId)
+  GROUP BY s.id
+) t
+  LEFT JOIN sponsor s ON s.id = t.id
+${ orderBy }  
+</select>
+
+<select id="selectReport2a" resultType="hashmap">
+DECLARE @startDate DATE, @endDate DATE, @sum BIGINT, @corporateId INT
+SET @startDate = #{startDate}
+SET @endDate = #{endDate}
+SET @corporateId = #{corporateId}
+SET @sum = (SELECT SUM(CONVERT(BIGINT,amount)) 
+            FROM payment p
+              LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
+              LEFT JOIN corporate c ON c.id = d.corporateId
+            WHERE paymentDate BETWEEN @startDate AND @endDate
+            AND (@corporateId = 0 OR @corporateId = c.id))
+
+SELECT c.name +' '+ o.codeName +' '+ d.name name, 
+  amount, sponsorCount, paymentCount, (amount * 100.0 / @sum) ratio, 
+  d.corporateId, d.organizationId, d.name dname
+FROM (
+  SELECT donationPurposeId, SUM(CONVERT(BIGINT,amount)) amount, COUNT(DISTINCT sponsorId) sponsorCount, COUNT(DISTINCT p.id) paymentCount
+  FROM payment p
+    LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
+    LEFT JOIN corporate c ON c.id = d.corporateId
+  WHERE paymentDate BETWEEN @startDate AND @endDate
+  AND (@corporateId = 0 OR @corporateId = c.id)
+  GROUP BY donationPurposeId
+) t
+  LEFT JOIN donationPurpose d ON t.donationPurposeId = d.id 
+  LEFT JOIN corporate c ON c.id = d.corporateId
+  LEFT JOIN code o ON o.id = d.organizationId
+
+UNION ALL
+
+SELECT '합계' name, 
+  SUM(CONVERT(BIGINT,amount)) amount, COUNT(DISTINCT sponsorId) sponsorCount, COUNT(*) paymentCount, 100.0 ratio,
+  999999999 corporateId, 0 organizationId, '' dname
+FROM payment p
+    LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
+    LEFT JOIN corporate c ON c.id = d.corporateId
+WHERE paymentDate BETWEEN @startDate AND @endDate
+AND (@corporateId = 0 OR @corporateId = c.id)
+ORDER BY corporateId, organizationId, dname
+</select>
+
+<select id="selectReport2b" resultType="hashmap">
+DECLARE @startDate DATE, @endDate DATE, @sum BIGINT, @corporateId INT
+SET @startDate = #{startDate}
+SET @endDate = #{endDate}
+SET @corporateId = #{corporateId}
+SET @sum = (SELECT SUM(CONVERT(BIGINT,amount)) 
+            FROM payment p
+              LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
+              LEFT JOIN corporate c ON c.id = d.corporateId
+            WHERE paymentDate BETWEEN @startDate AND @endDate
+            AND (@corporateId = 0 OR @corporateId = c.id))
+
+SELECT sponsorType2Id, c.codeName name, 
+  amount, sponsorCount, paymentCount, (amount * 100.0 / @sum) ratio
+FROM (
+  SELECT sponsorType2Id, SUM(CONVERT(BIGINT,amount)) amount, COUNT(DISTINCT sponsorId) sponsorCount, COUNT(DISTINCT p.id) paymentCount
+  FROM payment p LEFT JOIN sponsor s ON s.id = p.sponsorId
+    LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
+    LEFT JOIN corporate c ON c.id = d.corporateId
+  WHERE paymentDate BETWEEN @startDate AND @endDate
+  AND (@corporateId = 0 OR @corporateId = c.id)
+  GROUP BY s.sponsorType2Id
+) t
+  LEFT JOIN code c ON c.id = t.sponsorType2Id
+
+UNION ALL
+SELECT 999999999 sponsorType2Id, '합계' name,
+  SUM(CONVERT(BIGINT,amount)) amount, COUNT(DISTINCT sponsorId) sponsorCount, COUNT(*) paymentCount, 100.0 ratio
+FROM payment p
+    LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
+    LEFT JOIN corporate c ON c.id = d.corporateId
+WHERE paymentDate BETWEEN @startDate AND @endDate
+AND (@corporateId = 0 OR @corporateId = c.id)
+
+ORDER BY sponsorType2Id
+</select>
+
+<select id="selectReport2c" resultType="hashmap">
+DECLARE @startDate DATE, @endDate DATE, @sum BIGINT, @corporateId INT
+SET @startDate = #{startDate}
+SET @endDate = #{endDate}
+SET @corporateId = #{corporateId}
+SET @sum = (SELECT SUM(CONVERT(BIGINT,amount)) 
+            FROM payment p
+              LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
+              LEFT JOIN corporate c ON c.id = d.corporateId
+              LEFT JOIN sponsor s ON s.id = p.sponsorId
+            WHERE paymentDate BETWEEN @startDate AND @endDate
+            AND (@corporateId = 0 OR @corporateId = c.id)
+            AND s.churchId IS NOT NULL)
+
+SELECT churchId, c.codeName name, 
+  amount, sponsorCount, paymentCount, (amount * 100.0 / @sum) ratio
+FROM (
+  SELECT churchId, SUM(CONVERT(BIGINT,amount)) amount, COUNT(DISTINCT sponsorId) sponsorCount, COUNT(DISTINCT p.id) paymentCount
+  FROM payment p LEFT JOIN sponsor s ON s.id = p.sponsorId
+    LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
+    LEFT JOIN corporate c ON c.id = d.corporateId
+  WHERE paymentDate BETWEEN @startDate AND @endDate
+  AND (@corporateId = 0 OR @corporateId = c.id)
+  AND s.churchId IS NOT NULL
+  GROUP BY s.churchId
+) t
+  LEFT JOIN code c ON c.id = t.churchId
+
+UNION ALL
+SELECT 999999999 churchId, '합계' name,
+  SUM(CONVERT(BIGINT,amount)) amount, COUNT(DISTINCT sponsorId) sponsorCount, COUNT(*) paymentCount, 100.0 ratio
+FROM payment p LEFT JOIN sponsor s ON s.id = p.sponsorId
+    LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
+    LEFT JOIN corporate c ON c.id = d.corporateId
+WHERE paymentDate BETWEEN @startDate AND @endDate
+AND (@corporateId = 0 OR @corporateId = c.id)
+AND s.churchId IS NOT NULL
+
+ORDER BY churchId
+</select>
+
+</mapper>

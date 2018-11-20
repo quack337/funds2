@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2017-03-09T16:59:35 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="chartBydonationPurpose" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5d4c1ba1-2d9d-434f-94e1-b6f66de5ae09">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="name" class="java.lang.String"/>
+	<parameter name="sponsorCount" class="java.lang.Integer"/>
+	<parameter name="paymentCount" class="java.lang.Integer"/>
+	<parameter name="amount" class="java.lang.Long"/>
+	<parameter name="ratio" class="java.math.BigDecimal"/>
+	<parameter name="title" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select (select
+		name from donationPurpose where
+		donationPurpose.ID=payment.donationPurposeID) AS donationPurpose,
+		count(distinct sponsorID) AS count1,
+		count(*) AS count2,
+		sum(CAST(
+		amount AS BIGINT )) AS sum
+		from [donationPurpose] join [payment] on
+		donationPurpose.ID=payment.donationPurposeID
+		group by donationPurposeID]]>
+	</queryString>
+	<field name="name" class="java.lang.String"/>
+	<field name="sponsorCount" class="java.lang.Integer"/>
+	<field name="paymentCount" class="java.lang.Integer"/>
+	<field name="amount" class="java.lang.Long"/>
+	<field name="ratio" class="java.math.BigDecimal"/>
+	<field name="corporateName" class="java.lang.String"/>
+	<field name="organizationName" class="java.lang.String"/>
+	<variable name="sum_count1" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{sponsorCount}]]></variableExpression>
+	</variable>
+	<variable name="sum_count2" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{paymentCount}]]></variableExpression>
+	</variable>
+	<variable name="sum_amount" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{amount}]]></variableExpression>
+	</variable>
+	<variable name="sum_SUM" class="java.lang.Integer" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{amount}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="60" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField>
+				<reportElement x="0" y="0" width="800" height="60" uuid="07cab225-79ac-4b6d-b6ec-80eec9a2c234"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{title}+"별 납입현황"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="600" y="0" width="110" height="30" uuid="06d4eb13-404b-458f-a07c-b1e46679b1b7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="fonts/NanumGothic.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[금액]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="0" width="90" height="30" uuid="739045e6-a55f-4fee-98e8-ae5f609b4df5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="fonts/NanumGothic.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[후원인수]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="490" y="0" width="110" height="30" uuid="4f46183d-6480-4449-8fcf-2947eb8ea12a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="fonts/NanumGothic.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[납입수]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="710" y="0" width="90" height="30" uuid="523c6097-6208-45cd-a28d-337b084a01a2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="fonts/NanumGothic.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[비율]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="0" width="400" height="30" uuid="6bf5e423-8df1-4e93-99b9-91190facaa40"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{title}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="400" height="30" uuid="66b2a284-baab-493d-8dc3-0db917bf07cd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="fonts/NanumGothic.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###" isBlankWhenNull="true">
+				<reportElement x="600" y="0" width="110" height="30" uuid="55bb2396-f806-4866-84a9-d8dc5431f60e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="400" y="0" width="90" height="30" uuid="5797fcc9-d280-440b-b491-d899dae2c0d9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{sponsorCount}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="490" y="0" width="110" height="30" uuid="f5e9476b-9e8d-47ca-90d8-13c713fc52c7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{paymentCount}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Auto" pattern="#0.00" isBlankWhenNull="true">
+				<reportElement x="710" y="0" width="90" height="30" uuid="bb149e42-5384-4c84-8321-c815891876f7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none"/>
+				<textFieldExpression><![CDATA[$F{ratio}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="379" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<pieChart>
+				<chart evaluationTime="Report">
+					<reportElement x="0" y="30" width="800" height="349" uuid="c42f9c0b-ac96-494c-8a10-621ee676caa7"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<keyExpression><![CDATA[$F{name}]]></keyExpression>
+					<valueExpression><![CDATA[$F{amount}]]></valueExpression>
+					<labelExpression><![CDATA[$F{name}]]></labelExpression>
+				</pieDataset>
+				<piePlot>
+					<plot/>
+					<itemLabel/>
+				</piePlot>
+			</pieChart>
+			<textField>
+				<reportElement x="0" y="0" width="400" height="30" uuid="cf5b6cc7-6b49-4029-925c-5fd4bd512e12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="400" y="0" width="90" height="30" uuid="9a9d5cf3-0123-4dcc-b7ef-de519383abff"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{sponsorCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="490" y="0" width="110" height="30" uuid="25aa23e3-7a40-4a71-b5f8-4c6726dc215f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{paymentCount}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;¤-#,##0.##">
+				<reportElement x="600" y="0" width="110" height="30" uuid="bdbd618e-e290-4d75-938b-a598e0bb5cba"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{amount}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#.00">
+				<reportElement x="710" y="0" width="90" height="30" uuid="0b8db108-e9a9-46bd-b10f-0cbe358f39f8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{ratio}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

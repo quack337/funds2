@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="fund.mapper.CorporateMapper">
+
+<select id="selectAll" resultType="fund.dto.Corporate">
+SELECT * FROM Corporate
+</select>
+
+<select id="selectById" resultType="fund.dto.Corporate"> 
+SELECT  * FROM  Corporate WHERE id = #{id}
+</select>
+
+<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+INSERT Corporate (name, shortName, corporateNo, representative, roadAddress, detailAddress, postCode)
+VALUES (#{name}, #{shortName}, #{corporateNo}, #{representative}, #{roadAddress}, #{detailAddress}, #{postCode})
+</insert>
+
+<update id="update">
+UPDATE Corporate
+SET name = #{name}, 
+  shortName = #{shortName},
+  corporateNo = #{corporateNo}, 
+  representative = #{representative}, 
+  roadAddress = #{roadAddress},
+  detailAddress = #{detailAddress},
+  postcode = #{postCode}
+WHERE ID = #{id}
+</update>
+
+<delete id="delete">
+DELETE FROM Corporate WHERE id = #{id}
+</delete>
+	
+</mapper>

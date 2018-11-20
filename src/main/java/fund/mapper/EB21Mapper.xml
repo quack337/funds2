@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="fund.mapper.EB21Mapper">
+
+<select id="selectByPaymentDate" resultType="fund.dto.EB21">
+  SELECT * FROM eb21 WHERE paymentDate = #{paymentDate}
+</select>
+
+<select id="selectByCommitmentNo12" resultType="fund.dto.EB21">
+  SELECT * FROM eb21 
+  WHERE REPLACE(commitmentNo12, '-', '') = REPLACE(#{commitmentNo12}, '-', '') 
+  AND paymentDate = #{paymentDate}
+</select>
+
+<select id="selectCmsResult" resultType="fund.dto.EB21">
+  SELECT e.*, c.commitmentNo, s.sponsorNo, s.name sponsorName, 
+    d.name donationPurposeName, cp.shortName corporateName, og.codeName organizationName,
+    ec.[description]
+  FROM EB21 e
+    JOIN commitment c ON c.id = e.commitmentId
+    JOIN sponsor s ON s.id = c.sponsorId
+    LEFT JOIN donationPurpose d ON d.id = c.donationPurposeId
+    LEFT JOIN corporate cp ON cp.id = d.corporateId
+    LEFT JOIN code og ON og.id = d.organizationId
+    LEFT JOIN cmsErrorCode ec ON ec.code = e.errorCode
+  WHERE e.paymentDate BETWEEN #{startDt} AND #{endDt}
+    AND (#{state} = 'all' OR #{state} = e.[state])
+</select>
+
+<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+  INSERT eb21(commitmentId, commitmentNo12, paymentDate, state, errorCode)
+  VALUES (#{commitmentId}, #{commitmentNo12}, #{paymentDate}, #{state}, #{errorCode})
+</insert>
+
+<update id="update">
+  UPDATE eb21
+    SET state = #{state}, errorCode = #{errorCode}
+  WHERE id = #{id}
+</update>
+
+<delete id="deleteByPaymentDate">
+  DELETE FROM EB21 WHERE paymentDate = #{paymentDate}
+</delete>
+
+</mapper>

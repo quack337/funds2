@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="fund.mapper.LoginErrorMapper">
+
+<select id="selectCount" resultType="java.lang.Integer">
+SELECT COUNT(*) FROM loginError WHERE loginName = #{loginName}
+</select>
+
+<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+INSERT loginError (loginName, time)
+VALUES (#{loginName}, GETDATE())
+</insert>
+
+<delete id="deleteOld">
+DELETE FROM loginError WHERE DATEDIFF(MINUTE, time, GETDATE()) > 30
+</delete>
+
+<delete id="deleteAll">
+DELETE FROM loginError WHERE loginName = #{loginName}
+</delete>
+
+</mapper>

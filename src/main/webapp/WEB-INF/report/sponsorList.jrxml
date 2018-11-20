@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2017-03-09T17:35:56 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sponsorList" pageWidth="1190" pageHeight="842" orientation="Landscape" columnWidth="1150" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="08be0ca4-8579-49b2-b423-10019a7bc8a4">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="patronageDataAdapter.xml"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<queryString>
+		<![CDATA[SELECT sponsorNo,name,
+		(select codeName from code where code.ID=sponsor.sponsorType1ID )AS sponsorType1,
+		(select codeName from code where code.ID=sponsor.sponsorType2ID )AS sponsorType2,
+		(select codeName from code where code.ID=sponsor.churchID )AS church,
+		signUpDate,mobilePhone,email
+             from sponsor]]>
+	</queryString>
+	<field name="sponsorNo" class="java.lang.String"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="sponsorType1" class="java.lang.String"/>
+	<field name="sponsorType2" class="java.lang.String"/>
+	<field name="church" class="java.lang.String"/>
+	<field name="signUpDate" class="java.lang.String"/>
+	<field name="mobilePhone" class="java.lang.String"/>
+	<field name="email" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="30" uuid="352fffb9-7f6b-4a3b-9779-5486a4a78bd3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[후원인번호]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="0" width="270" height="30" uuid="485bb7da-73cf-45f7-b1e6-5d425bf5e7be"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[이름]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="0" width="110" height="30" uuid="3eccbaec-5c1f-4418-8e40-541ecc4d39c0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[후원인구분1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="0" width="100" height="30" uuid="298b7a1f-6519-42f8-bc90-64ad12cdbad9"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[후원인구분2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="580" y="0" width="140" height="30" uuid="333ffa4a-a0b8-4353-a9c9-41c0d112c6f3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[소속교회]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="720" y="0" width="90" height="30" uuid="b808841a-27a6-4a1e-aa1b-59687ad975b0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[가입일]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="810" y="0" width="110" height="30" uuid="1b3b5fdb-427c-4e16-96b8-20710244069e"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[핸드폰번호]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="920" y="0" width="240" height="30" uuid="0321ef85-58dc-43a6-ba32-0794b7ef9fb1"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[이메일]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="100" height="30" uuid="218f3c01-4ff9-4e50-9499-cf836118f3a7"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{sponsorNo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="100" y="0" width="270" height="30" uuid="968b6a1a-c10d-41a5-a0b6-a75eec4b40db"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="370" y="0" width="110" height="30" uuid="be57aac3-d4d3-4304-beda-f41037e98793"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{sponsorType1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="480" y="0" width="100" height="30" uuid="c453bb87-8327-4654-b445-115497d118fb"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{sponsorType2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="580" y="0" width="140" height="30" uuid="32c0b241-370a-4784-88ed-21cbaeaf6451"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{church}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy/MM/dd" isBlankWhenNull="true">
+				<reportElement x="720" y="0" width="90" height="30" uuid="92b53fb4-12d3-4ea7-b360-216f557e52c2"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{signUpDate}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="810" y="0" width="110" height="30" uuid="0a8a944c-3933-4ed9-8221-8fa15e91afa2"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{mobilePhone}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="920" y="0" width="240" height="30" uuid="dd0ae5de-a0d0-4e98-8700-3aa1b01f7035"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</summary>
+</jasperReport>

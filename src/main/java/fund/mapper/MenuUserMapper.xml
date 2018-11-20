@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>		
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">		
+		
+<mapper namespace="fund.mapper.MenuUserMapper">
+
+<select id="selectMenuIdByUserId" resultType="int">        
+  SELECT menuId FROM [menuUser] WHERE userId = #{userId}      
+</select>
+
+<select id="selectMenuUserByUserId" resultType="fund.dto.MenuUser">
+  SELECT m.id menuId, #{userId} userId, m.title1 + ' - ' + m.title2 title, 
+        CASE WHEN userId IS NOT NULL THEN 1 ELSE 0 END enabled
+  FROM menu m LEFT JOIN menuUser u ON m.id = u.menuId AND userId = #{userId}
+  ORDER BY m.no
+</select>
+ 
+<delete id="delete">
+  DELETE FROM menuUser WHERE menuId = #{menuId} AND userId = #{userId}
+</delete> 
+
+<insert id="insert">
+  INSERT INTO menuUser (menuId, userId)
+  VALUES (#{menuId}, #{userId})
+</insert>
+		
+</mapper>

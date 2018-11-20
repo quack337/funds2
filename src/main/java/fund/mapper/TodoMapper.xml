@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>		
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">		
+		
+<mapper namespace="fund.mapper.TodoMapper">
+
+<select id="selectById" resultType="fund.dto.Todo">
+DECLARE @year INT, @month INT
+SET @year = YEAR(GETDATE())
+SET @month = MONTH(GETDATE())
+
+SELECT *,
+  CASE [repeat] 
+    WHEN 0 THEN dueDate 
+    WHEN 1 THEN DATEADD(year, @year-1900, CONVERT(date, DATEADD(month, @month-1, DAY(dueDate)-1)))
+    WHEN 2 THEN DATEADD(year, @year-1900, CONVERT(date, DATEADD(month, MONTH(dueDate)-1, DAY(dueDate)-1)))
+  END dueDate2
+FROM [Todo]
+WHERE id = #{id}
+</select>
+
+<select id="selectPage" resultType="fund.dto.Todo">
+<![CDATA[
+DECLARE @order INT, @currentPage INT, @pageSize INT, @startDate DATE, @endDate DATE, @year INT, @month INT, @userId INT
+SET @order = #{order}
+SET @currentPage = #{currentPage}
+SET @pageSize = #{pageSize}
+SET @startDate = CONVERT(DATE, #{startDate})
+SET @endDate = CONVERT(DATE, #{endDate})
+
+SET @year = YEAR(GETDATE())
+SET @month = MONTH(GETDATE())
+SET @userId = #{ss}
+
+SELECT * 
+FROM (
+  SELECT *,
+      CASE @order
+        WHEN 0 THEN ROW_NUMBER() OVER (ORDER BY dueDate2)
+        WHEN 1 THEN ROW_NUMBER() OVER (ORDER BY createDate DESC)
+      END 행번호
+  FROM (
+    SELECT t.*, u.name userName,
+      CASE [repeat] 
+        WHEN 0 THEN dueDate 
+        WHEN 1 THEN DATEADD(year, @year-1900, CONVERT(date, DATEADD(month, @month-1, DAY(dueDate)-1)))
+        WHEN 2 THEN DATEADD(year, @year-1900, CONVERT(date, DATEADD(month, MONTH(dueDate)-1, DAY(dueDate)-1)))
+      END dueDate2
+    FROM Todo t
+      LEFT JOIN [User] u 
+        ON t.userId = u.id
+     WHERE userId = @userId
+  ) t0
+  WHERE @startDate IS NULL 
+     OR @startDate < '1990-01-01'
+     OR dueDate2 BETWEEN @startDate AND @endDate
+) t1
+WHERE 행번호 > (@currentPage - 1) * @pageSize AND
+      행번호 <= @currentPage * @pageSize
+ORDER BY 행번호
+]]>
+</select>
+
+<select id="selectCount" resultType="int">
+<![CDATA[
+DECLARE @startDate DATE, @endDate DATE, @year INT, @month INT, @userId INT
+SET @startDate = CONVERT(DATE, #{startDate})
+SET @endDate = CONVERT(DATE, #{endDate})
+
+SET @year = YEAR(GETDATE())
+SET @month = MONTH(GETDATE())
+SET @userId = #{ss}
+
+SELECT COUNT(*)
+FROM (
+  SELECT t.*, u.name userName,
+    CASE [repeat] 
+      WHEN 0 THEN dueDate 
+      WHEN 1 THEN DATEADD(year, @year-1900, CONVERT(date, DATEADD(month, @month-1, DAY(dueDate)-1)))
+      WHEN 2 THEN DATEADD(year, @year-1900, CONVERT(date, DATEADD(month, MONTH(dueDate)-1, DAY(dueDate)-1)))
+    END dueDate2
+  FROM Todo t
+    LEFT JOIN [User] u 
+      ON t.userId = u.id
+  WHERE userId = @userId
+) t0
+WHERE @startDate IS NULL 
+   OR @startDate < '1990-01-01'
+   OR dueDate2 BETWEEN @startDate AND @endDate
+]]>
+</select>
+
+<select id="selectAlert" resultType="fund.dto.Todo">
+<![CDATA[
+DECLARE @year INT, @month INT, @userId INT
+SET @year = YEAR(GETDATE())
+SET @month = MONTH(GETDATE())
+SET @userId = #{userId}
+
+SELECT *
+FROM (
+  SELECT *, DATEADD(day, -alertBefore, dueDate2) alertDate
+  FROM (
+    SELECT t.*, u.name userName,
+      CASE [repeat] 
+      WHEN 0 THEN dueDate 
+      WHEN 1 THEN DATEADD(year, @year-1900, CONVERT(date, DATEADD(month, @month-1, DAY(dueDate)-1)))
+      WHEN 2 THEN DATEADD(year, @year-1900, CONVERT(date, DATEADD(month, MONTH(dueDate)-1, DAY(dueDate)-1)))
+      END dueDate2
+    FROM Todo t
+      LEFT JOIN [User] u 
+        ON t.userId = u.id
+    WHERE userId = @userId
+  ) t0
+) t1
+WHERE alertDate <= GETDATE()
+AND (confirmDate IS NULL OR alertDate > confirmDate)
+ORDER BY dueDate2
+]]>
+</select>
+
+<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+INSERT [Todo] (userId, createDate, dueDate, message)
+VALUES (#{userId}, GETDATE(), #{dueDate2}, #{message})  
+</insert>
+
+<update id="update">
+UPDATE [Todo]
+SET message = #{message},
+    dueDate = #{dueDate2},
+    repeat = #{repeat}
+WHERE id = #{id}
+</update>
+
+<delete id="delete">
+DELETE FROM [Todo] WHERE id = #{id}
+</delete>
+
+<update id="confirm">
+UPDATE [Todo] SET confirmDate = GETDATE() WHERE id = #{id}
+</update>
+
+<update id="cancelConfirm">
+UPDATE [Todo] SET confirmDate = null WHERE id = #{id}
+</update>		
+</mapper>		

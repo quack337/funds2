@@ -1,0 +1,68 @@
+/* user part*/
+.issue {
+	height: 400px;
+	border: 1px solid #eee;
+	background-color: #f8f8f8;
+	margin-top: 100px;
+	padding: 50px 80px;
+}
+
+.issue_t {
+	height: 300px;
+	border: 1px solid #eee;
+	background-color: #f8f8f8;
+	margin-top: 100px;
+	padding: 50px 80px;
+}
+
+.input {
+	margin: 0 auto;
+	border-radius: 5px;
+	width: 289px;
+	min-height: 41px;
+	padding: 0;
+	opacity: 0.8;
+	margin-bottom: 10px;
+}
+
+.userError {
+	color: red;
+	width: 289px;
+}
+
+#checkResult{
+	margin: 0 auto;
+	width: 289px;
+}
+
+.box {
+	float: left;
+	width: 289px;
+	height: 41px;
+	border-radius: 5px;
+	font-size: 12px;
+	line-height: 41px;
+	border: 1px solid #B6B6B6;
+}
+
+.login_btn {
+	margin: 0 auto;
+	border-radius: 5px;
+	width: 289px;
+	height: 41px;
+	line-height: 41px;
+	font-size: 15px;
+	font-style: bold;
+	text-align: center;
+	padding: 0;
+	background: #63A5E0;
+	color: #FFF;
+	margin-bottom: 5px;
+	margin-top: 10px;
+}
+
+
+/* sponsor part   */
+.sponsorError{
+color:red;	
+}

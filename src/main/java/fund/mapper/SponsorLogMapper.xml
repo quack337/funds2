@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="fund.mapper.SponsorLogMapper">
+
+<select id="selectById" resultType="fund.dto.SponsorLog">
+SELECT *, u.name userName
+FROM [sponsorLog] s 
+  LEFT JOIN [User] u ON u.id = s.userId 
+WHERE id = #{id}
+</select>
+    
+<select id="selectBySponsorId" resultType="fund.dto.SponsorLog">
+SELECT *, u.name userName
+FROM [sponsorLog] s 
+  LEFT JOIN [User] u ON u.id = s.userId
+WHERE sponsorId = #{sponsorId}
+</select>
+
+<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+INSERT sponsorLog (userId, sponsorId, writeTime, field, value1, value2)
+VALUES (#{userId}, #{sponsorId}, #{writeTime}, #{field}, #{value1}, #{value2})
+</insert>
+    
+<delete id="delete">
+DELETE FROM [sponsorLog] WHERE id = #{id}
+</delete>
+
+</mapper>

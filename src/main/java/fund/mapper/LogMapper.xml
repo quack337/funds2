@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="fund.mapper.LogMapper">
+
+<select id="selectById" resultType="fund.dto.Log">
+SELECT * FROM [log] WHERE id = #{id}
+</select>
+    
+<select id="selectPage" resultType="fund.dto.Log">
+<![CDATA[
+DECLARE @order INT, @srchType INT, @srchText nvarchar(50), @currentPage INT, @pageSize INT
+SET @order = #{order}
+SET @srchType = #{srchType}
+SET @srchText = #{srchText}
+SET @currentPage = #{currentPage}
+SET @pageSize = #{pageSize}
+
+SELECT *
+FROM 
+( 
+  SELECT g.*,
+    CASE @order
+      WHEN 0 THEN ROW_NUMBER() OVER (ORDER BY g.id DESC)
+      WHEN 1 THEN ROW_NUMBER() OVER (ORDER BY g.ip)
+      WHEN 2 THEN ROW_NUMBER() OVER (ORDER BY g.url)
+      WHEN 3 THEN ROW_NUMBER() OVER (ORDER BY g.category)
+    END 행번호
+  FROM [log] g
+  WHERE
+    ((@srchType = 0) OR
+     (@srchType = 1 AND g.ip = @srchText) OR
+     (@srchType = 2 AND CHARINDEX(@srchText, g.url) > 0) OR
+     (@srchType = 3 AND CHARINDEX(@srchText, g.category) > 0) OR
+     (@srchType = 4 AND CHARINDEX(@srchText, g.body) > 0)) 
+) subquery
+WHERE 행번호 > (@currentPage - 1) * @pageSize AND
+      행번호 <= @currentPage * @pageSize
+ORDER BY 행번호
+]]>
+</select>
+
+<select id="selectCount" resultType="int">
+<![CDATA[
+DECLARE @srchType INT, @srchText NVARCHAR(50)
+SET @srchType = #{srchType}
+SET @srchText = #{srchText}
+
+SELECT count(*) 
+FROM [log] g
+WHERE
+  ((@srchType = 0) OR
+   (@srchType = 1 AND g.ip = @srchText) OR
+   (@srchType = 2 AND CHARINDEX(@srchText, g.url) > 0) OR
+   (@srchType = 3 AND CHARINDEX(@srchText, g.category) > 0) OR
+   (@srchType = 4 AND CHARINDEX(@srchText, g.body) > 0)) 
+]]>
+</select>    
+
+<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+INSERT log(currentUser, ip, url, category, writeTime, body)
+VALUES (#{currentUser}, #{ip}, #{url}, #{category}, GETDATE(), #{body})
+</insert>
+    
+<delete id="delete">
+DELETE FROM [log] WHERE id = #{id}
+</delete>
+
+</mapper>

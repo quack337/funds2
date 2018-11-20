@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="fund.mapper.CertificateMapper">
+
+<select id="selectById" parameterType="int" resultType="fund.dto.Certificate">
+SELECT * FROM [Certificate] WHERE id = #{id}
+</select>
+
+<select id="selectPage" resultType="fund.dto.Certificate">
+<![CDATA[
+SELECT *
+FROM
+  ( SELECT *, ROW_NUMBER() OVER (ORDER BY s.id DESC) 행번호
+    FROM [Certificate] s
+    WHERE [type] = #{order} AND
+      ((#{srchType} = 0) OR
+       (#{srchType} = 1 AND CHARINDEX(#{srchText,jdbcType=NVARCHAR}, personName) > 0) OR
+       (#{srchType} = 2 AND CHARINDEX(#{srchText,jdbcType=NVARCHAR}, personNo) > 0)) 
+  ) subquery
+WHERE 행번호 > (#{currentPage} - 1) * #{pageSize} AND
+      행번호 <= #{currentPage} * #{pageSize}
+ORDER BY 행번호
+]]>
+</select>
+
+<select id="selectCount" resultType="int">
+<![CDATA[
+SELECT COUNT(*) 
+FROM [Certificate] s
+WHERE [type] = #{order} AND
+  ((#{srchType} = 0) OR
+   (#{srchType} = 1 AND CHARINDEX(#{srchText,jdbcType=NVARCHAR}, personName) = 1) OR
+   (#{srchType} = 2 AND CHARINDEX(#{srchText,jdbcType=NVARCHAR}, personNo) = 1)) 
+]]>
+</select>
+
+<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+INSERT [Certificate] (type, certificateNo, userId, createDate, personNo, personName, department, amount, body)
+VALUES (#{type}, #{certificateNo}, #{userId}, #{createDate}, #{personNo}, #{personName}, #{department}, #{amount}, #{body})
+</insert>
+
+<delete id="delete">
+DELETE FROM [Certificate] WHERE id = #{id}
+</delete>
+
+<select id="generateCertificateNo" resultType="java.lang.String">
+DECLARE @n INT, @year CHAR(4)
+SET @year = YEAR(GETDATE())
+SET @n = (
+  SELECT MAX(CONVERT(INT, RIGHT(certificateNo,4)))
+  FROM [Certificate]
+  WHERE CHARINDEX(@year, certificateNo) = 1 AND LEN(certificateNo) = 9
+  AND ISNUMERIC(RIGHT(certificateNo,4)) = 1
+  AND [type] = #{type})
+SET @n = ISNULL(@n,0) + 1
+SELECT @year + '-' + REPLACE(STR(@n,4), ' ', '0')
+</select>
+
+</mapper>

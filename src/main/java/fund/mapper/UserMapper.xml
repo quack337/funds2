@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>		
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">		
+		
+<mapper namespace="fund.mapper.UserMapper">
+
+<select id="selectAll" resultType="fund.dto.User">        
+  SELECT * FROM [user]      
+</select>
+
+<select id="selectById" resultType="fund.dto.User">     
+  SELECT * FROM [User] WHERE id = #{id}       
+</select>       
+
+<select id="selectByLoginName" resultType="fund.dto.User">     
+  SELECT * FROM [User] WHERE  loginName = #{loginName}        
+</select>       
+
+<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+  INSERT [user] (loginName, [password], [name], [email], userType, [enabled])
+  VALUES (#{loginName}, #{password}, #{name}, #{email}, #{userType}, #{enabled})
+</insert>
+
+<update id="update">
+  UPDATE [user] 
+  SET [loginName] = #{loginName}, [name] = #{name}, userType = #{userType}, email = #{email}, enabled = #{enabled}
+  WHERE id = #{id}
+</update>
+
+<update id="updatePassword">
+  UPDATE [user] 
+  SET [password] = #{password}
+  WHERE id = #{id}
+</update>
+
+<update id="updateErrorCount">
+  UPDATE [user]
+  SET errorCount = #{errorCount}
+  WHERE id = #{id}
+</update>
+
+<delete id="delete">
+  DELETE FROM [user] WHERE id = #{id}
+</delete>
+		
+</mapper>		

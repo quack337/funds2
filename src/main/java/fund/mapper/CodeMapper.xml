@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+             "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="fund.mapper.CodeMapper">
+
+<select id="selectById" parameterType="int" resultType="fund.dto.Code">
+    SELECT * FROM [Code] WHERE id = #{id}
+</select>
+
+<select id="selectByCodeName" resultType="fund.dto.Code">
+    SELECT * FROM code WHERE codeName = #{codeName}
+</select>
+
+<select id="selectCodeGroupById" resultType="fund.dto.CodeGroup">
+    SELECT * FROM [CodeGroup] WHERE id = #{id}
+</select>
+
+<select id="selectEnabledByCodeGroupId"  resultType="fund.dto.Code"> 
+    SELECT *
+    FROM [Code] 
+    WHERE codeGroupId = #{codeGroupId}
+    AND state = 1            
+    ORDER BY state DESC, codeName
+</select>
+
+<select id="selectAllByCodeGroupId"  resultType="fund.dto.Code"> 
+    SELECT *
+    FROM [Code] 
+    WHERE codeGroupId = #{codeGroupId}            
+    ORDER BY state DESC, codeName
+</select>
+
+<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    INSERT [Code] (codeGroupId, codeName, state, etc1, etc2, etc3)
+    VALUES (#{codeGroupId}, #{codeName}, #{state}, #{etc1}, #{etc2}, #{etc3})
+</insert>
+
+<update id="update">
+    UPDATE [Code]
+    SET codeName = #{codeName}, 
+    state = #{state},
+    etc1 = #{etc1},
+    etc2 = #{etc2},
+    etc3 = #{etc3}
+    WHERE id = #{id}
+</update>
+
+<delete id="delete">
+    DELETE FROM [Code] WHERE id = #{id}
+</delete>
+
+
+<select id="selectAllPaymentMethod" resultType="fund.dto.Code">
+	select c2.*
+	from
+	CodeGroup c1 left join Code c2 on c1.id = c2.codeGroupId
+	where
+	c1.name=#{name1} or c1.name=#{name2}
+</select>
+
+
+<select id="selectCodeGroup" resultType="fund.dto.CodeGroup">
+	SELECT *
+	FROM [CodeGroup]
+</select>
+   
+
+</mapper>

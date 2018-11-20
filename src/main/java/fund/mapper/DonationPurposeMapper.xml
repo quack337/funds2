@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="fund.mapper.DonationPurposeMapper">
+
+<select id="selectAll" resultType="fund.dto.DonationPurpose">
+SELECT d.*, c1.codeName organizationName, c2.shortName corporateName
+FROM DonationPurpose d 
+  left JOIN Code c1 ON d.organizationId = c1.id
+  left JOIN Corporate c2 ON d.corporateId = c2.id
+ORDER BY c2.id, c1.id, d.name
+</select>
+
+<select id="selectPage" resultType="fund.dto.DonationPurpose">
+<![CDATA[
+DECLARE @order INT, @srchType INT, @srchText nvarchar(50), @currentPage INT, @pageSize INT
+SET @order = #{order}
+SET @srchType = #{srchType}
+SET @srchText = #{srchText}
+SET @currentPage = #{currentPage}
+SET @pageSize = #{pageSize}
+
+SELECT *
+FROM 
+( 
+  SELECT d.*, c1.codeName organizationName, c2.shortName corporateName,
+         ROW_NUMBER() OVER (ORDER BY c2.id, c1.id, d.name) 행번호
+  FROM DonationPurpose d 
+    left JOIN Code c1 ON d.organizationId = c1.id
+    left JOIN Corporate c2 ON d.corporateId = c2.id
+  WHERE
+    ((@srchType = 0) OR
+     (@srchType = 1 AND CHARINDEX(@srchText, d.name) > 0) OR
+     (@srchType = 2 AND @srchText = d.code))
+  AND
+    ((@order = 0) OR
+     (@order = 1 AND closed = 0) OR
+     (@order = 2 AND closed = 1)) 
+) subquery
+WHERE 행번호 > (@currentPage - 1) * @pageSize AND
+      행번호 <= @currentPage * @pageSize
+ORDER BY 행번호
+]]>
+</select>
+
+<select id="selectCount" resultType="int">
+<![CDATA[
+DECLARE @srchType INT, @srchText NVARCHAR(50), @order INT
+SET @order = #{order}
+SET @srchType = #{srchType}
+SET @srchText = #{srchText}
+
+SELECT count(*) 
+FROM donationPurpose d
+WHERE
+  ((@srchType = 0) OR
+   (@srchType = 1 AND CHARINDEX(@srchText, d.name) > 0) OR
+   (@srchType = 2 AND @srchText = d.code))
+AND
+  ((@order = 0) OR
+   (@order = 1 AND closed = 0) OR
+   (@order = 2 AND closed = 1)) 
+]]>
+</select>
+
+<select id="selectNotClosed" resultType="fund.dto.DonationPurpose">
+SELECT d.*, c1.codeName organizationName, c2.shortName corporateName
+FROM DonationPurpose d 
+  left JOIN Code c1 ON d.organizationId = c1.id
+  left JOIN Corporate c2 ON d.corporateId = c2.id
+WHERE closed = 0  
+ORDER BY c2.id, c1.id, d.name
+</select>
+
+<select id="selectById" resultType="fund.dto.DonationPurpose">
+SELECT * FROM DonationPurpose WHERE id = #{id}
+</select>
+
+<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+INSERT DonationPurpose (corporateId, organizationId, name, gubun, closed, etc, code)
+VALUES (#{corporateId}, #{organizationId}, #{name}, #{gubun}, 0, #{etc}, #{code})
+</insert>
+
+<update id="update">
+UPDATE DonationPurpose
+SET corporateId = #{corporateId}, 
+  organizationId = #{organizationId},
+	name = #{name},
+	gubun = #{gubun},
+    closed = #{closed},
+    etc = #{etc},
+    code = #{code}
+WHERE id = #{id}
+</update>
+
+<delete id="delete">
+DELETE FROM [DonationPurpose] WHERE id = #{id}
+</delete>
+
+</mapper>

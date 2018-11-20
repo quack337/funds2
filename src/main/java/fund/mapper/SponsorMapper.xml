@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="fund.mapper.SponsorMapper">
+
+<select id="selectKey1" resultType="java.lang.String">
+SELECT ${key1}
+</select>
+
+<select id="selectById" resultType="fund.dto.Sponsor">
+SELECT *,
+  CONVERT(VARCHAR, DECRYPTBYPASSPHRASE(CONVERT(VARCHAR, ${key1}), juminNo_encrypted)) juminNo,
+  (SELECT codeName FROM code c WHERE c.id = s.churchID ) church,
+  (SELECT codeName FROM code t WHERE t.id = s.sponsorType1Id) sponsorType1,
+  (SELECT codeName FROM code t WHERE t.id = s.sponsorType2Id) sponsorType2
+FROM sponsor s
+WHERE id = #{id}
+</select>
+
+<select id="selectBySponsorNo" resultType="fund.dto.Sponsor">
+SELECT *
+FROM sponsor s
+WHERE sponsorNo = #{sponsorNo}
+</select>
+
+<select id="selectPage" resultType="fund.dto.Sponsor">
+<![CDATA[
+DECLARE @order INT, @srchType INT, @srchText NVARCHAR(50), @currentPage INT, @pageSize INT, @st1 INT, @st2 INT, @st3 INT, @startDate DATE, @endDate DATE
+SET @order = #{order}
+SET @srchType = #{srchType}
+SET @srchText = RTRIM(#{srchText})
+SET @currentPage = #{currentPage}
+SET @pageSize = #{pageSize}
+SET @st1 = #{st1}
+SET @st2 = #{st2}
+SET @st3 = #{st3}
+SET @startDate = CONVERT(DATE, #{startDate})
+SET @endDAte = CONVERT(DATE, #{endDate})
+SELECT *
+FROM( 
+  SELECT id, sponsorNo, name, signUpDate, mobilePhone, email, 
+    (SELECT codeName FROM code WHERE code.id=s.sponsorType1Id )AS sponsorType1,
+    (SELECT codeName FROM code WHERE code.id=s.sponsorType2Id )AS sponsorType2,
+    (SELECT codeName FROM code WHERE code.id=s.churchID ) AS church,
+    CASE @order
+      WHEN 0 THEN ROW_NUMBER() OVER (ORDER BY REPLACE(s.sponsorNo,'-', '9') DESC)
+      WHEN 1 THEN ROW_NUMBER() OVER (ORDER BY name)
+      WHEN 2 THEN ROW_NUMBER() OVER (ORDER BY s.id DESC)
+    END 행번호
+    FROM [sponsor] s
+    WHERE
+       (@srchText IS NULL OR
+        (LEN(@srchText) = 0) OR
+        (CHARINDEX(@srchText, name) > 0) OR
+        (CHARINDEX(@srchText, sponsorNo) > 0)) 
+    AND (@st1 = 0 OR @st1 = sponsorType1Id)
+    AND (@st2 = 0 OR @st2 = sponsorType2Id)
+    AND (@st3 = 0 OR (@st3 = 1 AND (EXISTS (SELECT c.sponsorId FROM commitment c WHERE c.sponsorId = s.id) OR
+                                    EXISTS (SELECT p.sponsorId FROM payment p WHERE p.sponsorId = s.id)))
+                  OR (@st3 = 2 AND (NOT EXISTS (SELECT c.sponsorId FROM commitment c WHERE c.sponsorId = s.id) AND
+                                    NOT EXISTS (SELECT p.sponsorId FROM payment p WHERE p.sponsorId = s.id))))
+    AND (@startDate IS NULL OR @startDate = '1900-01-01' OR signUpDate BETWEEN @startDate AND @endDate)
+  ) subquery
+WHERE 행번호 > (@currentPage - 1) * @pageSize AND
+      행번호 <= @currentPage * @pageSize
+ORDER BY 행번호
+]]>
+</select>
+
+<select id="selectAll" resultType="fund.dto.Sponsor">
+<![CDATA[
+SELECT sponsorNo, name, 
+    (SELECT TOP 1 codeName FROM code c WHERE c.id = sponsorType1Id) sponsorType1,
+    (SELECT TOP 1 codeName FROM code c WHERE c.id = sponsorType2Id) sponsorType2,
+    (SELECT TOP 1 codeName FROM code c WHERE c.id = churchId) church,
+    signUpDate,
+    mobilePhone,
+    email
+FROM sponsor s
+ORDER BY sponsorNo DESC
+]]>
+</select>
+
+<select id="selectDuplicate" resultType="fund.dto.Sponsor">
+  DECLARE @encrypted VARBINARY(1000), @homePhone VARCHAR(20), @officePhone VARCHAR(20), @mobilePhone VARCHAR(20), @juminNo VARCHAR(20)
+  SET @encrypted = ENCRYPTBYPASSPHRASE(CONVERT(VARCHAR, ${key1}), CONVERT(VARCHAR, #{juminNo}))
+  SET @homePhone = REPLACE(#{homePhone},'-','')
+  SET @officePhone = REPLACE(#{officePhone},'-','')
+  SET @mobilePhone = REPLACE(#{mobilePhone},'-','')
+  SET @juminNo = REPLACE(#{juminNo},'-','')
+  
+  SELECT *, CONVERT(VARCHAR, DECRYPTBYPASSPHRASE(CONVERT(VARCHAR, ${key1}), juminNo_encrypted)) juminNo
+  FROM sponsor
+  WHERE 
+  juminNo_encrypted = @encrypted
+  OR (@juminNo IS NOT NULL AND LEN(@juminNo) > 5 AND REPLACE(CONVERT(VARCHAR, DECRYPTBYPASSPHRASE(CONVERT(VARCHAR, ${key1}), juminNo_encrypted)),'-','') = @juminNo) 
+  OR name = #{name}
+  OR (email IS NOT NULL AND LEN(email) > 8 AND email = #{email})
+  OR (mobilePhone IS NOT NULL AND LEN(mobilePhone) > 8 AND REPLACE(mobilePhone,'-','') = @mobilePhone)
+  OR (homePhone IS NOT NULL AND LEN(homePhone) > 8 AND (REPLACE(homePhone,'-','') = @homePhone OR REPLACE(homePhone,'-','') = @officePhone))
+  OR (officePhone IS NOT NULL AND LEN(officePhone) > 8 AND (REPLACE(officePhone,'-','') = @officePhone OR REPLACE(officePhone,'-','') = @homePhone))
+</select>
+
+<select id="selectCount" resultType="int">
+<![CDATA[
+DECLARE @srchType INT, @srchText NVARCHAR(50)
+SET @srchType = #{srchType}
+SET @srchText = RTRIM(#{srchText})
+
+SELECT COUNT(*) 
+FROM [sponsor] s
+WHERE
+   (@srchText IS NULL OR
+    (LEN(@srchText) = 0) OR
+    (CHARINDEX(@srchText, name) > 0) OR
+    (CHARINDEX(@srchText, sponsorNo) > 0)) 
+AND (#{st1} = 0 OR #{st1} = sponsorType1Id)
+AND (#{st2} = 0 OR #{st2} = sponsorType2Id)
+]]>
+</select>   
+    
+<update id="update">
+DECLARE @encrypted VARBINARY(1000)
+SET @encrypted = ENCRYPTBYPASSPHRASE(CONVERT(VARCHAR, ${key1}), CONVERT(VARCHAR, #{juminNo}))
+UPDATE sponsor
+SET 
+  name = #{name},
+  juminNo_encrypted = @encrypted,
+  sponsorType1Id = #{sponsorType1Id},
+  sponsorType2Id = #{sponsorType2Id},
+  sponsorTypeDetail = #{sponsorTypeDetail},
+  churchId = CASE WHEN #{churchId} = 0 THEN null ELSE #{churchId} END,
+  signUpDate = #{signUpDate},
+  mobilePhone = #{mobilePhone},
+  recommender = #{recommender},
+  recommenderRelation = #{recommenderRelation},
+  mailTo = #{mailTo},
+  homeRoadAddress = #{homeRoadAddress},
+  homeDetailAddress = #{homeDetailAddress},
+  homePostCode = #{homePostCode},
+  homePhone = #{homePhone},
+  email = #{email},
+  company = #{company},
+  department = #{department},
+  position = #{position},
+  officePhone = #{officePhone},
+  officeRoadAddress = #{officeRoadAddress},
+  officeDetailAddress = #{officeDetailAddress},
+  officePostCode = #{officePostCode},
+  etc = #{etc},
+  mailReceiving = #{mailReceiving},
+  emailReceiving = #{emailReceiving},
+  smsReceiving = #{smsReceiving},
+  piuaRequiredItem = #{piuaRequiredItem},
+  piuaOptionalItem = #{piuaOptionalItem},
+  piuaIdentification = #{piuaIdentification},
+  dmError = #{dmError},
+  dmErrorEtc = #{dmErrorEtc}
+WHERE id = #{id}
+</update>    
+    
+<delete id="delete">
+  DELETE FROM sponsor WHERE id = #{id}
+</delete>
+
+<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+DECLARE @encrypted VARBINARY(1000)
+SET @encrypted = ENCRYPTBYPASSPHRASE(CONVERT(VARCHAR, ${key1}), CONVERT(VARCHAR, #{juminNo}))
+INSERT sponsor(sponsorNo, name, sponsorType1Id, sponsorType2Id, sponsorTypeDetail, 
+  churchId, signUpDate, mobilePhone, 
+  recommender, recommenderRelation, mailTo, homeRoadAddress, homeDetailAddress, homePostCode, homePhone, 
+  email, company, department, position, officePhone, officeRoadAddress, officeDetailAddress, officePostCode, etc, juminNo_encrypted,
+  mailReceiving, emailReceiving, smsReceiving, piuaRequiredItem, piuaOptionalItem, piuaIdentification, dmError, dmErrorEtc)
+VALUES (#{sponsorNo}, #{name}, #{sponsorType1Id}, #{sponsorType2Id}, #{sponsorTypeDetail},
+  CASE WHEN #{churchId} = 0 THEN null ELSE #{churchId} END, #{signUpDate}, #{mobilePhone}, 
+  #{recommender}, #{recommenderRelation}, #{mailTo},  #{homeRoadAddress}, #{homeDetailAddress}, #{homePostCode}, #{homePhone},
+  #{email}, #{company}, #{department}, #{position}, #{officePhone}, #{officeRoadAddress}, #{officeDetailAddress}, #{officePostCode}, #{etc}, @encrypted
+  #{mailReceiving}, #{emailReceiving}, #{smsReceiving}, #{piuaRequiredItem}, #{piuaOtionalItem}, #{piuaIdentification}, #{dmError}, #{dmErrorEtc})
+</insert>
+
+<select id="generateSponsorNo" resultType="java.lang.String">
+DECLARE @n INT, @year CHAR(4)
+SET @year = YEAR(GETDATE())
+SET @n = (
+  SELECT MAX(CONVERT(INT, RIGHT(sponsorNo,4)))
+  FROM sponsor
+  WHERE CHARINDEX(@year, sponsorNo) = 1 AND LEN(sponsorNo) = 9
+  AND ISNUMERIC(RIGHT(sponsorNo,4)) = 1)
+SET @n = ISNULL(@n,0) + 1
+SELECT @year + '-' + REPLACE(STR(@n,4), ' ', '0')
+</select>
+
+<select id="selectForDM" resultType="fund.dto.Sponsor">
+<![CDATA[
+DECLARE @currentPage INT, @pageSize INT, @startDate DATE, @endDate DATE, @sponsorType2 INT, @hoewonYn INT, @name NVARCHAR(50)
+SET @currentPage = #{currentPage}
+SET @pageSize = #{pageSize}
+SET @startDate = #{startDate}
+SET @endDate = #{endDate}
+SET @sponsorType2 = #{od} -- 회원구분
+SET @name = #{st}
+SET @hoewonYn = #{ss} -- 회원비회원, 0전체 1회원 2비회원
+
+SELECT *
+FROM (
+  SELECT *, ROW_NUMBER() OVER (ORDER BY sponsorNo DESC) 행번호
+  FROM (
+    SELECT s.*,
+      (SELECT codeName FROM code c WHERE c.id = s.sponsorType2Id) AS sponsorType2,
+      (SELECT codeName FROM code c WHERE c.id = s.churchId) AS church,
+      (CASE WHEN EXISTS(SELECT id FROM commitment WHERE sponsorId = s.id)
+              OR EXISTS(SELECT id FROM payment WHERE sponsorId = s.id)
+            THEN 1 ELSE 2 END) hoewonYn
+    FROM sponsor s 
+    WHERE 1=1
+    AND s.mailReceiving = 1 AND dmError = 0
+    AND (@sponsorType2 = 0 OR @sponsorType2 = s.sponsorType2Id)
+    AND (@name IS NULL OR @name = '' OR s.name = @name)
+  ) subquery1
+  WHERE 1= 1
+  AND (@hoewonYn = 0 OR @hoewonYn = hoewonYn)
+  AND ((hoewonYn = 1 AND id IN (SELECT sponsorId FROM payment p WHERE paymentDate BETWEEN @startDate AND @endDate)) OR
+       (hoewonYn = 2 AND signUpDate BETWEEN @startDate AND @endDate))
+) subquery2
+WHERE 행번호 > (@currentPage - 1) * @pageSize 
+AND   행번호 <= @currentPage * @pageSize
+ORDER BY 행번호
+]]>
+</select>
+    
+<select id="selectCountForDM" resultType="int">
+<![CDATA[
+DECLARE @startDate DATE, @endDate DATE, @sponsorType2 INT, @hoewonYn INT, @name NVARCHAR(50)
+SET @startDate = #{startDate}
+SET @endDate = #{endDate}
+SET @sponsorType2 = #{od} -- 회원구분
+SET @name = #{st}
+SET @hoewonYn = #{ss} -- 회원비회원, 0전체 1회원 2비회원
+
+SELECT COUNT(*)
+FROM (
+SELECT s.*,
+    (SELECT codeName FROM code c WHERE c.id = s.sponsorType2Id) AS sponsorType2,
+    (SELECT codeName FROM code c WHERE c.id = s.churchId) AS church,
+    (CASE WHEN EXISTS(SELECT id FROM commitment WHERE sponsorId = s.id)
+            OR EXISTS(SELECT id FROM payment WHERE sponsorId = s.id)
+        THEN 1 ELSE 2 END) hoewonYn
+FROM sponsor s 
+WHERE 1=1
+AND s.mailReceiving = 1 AND dmError = 0
+AND (@sponsorType2 = 0 OR @sponsorType2 = s.sponsorType2Id)
+AND (@name IS NULL OR @name = '' OR s.name = @name)
+) subquery1
+WHERE 1= 1
+AND (@hoewonYn = 0 OR @hoewonYn = hoewonYn)
+AND ((hoewonYn = 1 AND id IN (SELECT sponsorId FROM payment p WHERE paymentDate BETWEEN @startDate AND @endDate)) OR
+    (hoewonYn = 2 AND signUpDate BETWEEN @startDate AND @endDate))
+]]>
+</select>    
+   
+</mapper>
