@@ -20,6 +20,8 @@
           <th>이름</th>
           <th>이메일</th>
           <th>사용자유형</th>
+          <th>소속</th>
+          <th>활성화</th>
         </tr>
       </thead>
       <tbody>
@@ -29,6 +31,8 @@
             <td>${ u.name }</td>
             <td>${ u.email }</td>
             <td>${ u.userType }</td>
+            <td>${ u.corporateName }</td>
+            <td>${ u.enabled ? "활성화" : "" }</td>
           </tr>
         </c:forEach>
       </tbody>

@@ -27,7 +27,7 @@
         <td><form:input path="email" />
         <td class="lb">사용자유형</td>
         <td><form:select path="userType">
-            <form:option value="직원" />
+            <form:option value="사용자" />
             <form:option value="관리자" />
             </form:select>
         </td>        

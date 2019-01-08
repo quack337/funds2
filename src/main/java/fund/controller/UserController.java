@@ -4,12 +4,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import fund.dto.User;
 import fund.dto.pagination.Pagination;
+import fund.mapper.CorporateMapper;
 import fund.mapper.UserMapper;
 import fund.service.C;
 import fund.service.LogService;
@@ -22,12 +24,19 @@ public class UserController extends BaseController{
 	@Autowired UserMapper userMapper;
 	@Autowired UserService userService;
     @Autowired LogService logService;
+    @Autowired CorporateMapper corporateMapper;
+
+    @ModelAttribute
+    void modelAttribute(Model model) {
+        model.addAttribute("corporates", corporateMapper.selectAll());
+    }
 
     @RequestMapping(value="/user/myinfo.do", method=RequestMethod.GET)
     public String myinfo(Model model) {
         int id = UserService.getCurrentUser().getId();
         model.addAttribute("user", userMapper.selectById(id));
         model.addAttribute("menu", userService.selectMenuUserByUserId(id));
+        model.addAttribute("corporates", corporateMapper.selectAll());
         return "user/myinfo";
     }
 

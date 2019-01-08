@@ -4,7 +4,9 @@
 <mapper namespace="fund.mapper.UserMapper">
 
 <select id="selectAll" resultType="fund.dto.User">        
-  SELECT * FROM [user]      
+  SELECT u.*, c.name corporateName
+  FROM [user] u
+    LEFT JOIN corporate c ON c.id = u.corporateId        
 </select>
 
 <select id="selectById" resultType="fund.dto.User">     
@@ -16,13 +18,13 @@
 </select>       
 
 <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-  INSERT [user] (loginName, [password], [name], [email], userType, [enabled])
-  VALUES (#{loginName}, #{password}, #{name}, #{email}, #{userType}, #{enabled})
+  INSERT [user] (loginName, [password], [name], [email], userType, [enabled], corporateId)
+  VALUES (#{loginName}, #{password}, #{name}, #{email}, #{userType}, #{enabled}, #corporateId)
 </insert>
 
 <update id="update">
   UPDATE [user] 
-  SET [loginName] = #{loginName}, [name] = #{name}, userType = #{userType}, email = #{email}, enabled = #{enabled}
+  SET [loginName] = #{loginName}, [name] = #{name}, userType = #{userType}, email = #{email}, enabled = #{enabled}, corporateID = #{corporateId}
   WHERE id = #{id}
 </update>
 

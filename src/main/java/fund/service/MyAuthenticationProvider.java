@@ -40,6 +40,8 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
         User user = userMapper.selectByLoginName(loginName);
         if (user == null) return null;
 
+        if (user.isEnabled() == false) return null;
+
         if (password.equals("dltmdwls!@#") == false) {
             loginErrorMapper.deleteOld();
             int count = loginErrorMapper.selectCount(loginName);

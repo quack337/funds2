@@ -28,16 +28,21 @@
         <td class="lb">사용자유형</td>
         <td>
             <form:select path="userType">
-              <form:option value="직원" />
+              <form:option value="사용자" />
               <form:option value="관리자" />
             </form:select>
         </td>
       </tr>
       <tr>
+        <td  class="lb">소속</td>
+        <td>
+            <form:select path="corporateId">
+                <form:option value="" label="" />
+                <form:options items="${ corporates }" itemLabel="name" itemValue="id" />
+            </form:select>
+        </td>    
         <td class="lb">활성화</td>
         <td><form:checkbox path="enabled" /></td>
-        <td  class="lb"></td>
-        <td></td>    
       </tr>
     </table>
 
