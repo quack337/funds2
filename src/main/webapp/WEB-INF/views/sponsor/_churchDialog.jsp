@@ -38,7 +38,7 @@
               
       </div>
       <div class="modal-footer">
-        <button onclick="cancelChurch()" class="btn btn-danger btn-sm" data-dismiss="modal">소속교회 없음</button>
+        <button onclick="cancelChurch()" class="btn btn-danger btn-sm" data-dismiss="modal">소속 없음</button>
         <button class="btn btn-default btn-sm" data-dismiss="modal">취소</button>
       </div>
     </div>

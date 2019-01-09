@@ -88,11 +88,11 @@
           <td><form:input path="map[amount]" />    
         </tr>
         <tr>
-          <td class="lb">소속교회</td>
+          <td class="lb">소속</td>
           <td>
             <form:input path="map[churchName]" readonly="true" /> 
             <form:hidden path="map[churchId]" /> 
-            <a href="#churchDialog" class="btn btn-xs btn-flat" data-toggle="modal">소속교회 조회</a>
+            <a href="#churchDialog" class="btn btn-xs btn-flat" data-toggle="modal">소속 조회</a>
           </td>
         </tr>
       </table>
@@ -107,7 +107,7 @@
              <th>회원번호</th>
              <th>이름</th>
              <th>회원구분</th>
-             <th>소속교회</th>
+             <th>소속</th>
              <th>정기<br/>비정기</th>
              <th>기부목적</th>
              <th>납입일</th>

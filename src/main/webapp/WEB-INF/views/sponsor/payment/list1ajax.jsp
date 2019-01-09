@@ -6,8 +6,9 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="my" %>
 
 <c:set var="sum" value="${ 0 }" />
+<div id="sum" class="mt10 mb10"></div>
 
-<my:scrollableTable tagId="list1ajax_scrollTable">
+<my:scrollableTable tagId="list1ajax_scrollTable" height="400">
     <jsp:attribute name="header">
 	    <tr>
 	      <th>약정번호</th>
@@ -43,6 +44,8 @@
     </jsp:attribute>
 </my:scrollableTable>
 
-<div class="sum">
-합계 : <fmt:formatNumber value="${ sum }" />
-</div>
+<span id="sumTemp">합계: <fmt:formatNumber value="${ sum }" /></span>
+<script>
+   var tag = $("#sumTemp");
+   tag.detach().appendTo("#sum");
+</script>

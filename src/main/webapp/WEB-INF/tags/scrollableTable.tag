@@ -3,7 +3,10 @@
 <%@ attribute name="tagId" required="true" %>
 <%@ attribute name="header" required="true" fragment="true" %>
 <%@ attribute name="body" required="true" fragment="true" %>
+<%@ attribute name="height" required="false" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<c:set var="height" value="${ empty height ? 450 : height }" />
 <style>
   #scroll1 th { white-space: normal; }
   #scroll2 td { white-space: nowrap; }
@@ -17,7 +20,7 @@
 	    </thead>
 	  </table>
 	</div>
-	<div id='scroll2'  style='overflow-y: scroll; overflow-x: auto; max-height: 600px; border: 1px solid #eee; margin-bottom: 10px; width:100%;'>    
+	<div id='scroll2'  style='overflow-y: scroll; overflow-x: auto; max-height: ${height}px; border: 1px solid #eee; margin-bottom: 10px; width:100%;'>    
 	  <table id="srch1a" class="table table-bordered mt4">
 	    <tbody>
 	      <jsp:invoke fragment="body" />

@@ -13,7 +13,7 @@
     <h3>로그기록 상세</h3>
   </div>
   <div class="panel-body">    
-    <div class="">
+    <div class="right mb10 mt10">
       <a class="btn btn-danger btn-sm" href="delete?id=${log.id}&${q}" data-confirm-delete>삭제</a>
       <a class="btn btn-gray btn-sm" href="list">목록으로 나가기</a>
     </div>

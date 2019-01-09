@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import fund.dto.Code;
 import fund.dto.Sponsor;
-import fund.dto.pagination.Pagination;
+import fund.dto.pagination.PaginationDM;
 import fund.dto.pagination.PaginationSponsor;
 import fund.mapper.CodeMapper;
 import fund.mapper.SponsorLogMapper;
@@ -165,18 +165,18 @@ public class SponsorController extends BaseController {
     }
 
     @RequestMapping("/sponsor/dm")
-    public String sendDM(Model model, Pagination pagination) {
+    public String sendDM(Model model, @ModelAttribute("pagination") PaginationDM pagination) {
         if (!UserService.canAccess(C.메뉴_회원관리_우편발송)) return "redirect:/home/logout";
-        if (StringUtils.isBlank(pagination.getStartDate()) == false) {
-            pagination.setRecordCount(sponsorMapper.selectCountForDM(pagination));
-            model.addAttribute("list", sponsorMapper.selectForDM(pagination));
-        }
+        if (StringUtils.isBlank(pagination.getStartDate())) pagination.setStartDate("1990-01-01");
+        if (StringUtils.isBlank(pagination.getEndDate())) pagination.setEndDate("2090-01-01");
+        pagination.setRecordCount(sponsorMapper.selectCountForDM(pagination));
+        model.addAttribute("list", sponsorMapper.selectForDM(pagination));
         model.addAttribute("sponsorType2List", codeMapper.selectEnabledByCodeGroupId(C.코드그룹ID_회원구분));
         return "sponsor/dm";
     }
 
     @RequestMapping("/sponsor/dmx")
-    public void sendDMxlsx(Pagination pagination, HttpServletRequest req, HttpServletResponse res) throws Exception {
+    public void sendDMxlsx(@ModelAttribute("pagination") PaginationDM pagination, HttpServletRequest req, HttpServletResponse res) throws Exception {
         if (!UserService.canAccess(C.메뉴_회원관리_우편발송)) return;
         if (StringUtils.isBlank(pagination.getStartDate()) == false) {
             int count = sponsorMapper.selectCountForDM(pagination);

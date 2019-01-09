@@ -3,6 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
+<style>
+    .nowrap { white-space: nowrap;}
+</style>
 
 <form:form method="get" modelAttribute="pagination">
 
@@ -30,6 +33,13 @@
           <form:option value="1" label="회원" />
           <form:option value="2" label="비회원" />
         </form:select>
+        <form:select path="et">
+          <form:option value="0" label="기타 조건" />
+          <form:option value="1" label="우편 반송" />
+          <form:option value="2" label="우편 발송 동의" />
+          <form:option value="3" label="이메일 수신 동의" />
+          <form:option value="4" label="SMS 수신 동의" />
+        </form:select>
         <form:input type="text" class="w100" path="st" placeholder="이름" style="margin-left: 20px; margin-right: 20px;" />
         <button type="submit" class="btn btn-primary btn-sm">조회</button>
         <a href="dmx?${pagination.queryString}" class="btn btn-success btn-sm">엑셀 다운로드</a>
@@ -38,23 +48,25 @@
       <table class="table table-bordered" id="table_s">
         <thead>
           <tr>
-            <th>회원번호</th>
-            <th>이름</th>
-            <th>회원구분</th>
-            <th>소속교회</th>
-            <th>우편번호</th>
+            <th class="nowrap">회원번호</th>
+            <th class="nowrap">이름</th>
+            <th class="nowrap">회원구분</th>
+            <th class="nowrap">소속</th>
             <th>주소</th>
+            <th class="nowrap">이메일</th>
+            <th class="nowrap">휴대폰</th>
           </tr>
         </thead>
         <tbody>
           <c:forEach var="s" items="${list}">
             <tr>
-              <td>${s.sponsorNo}</td>
-              <td>${s.name}</td>
-              <td>${s.sponsorType2}</td>
-              <td>${s.church}</td>
-              <td>${s.postCode}</td>
-              <td>${s.address}</td>
+              <td class="nowrap">${s.sponsorNo}</td>
+              <td class="nowrap">${s.name}</td>
+              <td class="nowrap">${s.sponsorType2}</td>
+              <td class="nowrap">${s.church}</td>
+              <td>${s.postCode} ${s.address}</td>
+              <td class="nowrap">${s.email}</td>
+              <td class="nowrap">${s.mobilePhone}</td>
             </tr>
           </c:forEach>
         </tbody>

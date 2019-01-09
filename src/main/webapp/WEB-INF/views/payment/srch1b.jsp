@@ -44,11 +44,11 @@
                 <form:options itemValue="id" itemLabel="codeName" items="${ sponsorType2List }" />
                 </form:select>
             </td>            
-            <td class="lb">소속교회</td>
+            <td class="lb">소속</td>
             <td>
               <form:input path="map[churchName]" readonly="true" /> 
               <form:hidden path="map[churchId]" /> 
-              <a href="#churchDialog" class="btn btn-xs btn-flat" data-toggle="modal">소속교회 조회</a>
+              <a href="#churchDialog" class="btn btn-xs btn-flat" data-toggle="modal">소속 조회</a>
             </td>
           </tr>
           <tr>      
@@ -97,7 +97,7 @@
             <th>회원번호</th>
             <th>이름</th>
             <th>회원구분</th>
-            <th>소속교회</th>
+            <th>소속</th>
             <th class="right">납입액</th>
             <th class="right">납입건수</th>
            </tr>        

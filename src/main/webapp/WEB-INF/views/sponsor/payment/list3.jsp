@@ -27,8 +27,9 @@
     </div>   
 
     <c:set var="sum" value="${ 0 }" />
-
-    <my:scrollableTable tagId="srch1a">
+    <div id="sum" class="mt10 mb10"></div>
+    
+    <my:scrollableTable tagId="srch1a" height="400">
         <jsp:attribute name="header">
            <tr>
 	          <th>납입방법</th>
@@ -52,9 +53,11 @@
         </jsp:attribute>
     </my:scrollableTable>
 
-    <div id="sum" class="mb10">
-      합계: <fmt:formatNumber value="${ sum }" />
-    </div>
+    <span id="sumTemp">합계: <fmt:formatNumber value="${ sum }" /></span>
+    <script>
+       var tag = $("#sumTemp");
+       tag.detach().appendTo("#sum");
+    </script>
 
   </div>
 </div>    

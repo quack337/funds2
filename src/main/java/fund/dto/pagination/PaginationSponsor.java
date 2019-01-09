@@ -1,34 +1,15 @@
 package fund.dto.pagination;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(callSuper=true)
 public class PaginationSponsor extends Pagination {
 
     int st1;
     int st2;
     int st3;
-
-    public int getSt1() {
-        return st1;
-    }
-
-    public void setSt1(int st1) {
-        this.st1 = st1;
-    }
-
-    public int getSt2() {
-        return st2;
-    }
-
-    public void setSt2(int st2) {
-        this.st2 = st2;
-    }
-
-    public int getSt3() {
-        return st3;
-    }
-
-    public void setSt3(int st3) {
-        this.st3 = st3;
-    }
 
     @Override
     public String getQueryString() {

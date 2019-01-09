@@ -193,7 +193,7 @@ SELECT @year + '-' + REPLACE(STR(@n,4), ' ', '0')
 
 <select id="selectForDM" resultType="fund.dto.Sponsor">
 <![CDATA[
-DECLARE @currentPage INT, @pageSize INT, @startDate DATE, @endDate DATE, @sponsorType2 INT, @hoewonYn INT, @name NVARCHAR(50)
+DECLARE @currentPage INT, @pageSize INT, @startDate DATE, @endDate DATE, @sponsorType2 INT, @hoewonYn INT, @name NVARCHAR(50), @et INT
 SET @currentPage = #{currentPage}
 SET @pageSize = #{pageSize}
 SET @startDate = #{startDate}
@@ -201,6 +201,7 @@ SET @endDate = #{endDate}
 SET @sponsorType2 = #{od} -- 회원구분
 SET @name = #{st}
 SET @hoewonYn = #{ss} -- 회원비회원, 0전체 1회원 2비회원
+SET @et = #{et} -- 0전체 1반송 2우편동의 3이메일동의
 
 SELECT *
 FROM (
@@ -222,6 +223,8 @@ FROM (
   AND (@hoewonYn = 0 OR @hoewonYn = hoewonYn)
   AND ((hoewonYn = 1 AND id IN (SELECT sponsorId FROM payment p WHERE paymentDate BETWEEN @startDate AND @endDate)) OR
        (hoewonYn = 2 AND signUpDate BETWEEN @startDate AND @endDate))
+  AND (@et = 0 OR (@et = 1 AND dmError = 1) OR 
+                  (@et = 2 AND mailReceiving = 1) OR (@et = 3 AND emailReceiving = 1) OR (@et = 4 AND smsReceiving = 1))
 ) subquery2
 WHERE 행번호 > (@currentPage - 1) * @pageSize 
 AND   행번호 <= @currentPage * @pageSize
@@ -231,12 +234,13 @@ ORDER BY 행번호
     
 <select id="selectCountForDM" resultType="int">
 <![CDATA[
-DECLARE @startDate DATE, @endDate DATE, @sponsorType2 INT, @hoewonYn INT, @name NVARCHAR(50)
+DECLARE @startDate DATE, @endDate DATE, @sponsorType2 INT, @hoewonYn INT, @name NVARCHAR(50), @et INT
 SET @startDate = #{startDate}
 SET @endDate = #{endDate}
 SET @sponsorType2 = #{od} -- 회원구분
 SET @name = #{st}
 SET @hoewonYn = #{ss} -- 회원비회원, 0전체 1회원 2비회원
+SET @et = #{et} -- 0전체 1반송 2우편동의 3이메일동의
 
 SELECT COUNT(*)
 FROM (
@@ -256,6 +260,8 @@ WHERE 1= 1
 AND (@hoewonYn = 0 OR @hoewonYn = hoewonYn)
 AND ((hoewonYn = 1 AND id IN (SELECT sponsorId FROM payment p WHERE paymentDate BETWEEN @startDate AND @endDate)) OR
     (hoewonYn = 2 AND signUpDate BETWEEN @startDate AND @endDate))
+  AND (@et = 0 OR (@et = 1 AND dmError = 1) OR 
+                  (@et = 2 AND mailReceiving = 1) OR (@et = 3 AND emailReceiving = 1) OR (@et = 4 AND smsReceiving = 1))
 ]]>
 </select>    
    

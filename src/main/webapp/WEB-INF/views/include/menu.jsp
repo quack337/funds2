@@ -65,7 +65,7 @@
                 <%= menu("회원별 납입 합계", "/funds2/payment/srch1b", C.메뉴_납입조회_회원별납입합계)%>
                 <%= menu("기부목적별 납입 합계", "/funds2/payment/srch2/0", C.메뉴_납입조회_기부목적별납입합계)%>
                 <%= menu("회원구분별 납입 합계", "/funds2/payment/srch2/1", C.메뉴_납입조회_회원구분별납입합계)%>
-                <%= menu("소속교회별 납입 합계", "/funds2/payment/srch2/2", C.메뉴_납입조회_소속교회별납입합계)%>
+                <%= menu("소속별 납입 합계", "/funds2/payment/srch2/2", C.메뉴_납입조회_소속교회별납입합계)%>
               </ul>
             </li>
             <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">기부금영수증<span class="caret"></span></a>

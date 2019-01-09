@@ -148,7 +148,7 @@ public class PaymentController extends BaseController {
         return "payment/srch1b";
     }
 
-    static String[] report2Title = new String[] { "기부목적", "회원구분", "소속교회" };
+    static String[] report2Title = new String[] { "기부목적", "회원구분", "소속" };
 
     //// report2
     @RequestMapping(value="/payment/srch2/{i}", method=RequestMethod.GET)
