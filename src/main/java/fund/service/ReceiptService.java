@@ -3,8 +3,10 @@ package fund.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import fund.dto.Payment;
 import fund.dto.Receipt;
 import fund.mapper.PaymentMapper;
@@ -16,7 +18,7 @@ public class ReceiptService {
 	@Autowired PaymentMapper paymentMapper;
     @Autowired ReceiptMapper receiptMapper;
 
-	public String createReceipt1(String createDate, int[] pid) {
+	public String createReceipt1(String createDate, int corporateId, int[] pid) {
 	    if (pid.length <= 0) return "납입 내역을 선택하세요.";
 
         List<Payment> payments = new ArrayList<>();
@@ -25,7 +27,8 @@ public class ReceiptService {
             if (payments.get(0).getSponsorId() != payments.get(i).getSponsorId())
                 return "하나의 회원만 선택해주세요.";
         }
-        String receiptNo = receiptMapper.generateReceiptNo(createDate);
+        String receiptNo = receiptMapper.generateReceiptNo(corporateId, createDate);
+
         Receipt receipt = new Receipt();
         receipt.setNo(receiptNo);
         receipt.setSponsorId(payments.get(0).getSponsorId());
@@ -53,6 +56,9 @@ public class ReceiptService {
         Receipt receipt = null;
         String createDate = (String)map.get("createDate");
         List<Payment> payments = paymentMapper.selectForReceiptCreation2(map);
+
+        System.out.printf("=== %d %s %s %s\n",  payments.size(), createDate, map.get("startDate"), map.get("endDate"));
+
         for (Payment p : payments) {
             if (sponsorId != p.getSponsorId() || corporateId != p.getCorporateId()) {
                 sponsorId = p.getSponsorId();
@@ -60,7 +66,7 @@ public class ReceiptService {
                 receipt = new Receipt();
                 receipt.setSponsorId(sponsorId);
                 receipt.setCreateDate(createDate);
-                receipt.setNo(receiptMapper.generateReceiptNo(createDate));
+                receipt.setNo(receiptMapper.generateReceiptNo(corporateId, createDate));
                 receiptMapper.insert(receipt);
             }
             p.setReceiptId(receipt.getId());

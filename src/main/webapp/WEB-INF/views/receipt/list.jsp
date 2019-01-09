@@ -90,14 +90,14 @@ function report2() {
           <li class='${ page.cssClass }'><a data-page="${ page.number }">${ page.label }</a></li>
         </c:forEach>
       </ul>
-      
-      </form:form>
 
       <div id="buttons" class="mt4">
         <button class="btn btn-info btn-sm" type="button" onclick="report1()">선택한 영수증(건별) 다운로드</button>
         <button class="btn btn-info btn-sm" type="button" onclick="report2()">선택한 영수증(합산) 다운로드</button>
         <button class="btn btn-danger btn-sm" type="submit" name="cmd" value="delete" data-confirm-delete >선택한 영수증 삭제</button>
       </div>
+      
+      </form:form>
 
   </div>
 </div>

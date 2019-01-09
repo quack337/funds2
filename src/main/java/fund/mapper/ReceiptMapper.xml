@@ -56,15 +56,20 @@ AND (@corporateId = 0 OR @corporateId IS NULL OR
 </select>
 
 <select id="generateReceiptNo" resultType="java.lang.String">
-DECLARE @n INT, @year CHAR(4)
+DECLARE @n1 CHAR(2), @n2 INT, @year CHAR(4)
 SET @year = SUBSTRING(#{createDate}, 1, 4)
-SET @n = (
+SET @n1 = (
+  SELECT RIGHT(corporateNo, 2)
+  FROM corporate
+  WHERE id = #{corporateId}
+)
+SET @n2 = (
   SELECT MAX(CONVERT(INT, RIGHT([no],4)))
   FROM receipt
   WHERE CHARINDEX(@year, [no]) = 1 AND LEN([no]) = 9
   AND ISNUMERIC(RIGHT([no], 4)) = 1)
-SET @n = ISNULL(@n,0) + 1
-SELECT @year + '-' + REPLACE(STR(@n, 4), ' ', '0')
+SET @n2 = ISNULL(@n2,0) + 1
+SELECT @year + '-' + @n1 + '-' + REPLACE(STR(@n2, 4), ' ', '0')
 </select>
 
 <select id="selectSum" resultType="hashmap">

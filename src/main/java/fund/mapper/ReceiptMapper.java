@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import fund.dto.Receipt;
 import fund.dto.pagination.Pagination;
@@ -16,6 +17,6 @@ public interface ReceiptMapper {
     int selectCount(Pagination pagination);
     List<HashMap<String,Object>> selectSum(Pagination pagination);
     void insert(Receipt receipt);
-    String generateReceiptNo(String createDate);
+    String generateReceiptNo(@Param("corporateId") int corporateId, @Param("createDate") String createDate);
 	void delete(int id);
 }

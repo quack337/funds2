@@ -103,7 +103,7 @@ FROM Payment p
   LEFT JOIN Receipt r ON p.receiptId = r.id
 WHERE p.paymentDate BETWEEN @startDate AND @endDate
 AND p.sponsorId IN (SELECT id FROM [sponsor] WHERE name = @srchText)
-AND p.donationPurposeId IN (SELECT id FROM donationPurpose WHERE @corporateId = 0 OR corporateId = @corporateId)
+AND p.donationPurposeId IN (SELECT id FROM donationPurpose WHERE @corporateId IS NULL OR @corporateId = 0 OR corporateId = @corporateId)
 AND LEN(REPLACE(CONVERT(VARCHAR, DECRYPTBYPASSPHRASE(CONVERT(VARCHAR, ${key1}), juminNo_encrypted)), '-', '')) IN (13, 10)
 ORDER BY p.paymentDate DESC
 </select>
@@ -121,7 +121,7 @@ FROM Payment p
 WHERE p.paymentDate BETWEEN @startDate AND @endDate
 AND p.receiptId IS NULL
 AND LEN(REPLACE(CONVERT(VARCHAR, DECRYPTBYPASSPHRASE(CONVERT(VARCHAR, ${key1}), juminNo_encrypted)), '-', '')) IN (13, 10)
-AND (@corporateId IS NULL OR d.corporateId = @corporateId)
+AND (@corporateId IS NULL OR @corporateId = 0 OR d.corporateId = @corporateId)
 ORDER BY p.sponsorId, d.corporateId
 </select>    
 
@@ -204,7 +204,7 @@ AND (@donationPurposeId IS NULL OR @donationPurposeId = '' OR @donationPurposeId
 AND (@sponsorType2Id IS NULL OR @sponsorType2Id = '' OR @sponsorType2Id = s.sponsorType2Id)
 AND (@sponsorName IS NULL OR @sponsorName = '' OR @sponsorName = s.name)
 AND (@sponsorNo IS NULL OR @sponsorNo = '' OR @sponsorNo = s.sponsorNo)
-AND (@corporateId IS NULL OR @corporateId = '' OR @corporateId = d.corporateId)
+AND (@corporateId IS NULL OR @corporateId = 0 OR @corporateId = d.corporateId)
 AND (@amount = 0 OR @amount = p.amount)
 AND (@commitmentNo IS NULL OR @commitmentNo = '' OR @commitmentNo = c.commitmentNo)
 ${ orderBy }
@@ -242,7 +242,7 @@ FROM
   AND (@sponsorType2Id IS NULL OR @sponsorType2Id = '' OR @sponsorType2Id = s.sponsorType2Id)
   AND (@sponsorName IS NULL OR @sponsorName = '' OR @sponsorName = s.name)
   AND (@sponsorNo IS NULL OR @sponsorNo = '' OR @sponsorNo = s.sponsorNo)
-  AND (@corporateId IS NULL OR @corporateId = '' OR @corporateId = d.corporateId)
+  AND (@corporateId IS NULL OR @corporateId = 0 OR @corporateId = d.corporateId)
   GROUP BY s.id
 ) t
   LEFT JOIN sponsor s ON s.id = t.id
@@ -259,7 +259,7 @@ SET @sum = (SELECT SUM(CONVERT(BIGINT,amount))
               LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
               LEFT JOIN corporate c ON c.id = d.corporateId
             WHERE paymentDate BETWEEN @startDate AND @endDate
-            AND (@corporateId = 0 OR @corporateId = c.id))
+            AND (@corporateId IS NULL OR @corporateId = 0 OR @corporateId = c.id))
 
 SELECT c.name +' '+ o.codeName +' '+ d.name name, 
   amount, sponsorCount, paymentCount, (amount * 100.0 / @sum) ratio, 
@@ -270,7 +270,7 @@ FROM (
     LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
     LEFT JOIN corporate c ON c.id = d.corporateId
   WHERE paymentDate BETWEEN @startDate AND @endDate
-  AND (@corporateId = 0 OR @corporateId = c.id)
+  AND (@corporateId IS NULL OR @corporateId = 0 OR @corporateId = c.id)
   GROUP BY donationPurposeId
 ) t
   LEFT JOIN donationPurpose d ON t.donationPurposeId = d.id 
@@ -286,7 +286,7 @@ FROM payment p
     LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
     LEFT JOIN corporate c ON c.id = d.corporateId
 WHERE paymentDate BETWEEN @startDate AND @endDate
-AND (@corporateId = 0 OR @corporateId = c.id)
+AND (@corporateId IS NULL OR @corporateId = 0 OR @corporateId = c.id)
 ORDER BY corporateId, organizationId, dname
 </select>
 
@@ -300,7 +300,7 @@ SET @sum = (SELECT SUM(CONVERT(BIGINT,amount))
               LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
               LEFT JOIN corporate c ON c.id = d.corporateId
             WHERE paymentDate BETWEEN @startDate AND @endDate
-            AND (@corporateId = 0 OR @corporateId = c.id))
+            AND (@corporateId IS NULL OR @corporateId = 0 OR @corporateId = c.id))
 
 SELECT sponsorType2Id, c.codeName name, 
   amount, sponsorCount, paymentCount, (amount * 100.0 / @sum) ratio
@@ -310,7 +310,7 @@ FROM (
     LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
     LEFT JOIN corporate c ON c.id = d.corporateId
   WHERE paymentDate BETWEEN @startDate AND @endDate
-  AND (@corporateId = 0 OR @corporateId = c.id)
+  AND (@corporateId IS NULL OR @corporateId = 0 OR @corporateId = c.id)
   GROUP BY s.sponsorType2Id
 ) t
   LEFT JOIN code c ON c.id = t.sponsorType2Id
@@ -322,7 +322,7 @@ FROM payment p
     LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
     LEFT JOIN corporate c ON c.id = d.corporateId
 WHERE paymentDate BETWEEN @startDate AND @endDate
-AND (@corporateId = 0 OR @corporateId = c.id)
+AND (@corporateId IS NULL OR @corporateId = 0 OR @corporateId = c.id)
 
 ORDER BY sponsorType2Id
 </select>
@@ -338,7 +338,7 @@ SET @sum = (SELECT SUM(CONVERT(BIGINT,amount))
               LEFT JOIN corporate c ON c.id = d.corporateId
               LEFT JOIN sponsor s ON s.id = p.sponsorId
             WHERE paymentDate BETWEEN @startDate AND @endDate
-            AND (@corporateId = 0 OR @corporateId = c.id)
+            AND (@corporateId IS NULL OR @corporateId = 0 OR @corporateId = c.id)
             AND s.churchId IS NOT NULL)
 
 SELECT churchId, c.codeName name, 
@@ -349,7 +349,7 @@ FROM (
     LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
     LEFT JOIN corporate c ON c.id = d.corporateId
   WHERE paymentDate BETWEEN @startDate AND @endDate
-  AND (@corporateId = 0 OR @corporateId = c.id)
+  AND (@corporateId IS NULL OR @corporateId = 0 OR @corporateId = c.id)
   AND s.churchId IS NOT NULL
   GROUP BY s.churchId
 ) t
@@ -362,7 +362,7 @@ FROM payment p LEFT JOIN sponsor s ON s.id = p.sponsorId
     LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
     LEFT JOIN corporate c ON c.id = d.corporateId
 WHERE paymentDate BETWEEN @startDate AND @endDate
-AND (@corporateId = 0 OR @corporateId = c.id)
+AND (@corporateId IS NULL OR @corporateId = 0 OR @corporateId = c.id)
 AND s.churchId IS NOT NULL
 
 ORDER BY churchId

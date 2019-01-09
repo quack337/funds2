@@ -92,7 +92,8 @@ public class ReceiptController extends BaseController {
     public String create1CreateReceipt(RedirectAttributes ra, @RequestParam("pid") int[] pid, Wrapper wrapper) throws Exception {
         if (!UserService.canAccess(C.메뉴_영수증_영수증개별생성)) return "redirect:/home/logout.do";
         String createDate = (String)wrapper.getMap().get("createDate");
-        receiptService.createReceipt1(createDate, pid);
+        int corporateId = Integer.valueOf(wrapper.getMap().get("corporateId").toString());
+        receiptService.createReceipt1(createDate, corporateId, pid);
         ra.addFlashAttribute("successMsg", "영수증이 생성되었습니다.");
         return "redirect:list.do";
     }

@@ -8,6 +8,7 @@
 <style>
 body table#receiptCreaet1 tbody tr td { height: 1.7em; line-height: 1.7em; vertical-align: middle; padding: 4px; }
 body table#receiptCreaet1 td:nth-child(1) { text-align: center; }
+th:nth-child(1), td:nth-child(1) { text-align:center; }
 </style>
 
 <div class="navigation-info">
