@@ -10,7 +10,7 @@
 <c:set var="mode" value="${ todo.id > 0 ? '수정' : '등록' }" />
 
 <div class="navigation-info">
-  &gt; 기타 &gt; <a href="list.do?${ pagination.queryString }">일정목록</a> &gt; 일정 ${ mode }
+  &gt; 기타 &gt; <a href="list?${ pagination.queryString }">일정목록</a> &gt; 일정 ${ mode }
 </div>
 
 <form:form method="post" modelAttribute="todo">
@@ -26,7 +26,7 @@
       <c:if test="${ todo.id > 0 }">
         <button type="submit" class="btn btn-danger btn-sm" name="cmd" value="delete" data-confirm-delete>일정 삭제</button>
       </c:if>    
-      <a href="list.do?${ pagination.queryString }" class="btn btn-gray btn-sm">일정 목록으로</a>
+      <a href="list?${ pagination.queryString }" class="btn btn-gray btn-sm">일정 목록으로</a>
     </div>
 
     <table id="todo" class="table table-bordered lbw120 pd4">

@@ -6,8 +6,8 @@
 <c:url var="R" value="/" />
 
 <div class="navigation-info">
-  &gt; 회원 관리 &gt; <a href="${R}sponsor/list.do?${ pagination.queryString }">회원 목록</a> 
-  &gt; 약정 관리 &gt; <a href="list.do?sid=${ sponsor.id }&${ pagination.queryString }">약정 목록</a> &gt; 약정 수정
+  &gt; 회원 관리 &gt; <a href="${R}sponsor/list?${ pagination.queryString }">회원 목록</a> 
+  &gt; 약정 관리 &gt; <a href="list?sid=${ sponsor.id }&${ pagination.queryString }">약정 목록</a> &gt; 약정 수정
 </div>
 
 <form:form method="post" modelAttribute="commitment">
@@ -26,8 +26,8 @@
       <c:if test="${ commitment.eb13State eq null || commitment.eb13State eq '에러' }">
         <button type="submit" class="btn btn-danger  btn-sm" name="cmd" value="delete" data-confirm-delete>삭제</button>
       </c:if>
-      <a href="list.do?sid=${ sponsor.id }&${ pagination.queryString }" class="btn btn-gray btn-sm">약정 목록으로</a>
-      <a href="${R}payment/srch1a.do?commitmentNo=${commitment.commitmentNo}" class="btn btn-info btn-sm">납입내역 상세 조회</a>
+      <a href="list?sid=${ sponsor.id }&${ pagination.queryString }" class="btn btn-gray btn-sm">약정 목록으로</a>
+      <a href="${R}payment/srch1a?commitmentNo=${commitment.commitmentNo}" class="btn btn-info btn-sm">납입내역 상세 조회</a>
     </div>
 
     <table class="table table-bordered lbw120 pd4 mt10">

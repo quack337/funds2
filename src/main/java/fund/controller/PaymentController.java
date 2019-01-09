@@ -59,7 +59,7 @@ public class PaymentController extends BaseController {
             @RequestParam(value="commitmentNo", required=false) String commitmentNo,
             @RequestParam(value="sponsorNo", required=false) String sponsorNo,
             @RequestParam(value="regular", required=false) String regular) {
-        if (!UserService.canAccess(C.메뉴_납입조회_납입내역조회)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_납입조회_납입내역조회)) return "redirect:/home/logout";
         addModel1(model);
         Wrapper wrapper = new Wrapper();
         if (commitmentNo != null) wrapper.getMap().put("commitmentNo", commitmentNo);
@@ -71,7 +71,7 @@ public class PaymentController extends BaseController {
 
     @RequestMapping(value="/payment/srch1a", method=RequestMethod.POST, params="cmd=search")
     public String report1aPOST(Model model, Wrapper wrapper) {
-        if (!UserService.canAccess(C.메뉴_납입조회_납입내역조회)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_납입조회_납입내역조회)) return "redirect:/home/logout";
         addModel1(model);
         model.addAttribute("list", paymentMapper.selectReport1a(wrapper.getMap()));
         return "payment/srch1a";
@@ -130,7 +130,7 @@ public class PaymentController extends BaseController {
 
     @RequestMapping(value="/payment/srch1b", method=RequestMethod.GET)
     public String report1b(Model model) {
-        if (!UserService.canAccess(C.메뉴_납입조회_회원별납입합계)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_납입조회_회원별납입합계)) return "redirect:/home/logout";
         Wrapper wrapper = new Wrapper();
         int year = Calendar.getInstance().get(Calendar.YEAR);
         wrapper.getMap().put("startDate", String.format("%d-01-01", year));
@@ -142,7 +142,7 @@ public class PaymentController extends BaseController {
 
     @RequestMapping(value="/payment/srch1b", method=RequestMethod.POST, params="cmd=search")
     public String report1b(Model model, Wrapper wrapper) {
-        if (!UserService.canAccess(C.메뉴_납입조회_회원별납입합계)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_납입조회_회원별납입합계)) return "redirect:/home/logout";
         addModel1(model);
         model.addAttribute("list", paymentMapper.selectReport1b(wrapper.getMap()));
         return "payment/srch1b";
@@ -153,9 +153,9 @@ public class PaymentController extends BaseController {
     //// report2
     @RequestMapping(value="/payment/srch2/{i}", method=RequestMethod.GET)
     public String report2a(Model model, @PathVariable("i") int i) {
-        if (i == 0 && !UserService.canAccess(C.메뉴_납입조회_기부목적별납입합계)) return "redirect:/home/logout.do";
-        if (i == 1 && !UserService.canAccess(C.메뉴_납입조회_회원구분별납입합계)) return "redirect:/home/logout.do";
-        if (i == 2 && !UserService.canAccess(C.메뉴_납입조회_소속교회별납입합계)) return "redirect:/home/logout.do";
+        if (i == 0 && !UserService.canAccess(C.메뉴_납입조회_기부목적별납입합계)) return "redirect:/home/logout";
+        if (i == 1 && !UserService.canAccess(C.메뉴_납입조회_회원구분별납입합계)) return "redirect:/home/logout";
+        if (i == 2 && !UserService.canAccess(C.메뉴_납입조회_소속교회별납입합계)) return "redirect:/home/logout";
 
         Wrapper wrapper = new Wrapper();
         int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -169,9 +169,9 @@ public class PaymentController extends BaseController {
 
     @RequestMapping(value="/payment/srch2/{i}", method=RequestMethod.POST, params="cmd=search")
     public String report2a(Model model, Wrapper wrapper, @PathVariable("i") int i) {
-        if (i == 0 && !UserService.canAccess(C.메뉴_납입조회_기부목적별납입합계)) return "redirect:/home/logout.do";
-        if (i == 1 && !UserService.canAccess(C.메뉴_납입조회_회원구분별납입합계)) return "redirect:/home/logout.do";
-        if (i == 2 && !UserService.canAccess(C.메뉴_납입조회_소속교회별납입합계)) return "redirect:/home/logout.do";
+        if (i == 0 && !UserService.canAccess(C.메뉴_납입조회_기부목적별납입합계)) return "redirect:/home/logout";
+        if (i == 1 && !UserService.canAccess(C.메뉴_납입조회_회원구분별납입합계)) return "redirect:/home/logout";
+        if (i == 2 && !UserService.canAccess(C.메뉴_납입조회_소속교회별납입합계)) return "redirect:/home/logout";
 
         switch (i) {
         case 0: model.addAttribute("list", paymentMapper.selectReport2a(wrapper.getMap())); break;

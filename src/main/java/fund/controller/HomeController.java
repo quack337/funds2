@@ -15,17 +15,17 @@ public class HomeController extends BaseController {
 
 	@Autowired TodoMapper todoMapper;
 
-    @RequestMapping(value= {"/", "/home/index.do"}, method=RequestMethod.GET)
+    @RequestMapping(value= {"/", "/home/index"}, method=RequestMethod.GET)
     public String index(Model model) {
         int userId = UserService.getCurrentUser().getId();
         model.addAttribute("todos", todoMapper.selectAlert(userId));
         return "home/index";
     }
 
-    @RequestMapping(value="/home/confirm.do", method=RequestMethod.GET)
+    @RequestMapping(value="/home/confirm", method=RequestMethod.GET)
     public String confirm(Model model, @RequestParam("id") int id) {
         todoMapper.confirm(id);
-        return "redirect:index.do";
+        return "redirect:index";
     }
 
 }

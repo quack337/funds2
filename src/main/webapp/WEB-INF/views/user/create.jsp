@@ -7,7 +7,7 @@
 <form:form method="post" modelAttribute="user">
 
 <div class="navigation-info">
-  &gt; 시스템 관리 &gt; 사용자 관리 &gt; <a href="list.do">사용자 목록</a> &gt; 사용자 등록
+  &gt; 시스템 관리 &gt; 사용자 관리 &gt; <a href="list">사용자 목록</a> &gt; 사용자 등록
 </div>
 
 <div class="panel panel-default shadow w900">
@@ -17,7 +17,7 @@
   <div class="panel-body">
     <div class="right mt10 mb10">
       <button class="btn btn-primary" type="submit">사용자 저장</button>
-      <a class="btn btn-gray" href="list.do">목록으로 나가기</a>
+      <a class="btn btn-gray" href="list">목록으로 나가기</a>
     </div>
 
     <table class="table table-bordered lbw150">

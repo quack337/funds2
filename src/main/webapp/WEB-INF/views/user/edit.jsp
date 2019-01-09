@@ -5,7 +5,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <div class="navigation-info">
-  &gt; 시스템 관리 &gt; 사용자 관리 &gt; <a href="list.do">사용자 목록</a> &gt; 사용자 정보
+  &gt; 시스템 관리 &gt; 사용자 관리 &gt; <a href="list">사용자 목록</a> &gt; 사용자 정보
 </div>
  
 <form:form method="post" modelAttribute="user">
@@ -49,7 +49,7 @@
     <div>
       <button class="btn btn-primary btn-sm" type="submit" name="cmd" value="saveInfo">사용자 정보 저장</button>
       <button class="btn btn-danger btn-sm" type="submit" name="cmd" value="delete" data-confirm-delete>사용자 삭제</button>
-      <a class="btn btn-gray btn-sm" href="list.do">사용자 목록으로</a>
+      <a class="btn btn-gray btn-sm" href="list">사용자 목록으로</a>
     </div>    
   </div>
 </div>  

@@ -22,7 +22,7 @@
   </div>
   <div class="panel-body">      
    
-    <form method="POST" action="${R}guest/login_processing.do">
+    <form method="POST" action="${R}guest/login_processing">
       <div>
           <img src="${R}res/images/skhu_logo.png" style="width: 200px;" />
       </div>

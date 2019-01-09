@@ -41,9 +41,9 @@ public class SponsorController extends BaseController {
     @Autowired SponsorService sponsorService;
     @Autowired SponsorLogMapper sponsorLogMapper;
 
-    @RequestMapping("/sponsor/list.do")
+    @RequestMapping("/sponsor/list")
     public String list(Model model, @ModelAttribute("pagination") PaginationSponsor pagination) {
-        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
         pagination.setRecordCount(sponsorMapper.selectCount(pagination));
         List<Sponsor> list = sponsorMapper.selectPage(pagination);
         List<Code> sponsorType1Codes = codeMapper.selectEnabledByCodeGroupId(1);
@@ -54,9 +54,9 @@ public class SponsorController extends BaseController {
         return "sponsor/list";
     }
 
-    @RequestMapping(value="/sponsor/edit.do", method=RequestMethod.GET)
+    @RequestMapping(value="/sponsor/edit", method=RequestMethod.GET)
     public String edit(@RequestParam("id") int id, @ModelAttribute("pagination") PaginationSponsor pagination, Model model) throws Exception {
-        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
         model.addAttribute("sponsor", sponsorMapper.selectById(id));
         addCodesToModel(id, model);
         return "sponsor/edit";
@@ -69,10 +69,10 @@ public class SponsorController extends BaseController {
         model.addAttribute("fileCount", dataFileMapper.selectCountByForeignId("sponsor", sponsorId));
     }
 
-    @RequestMapping(value="/sponsor/edit.do", method=RequestMethod.POST, params="cmd=save")
+    @RequestMapping(value="/sponsor/edit", method=RequestMethod.POST, params="cmd=save")
     public String edit(Sponsor sponsor, @ModelAttribute("pagination") PaginationSponsor pagination, Model model) throws Exception {
         try {
-            if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+            if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
             Sponsor s1 = sponsorMapper.selectById(sponsor.getId());
             sponsorMapper.update(sponsor);
             sponsorService.changeLog(s1, sponsor);
@@ -85,22 +85,22 @@ public class SponsorController extends BaseController {
         }
     }
 
-    @RequestMapping(value="/sponsor/edit.do", method=RequestMethod.POST, params="cmd=delete")
+    @RequestMapping(value="/sponsor/edit", method=RequestMethod.POST, params="cmd=delete")
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public String delete(Model model, @RequestParam("id") int id, @ModelAttribute("pagination") PaginationSponsor pagination) throws Exception {
         try {
-            if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+            if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
             dataFileMapper.deleteByForeignId("sponsor", id);
             sponsorMapper.delete(id);
         } catch (Exception e) {
             return logService.logErrorAndReturn(model, e, "sponsor/edit");
         }
-        return "redirect:list.do?" + pagination.getQueryString();
+        return "redirect:list?" + pagination.getQueryString();
     }
 
-    @RequestMapping(value="/sponsor/create.do", method=RequestMethod.GET)
+    @RequestMapping(value="/sponsor/create", method=RequestMethod.GET)
     public String create(@ModelAttribute("pagination") PaginationSponsor pagination, Model model) throws Exception {
-        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
         Sponsor sponsor = new Sponsor();
         sponsor.setSponsorNo(sponsorMapper.generateSponsorNo());
         model.addAttribute("sponsor", sponsor);
@@ -108,53 +108,53 @@ public class SponsorController extends BaseController {
         return "sponsor/edit";
     }
 
-    @RequestMapping(value="/sponsor/create.do", method=RequestMethod.POST, params="cmd=check")
+    @RequestMapping(value="/sponsor/create", method=RequestMethod.POST, params="cmd=check")
     public String createCheck(Sponsor sponsor, @ModelAttribute("pagination") PaginationSponsor pagination, Model model) throws Exception {
-        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
         List<Sponsor> list = sponsorMapper.selectDuplicate(sponsor);
         model.addAttribute("list", list);
         return "sponsor/edit";
     }
 
-    @RequestMapping(value="/sponsor/create.do", method=RequestMethod.POST, params="cmd=save")
+    @RequestMapping(value="/sponsor/create", method=RequestMethod.POST, params="cmd=save")
     public String createSave(Sponsor sponsor, @ModelAttribute("pagination") PaginationSponsor pagination, Model model) throws Exception {
         try {
-            if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+            if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
             sponsor.setSponsorNo(sponsorMapper.generateSponsorNo());
             sponsorMapper.insert(sponsor);
             logService.actionLog("회원 등록", "sponsor create", sponsor.getId(), sponsor.getSponsorNo());
             sponsorService.changeLog(new Sponsor(), sponsor);
-            return "redirect:list.do";
+            return "redirect:list";
         } catch (Exception e) {
             addCodesToModel(0, model);
             return logService.logErrorAndReturn(model, e, "sponsor/edit");
         }
     }
 
-    @RequestMapping(value="/sponsor/files.do", method=RequestMethod.GET)
+    @RequestMapping(value="/sponsor/files", method=RequestMethod.GET)
     public String files(@RequestParam("id") int id, @ModelAttribute("pagination") PaginationSponsor pagination, Model model) throws Exception {
-        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
         model.addAttribute("sponsor", sponsorMapper.selectById(id));
         model.addAttribute("files", dataFileMapper.selectByForeignId("sponsor", id));
-        String url = "/sponsor/files.do?id=" + id + "&" + pagination.getQueryString();
+        String url = "/sponsor/files?id=" + id + "&" + pagination.getQueryString();
         model.addAttribute("url", URLEncoder.encode(url, "UTF-8"));
         addCodesToModel(id, model);
         return "sponsor/files";
     }
 
-    @RequestMapping(value="/sponsor/log/list.do", method=RequestMethod.GET)
+    @RequestMapping(value="/sponsor/log/list", method=RequestMethod.GET)
     public String log(@RequestParam("id") int id, @ModelAttribute("pagination") PaginationSponsor pagination, Model model) throws Exception {
-        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
         model.addAttribute("sponsor", sponsorMapper.selectById(id));
         model.addAttribute("list", sponsorLogMapper.selectBySponsorId(id));
-        String url = "/sponsor/files.do?id=" + id + "&" + pagination.getQueryString();
+        String url = "/sponsor/files?id=" + id + "&" + pagination.getQueryString();
         model.addAttribute("url", URLEncoder.encode(url, "UTF-8"));
         addCodesToModel(id, model);
         return "sponsor/log/list";
     }
 
 
-    @RequestMapping("/sponsor/excel.do")
+    @RequestMapping("/sponsor/excel")
     public void excel(HttpServletRequest req, HttpServletResponse res) throws Exception {
         if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return;
         List<Sponsor> list = sponsorMapper.selectAll();
@@ -164,9 +164,9 @@ public class SponsorController extends BaseController {
         reportBuilder.build("xlsx");
     }
 
-    @RequestMapping("/sponsor/dm.do")
+    @RequestMapping("/sponsor/dm")
     public String sendDM(Model model, Pagination pagination) {
-        if (!UserService.canAccess(C.메뉴_회원관리_우편발송)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_회원관리_우편발송)) return "redirect:/home/logout";
         if (StringUtils.isBlank(pagination.getStartDate()) == false) {
             pagination.setRecordCount(sponsorMapper.selectCountForDM(pagination));
             model.addAttribute("list", sponsorMapper.selectForDM(pagination));
@@ -175,7 +175,7 @@ public class SponsorController extends BaseController {
         return "sponsor/dm";
     }
 
-    @RequestMapping("/sponsor/dmx.do")
+    @RequestMapping("/sponsor/dmx")
     public void sendDMxlsx(Pagination pagination, HttpServletRequest req, HttpServletResponse res) throws Exception {
         if (!UserService.canAccess(C.메뉴_회원관리_우편발송)) return;
         if (StringUtils.isBlank(pagination.getStartDate()) == false) {
@@ -188,7 +188,7 @@ public class SponsorController extends BaseController {
             reportBuilder.setCollection(list);
             reportBuilder.build("xlsx");
         } else
-            res.sendRedirect("dm.do");
+            res.sendRedirect("dm");
     }
 
 }

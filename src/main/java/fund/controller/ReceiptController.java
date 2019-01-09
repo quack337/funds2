@@ -55,10 +55,10 @@ public class ReceiptController extends BaseController {
     void modela(Model model, @ModelAttribute("pagination") PaginationReceipt pagination) {
     }
 
-    @RequestMapping("/receipt/list.do")
+    @RequestMapping("/receipt/list")
     public String list(Model model, @ModelAttribute("pagination") PaginationReceipt pagination,
             @RequestParam(value="cmd", required=false) String cmd, @RequestParam(value="rid", required=false) int[] rid) throws Exception {
-        if (!UserService.canAccess(C.메뉴_영수증_기부금영수증발급대장)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_영수증_기부금영수증발급대장)) return "redirect:/home/logout";
         if (rid != null && "delete".equals(cmd))
             for (int id : rid)
                 receiptService.deleteReceipt(id);
@@ -69,38 +69,38 @@ public class ReceiptController extends BaseController {
         return "receipt/list";
     }
 
-    @RequestMapping(value="/receipt/create1.do", method=RequestMethod.GET)
+    @RequestMapping(value="/receipt/create1", method=RequestMethod.GET)
     public String create1(Model model) throws Exception {
-        if (!UserService.canAccess(C.메뉴_영수증_영수증개별생성)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_영수증_영수증개별생성)) return "redirect:/home/logout";
         Wrapper wrapper = new Wrapper();
         userService.사용자소속제한(model, null, wrapper);
         model.addAttribute("wrapper", wrapper);
         return "receipt/create1";
     }
 
-    @RequestMapping(value="/receipt/create1.do", method=RequestMethod.POST, params="cmd=search")
+    @RequestMapping(value="/receipt/create1", method=RequestMethod.POST, params="cmd=search")
     public String create1Search(Model model, Wrapper wrapper) throws Exception {
-        if (!UserService.canAccess(C.메뉴_영수증_영수증개별생성)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_영수증_영수증개별생성)) return "redirect:/home/logout";
         wrapper.getMap().put("createDate", Util.toYMD());
         userService.사용자소속제한(model, null, wrapper);
         model.addAttribute("list", paymentMapper.selectForReceiptCreation1(wrapper.getMap()));
         return "receipt/create1";
     }
 
-    @RequestMapping(value="/receipt/create1.do", method=RequestMethod.POST, params="cmd=createReceipt")
+    @RequestMapping(value="/receipt/create1", method=RequestMethod.POST, params="cmd=createReceipt")
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public String create1CreateReceipt(RedirectAttributes ra, @RequestParam("pid") int[] pid, Wrapper wrapper) throws Exception {
-        if (!UserService.canAccess(C.메뉴_영수증_영수증개별생성)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_영수증_영수증개별생성)) return "redirect:/home/logout";
         String createDate = (String)wrapper.getMap().get("createDate");
         int corporateId = Integer.valueOf(wrapper.getMap().get("corporateId").toString());
         receiptService.createReceipt1(createDate, corporateId, pid);
         ra.addFlashAttribute("successMsg", "영수증이 생성되었습니다.");
-        return "redirect:list.do";
+        return "redirect:list";
     }
 
-    @RequestMapping("/receipt/detail.do")
+    @RequestMapping("/receipt/detail")
     public String detail(Model model, @RequestParam("id") int id) throws Exception {
-        if (!UserService.canAccess(C.메뉴_영수증_기부금영수증발급대장)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_영수증_기부금영수증발급대장)) return "redirect:/home/logout";
         Receipt receipt = receiptMapper.selectById(id);
         Map<String,Object> paymentSum = paymentMapper.getSumByReceiptId(id);
         Sponsor sponsor = sponsorMapper.selectById(receipt.getSponsorId());
@@ -116,7 +116,7 @@ public class ReceiptController extends BaseController {
         return "receipt/detail";
     }
 
-    @RequestMapping("/receipt/report1.do")
+    @RequestMapping("/receipt/report1")
     public void report1(@RequestParam("rid") int[] rid, HttpServletRequest req, HttpServletResponse res) throws Exception {
         if (!UserService.canAccess(C.메뉴_영수증_기부금영수증발급대장)) return;
         String s = Arrays.toString(rid);
@@ -131,7 +131,7 @@ public class ReceiptController extends BaseController {
         reportBuilder.build("pdf");
     }
 
-    @RequestMapping("/receipt/report2.do")
+    @RequestMapping("/receipt/report2")
     public void report2(@RequestParam("rid") int[] rid, HttpServletRequest req, HttpServletResponse res) throws Exception {
         if (!UserService.canAccess(C.메뉴_영수증_기부금영수증발급대장)) return;
         String s = Arrays.toString(rid);
@@ -145,28 +145,28 @@ public class ReceiptController extends BaseController {
         reportBuilder.build("pdf");
     }
 
-    @RequestMapping("/receipt/delete.do")
+    @RequestMapping("/receipt/delete")
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public String delete(RedirectAttributes ra, @RequestParam("id") int id, @ModelAttribute("pagination") PaginationReceipt pagination) {
-        if (!UserService.canAccess(C.메뉴_영수증_기부금영수증발급대장)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_영수증_기부금영수증발급대장)) return "redirect:/home/logout";
         receiptService.deleteReceipt(id);
         ra.addFlashAttribute("successMsg", "영수증이 삭제되었습니다.");
-        return "redirect:list.do?" + pagination.getQueryString();
+        return "redirect:list?" + pagination.getQueryString();
     }
 
-    @RequestMapping(value="/receipt/create2.do", method=RequestMethod.GET)
+    @RequestMapping(value="/receipt/create2", method=RequestMethod.GET)
     public String create2(Model model) throws Exception {
-        if (!UserService.canAccess(C.메뉴_영수증_영수증일괄생성)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_영수증_영수증일괄생성)) return "redirect:/home/logout";
         Wrapper wrapper = new Wrapper();
         userService.사용자소속제한(model, null, wrapper);
         model.addAttribute("wrapper", wrapper);
         return "receipt/create2";
     }
 
-    @RequestMapping(value="/receipt/create2.do", method=RequestMethod.POST)
+    @RequestMapping(value="/receipt/create2", method=RequestMethod.POST)
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public String create2CreateReceipt(RedirectAttributes ra, Model model, Wrapper wrapper) throws Exception {
-        if (!UserService.canAccess(C.메뉴_영수증_영수증일괄생성)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_영수증_영수증일괄생성)) return "redirect:/home/logout";
         Map<String,Object> map = wrapper.getMap();
         if (StringUtils.isBlank((String)map.get("startDate")) ||
             StringUtils.isBlank((String)map.get("endDate")) ||
@@ -176,19 +176,19 @@ public class ReceiptController extends BaseController {
         }
         receiptService.createReceipt2(wrapper.getMap());
         ra.addFlashAttribute("successMsg", "영수증이 생성되었습니다.");
-        return "redirect:list.do";
+        return "redirect:list";
     }
 
-    @RequestMapping(value="/receipt/taxData.do", method=RequestMethod.GET)
+    @RequestMapping(value="/receipt/taxData", method=RequestMethod.GET)
     public String taxData(Model model) {
-        if (!UserService.canAccess(C.메뉴_영수증_국세청보고자료)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_영수증_국세청보고자료)) return "redirect:/home/logout";
         Wrapper wrapper = new Wrapper();
         userService.사용자소속제한(model, null, wrapper);
         model.addAttribute("wrapper", wrapper);
         return "receipt/taxData";
     }
 
-    @RequestMapping(value="/receipt/taxData.do", method=RequestMethod.POST)
+    @RequestMapping(value="/receipt/taxData", method=RequestMethod.POST)
     public void taxData(Model model, Wrapper wrapper, HttpServletRequest req, HttpServletResponse res) throws Exception {
         if (!UserService.canAccess(C.메뉴_영수증_국세청보고자료)) return;
         List<Map<String, Object>> list = paymentMapper.selectForTaxData(wrapper.getMap());
@@ -198,17 +198,17 @@ public class ReceiptController extends BaseController {
     }
 
 
-    @RequestMapping(value="/receipt/sum.do", method=RequestMethod.GET)
+    @RequestMapping(value="/receipt/sum", method=RequestMethod.GET)
     public String sum(Model model, @ModelAttribute("pagination") PaginationReceipt pagination) throws Exception {
-        if (!UserService.canAccess(C.메뉴_영수증_기부금영수증발급합계)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_영수증_기부금영수증발급합계)) return "redirect:/home/logout";
 
         userService.사용자소속제한(model, pagination, null);
         return "receipt/sum";
     }
 
-    @RequestMapping(value="/receipt/sum.do", method=RequestMethod.POST)
+    @RequestMapping(value="/receipt/sum", method=RequestMethod.POST)
     public String sumPost(Model model, @ModelAttribute("pagination") PaginationReceipt pagination) throws Exception {
-        if (!UserService.canAccess(C.메뉴_영수증_기부금영수증발급합계)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_영수증_기부금영수증발급합계)) return "redirect:/home/logout";
         userService.사용자소속제한(model, pagination, null);
         model.addAttribute("list", receiptMapper.selectSum(pagination));
         return "receipt/sum";

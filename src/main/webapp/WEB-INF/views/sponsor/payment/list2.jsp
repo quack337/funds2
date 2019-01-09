@@ -10,7 +10,7 @@
 <c:set var="sid" value="${ sponsor.id }" />
 
 <div class="navigation-info">
-  &gt; 회원 관리 &gt; <a href="${R}sponsor/list.do?${ pagination.queryString }">회원 목록</a>  
+  &gt; 회원 관리 &gt; <a href="${R}sponsor/list?${ pagination.queryString }">회원 목록</a>  
   &gt; 비정기납입 관리 &gt; 비정기납입 목록
 </div>
 
@@ -24,9 +24,9 @@
 
 
     <div class="right mt10 mb10">
-      <a href="create2.do?sid=${sid}&${pg}" class="btn btn-primary btn-sm">비정기납입 등록</a>
+      <a href="create2?sid=${sid}&${pg}" class="btn btn-primary btn-sm">비정기납입 등록</a>
       <a id="btnChange" href="#donationPurposeUpdateDialog" class="btn btn-info btn-sm" data-toggle="modal">기부목적 일괄변경</a>
-      <a id="btnSearch" href="${R}payment/srch1a.do?sponsorNo=${sponsor.sponsorNo}&regular=0" class="btn btn-info btn-sm">납입내역 상세 조회</a>
+      <a id="btnSearch" href="${R}payment/srch1a?sponsorNo=${sponsor.sponsorNo}&regular=0" class="btn btn-info btn-sm">납입내역 상세 조회</a>
     </div>
     
     <c:set var="sum" value="${ 0 }" />
@@ -43,7 +43,7 @@
         </jsp:attribute>
         <jsp:attribute name="body">
             <c:forEach var="payment" items="${list}">
-	          <tr data-url="edit2.do?id=${payment.id}&sid=${sid}&${pg}">
+	          <tr data-url="edit2?id=${payment.id}&sid=${sid}&${pg}">
 	            <td>${ payment.paymentMethodName }</td>
 	            <td class="right"><fmt:formatNumber value="${ payment.amount}" /></td>
 	            <td>${ payment.paymentDate}</td>

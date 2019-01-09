@@ -5,7 +5,7 @@
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 
 <div class="navigation-info">
-  &gt; 시스템 관리 &gt; 로그기록 관리 &gt; <a href="list.do">로그기록 목록</a> &gt; 로그기록 상세
+  &gt; 시스템 관리 &gt; 로그기록 관리 &gt; <a href="list">로그기록 목록</a> &gt; 로그기록 상세
 </div>
 
 <div class="panel panel-default shadow w900">
@@ -14,8 +14,8 @@
   </div>
   <div class="panel-body">    
     <div class="">
-      <a class="btn btn-danger btn-sm" href="delete.do?id=${log.id}&${q}" data-confirm-delete>삭제</a>
-      <a class="btn btn-gray btn-sm" href="list.do">목록으로 나가기</a>
+      <a class="btn btn-danger btn-sm" href="delete?id=${log.id}&${q}" data-confirm-delete>삭제</a>
+      <a class="btn btn-gray btn-sm" href="list">목록으로 나가기</a>
     </div>
 
     <table class="table table-bordered lbw150">

@@ -10,11 +10,11 @@
     <h3>기부처</h3>
   </div>
   <div class="panel-body">
-    <div class="">
-      <a class="btn btn-primary btn-sm" href="create.do">기부처 등록</a>
+    <div class="right mb4">
+      <a class="btn btn-primary btn-sm" href="create">기부처 등록</a>
     </div>
 
-    <table class="table table-bordered">
+    <table class="table table-bordered mt4">
       <thead>
         <tr>
           <th>기부처명</th>
@@ -26,7 +26,7 @@
       </thead>
       <tbody>
         <c:forEach var="corporate" items="${ list }">
-          <tr data-url="edit.do?id=${corporate.id}">
+          <tr data-url="edit?id=${corporate.id}">
             <td>${ corporate.name }</td>
             <td>${ corporate.shortName }</td>
             <td>${ corporate.corporateNo }</td>

@@ -13,7 +13,7 @@ import fund.service.Util;
 public class GuestController extends BaseController {
 
 	@Autowired SponsorMapper sponsorMapper;
-    @RequestMapping(value="/guest/login.do", method=RequestMethod.GET)
+    @RequestMapping(value="/guest/login", method=RequestMethod.GET)
     public String login(Model model) {
         model.addAttribute("test", Util.hasIP("192.168.61.10") ? "(테스트 서버)" : "");
         return "guest/login";

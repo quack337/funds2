@@ -28,18 +28,18 @@ public class DonationPurposeController extends BaseController{
     @Autowired LogService logService;
     @Autowired DataFileMapper dataFileMapper;
 
-	@RequestMapping("/donationPurpose/list.do")
+	@RequestMapping("/donationPurpose/list")
 	public String list(Model model, Pagination pagination) {
-	    if (!UserService.canAccess(C.메뉴_기초정보관리)) return "redirect:/home/logout.do";
+	    if (!UserService.canAccess(C.메뉴_기초정보관리)) return "redirect:/home/logout";
 	    if (Strings.isNullOrEmpty(pagination.getSrchText())) pagination.setSrchType(0);
         pagination.setRecordCount(donationPurposeMapper.selectCount(pagination));
         model.addAttribute("list", donationPurposeMapper.selectPage(pagination));
 		return "donationPurpose/list";
 	}
 
-	@RequestMapping(value="/donationPurpose/create.do", method=RequestMethod.GET)
+	@RequestMapping(value="/donationPurpose/create", method=RequestMethod.GET)
 	public String create(Model model) {
-        if (!UserService.canAccess(C.메뉴_기초정보관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_기초정보관리)) return "redirect:/home/logout";
 	    model.addAttribute("donationPurpose", new DonationPurpose());
 		addCodesToModel(model);
 		return "donationPurpose/edit";
@@ -50,44 +50,44 @@ public class DonationPurposeController extends BaseController{
 		model.addAttribute("organizationList",codeMapper.selectEnabledByCodeGroupId(C.코드그룹ID_기관종류));
     }
 
-	@RequestMapping(value="/donationPurpose/create.do", method=RequestMethod.POST)
+	@RequestMapping(value="/donationPurpose/create", method=RequestMethod.POST)
 	public String create(DonationPurpose donationPurpose, Model model) {
 	    try {
-	        if (!UserService.canAccess(C.메뉴_기초정보관리)) return "redirect:/home/logout.do";
+	        if (!UserService.canAccess(C.메뉴_기초정보관리)) return "redirect:/home/logout";
     	    donationPurposeMapper.insert(donationPurpose);
-    		return "redirect:/donationPurpose/list.do";
+    		return "redirect:/donationPurpose/list";
         } catch (Exception e) {
             addCodesToModel(model);
             return logService.logErrorAndReturn(model, e, "donationPurpose/edit");
         }
 	}
 
-	@RequestMapping(value="/donationPurpose/edit.do", method=RequestMethod.GET)
+	@RequestMapping(value="/donationPurpose/edit", method=RequestMethod.GET)
 	public String edit(Model model,@RequestParam("id") int id) {
-        if (!UserService.canAccess(C.메뉴_기초정보관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_기초정보관리)) return "redirect:/home/logout";
         model.addAttribute("donationPurpose", donationPurposeMapper.selectById(id));
         model.addAttribute("files", dataFileMapper.selectByForeignId("donationPurpose", id));
 		addCodesToModel(model);
 		return "donationPurpose/edit";
 	}
 
-	@RequestMapping(value="/donationPurpose/edit.do", method=RequestMethod.POST, params="cmd=save")
+	@RequestMapping(value="/donationPurpose/edit", method=RequestMethod.POST, params="cmd=save")
 	public String edit(DonationPurpose donationPurpose, Model model) {
 	    try {
-	        if (!UserService.canAccess(C.메뉴_기초정보관리)) return "redirect:/home/logout.do";
+	        if (!UserService.canAccess(C.메뉴_기초정보관리)) return "redirect:/home/logout";
     	    donationPurposeMapper.update(donationPurpose);
-    		return "redirect:/donationPurpose/list.do";
+    		return "redirect:/donationPurpose/list";
         } catch (Exception e) {
             addCodesToModel(model);
             return logService.logErrorAndReturn(model, e, "donationPurpose/edit");
         }
 	}
 
-    @RequestMapping(value="/donationPurpose/edit.do", method=RequestMethod.POST, params="cmd=delete")
+    @RequestMapping(value="/donationPurpose/edit", method=RequestMethod.POST, params="cmd=delete")
 	public String delete(Model model, @RequestParam("id") int id) {
-        if (!UserService.canAccess(C.메뉴_기초정보관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_기초정보관리)) return "redirect:/home/logout";
 		donationPurposeMapper.delete(id);
-		return "redirect:/donationPurpose/list.do";
+		return "redirect:/donationPurpose/list";
 	}
 
 }

@@ -19,7 +19,7 @@
       <input type="hidden" name="pg" value="1" />
             
       <div class="pull-right mb4">
-        <a href="create.do?${pagination.queryString}" class="btn btn-primary btn-sm">일정 등록</a>
+        <a href="create?${pagination.queryString}" class="btn btn-primary btn-sm">일정 등록</a>
       </div>      
       
       <span>정렬순서:</span>
@@ -34,7 +34,7 @@
           
       <button type="submit" class="btn btn-default ml10 btn-sm">조회</button>
       <c:if test="${ not empty pagination.st || not empty pagination.sd }">
-         <a href="list.do" class="btn btn-default btn-sm">조회조건 취소</a>
+         <a href="list" class="btn btn-default btn-sm">조회조건 취소</a>
       </c:if>
       
       <table id="todo" class="table table-bordered mt4 pd6">
@@ -51,7 +51,7 @@
         </thead>
         <tbody>
           <c:forEach var="todo" items="${ list }">
-            <tr data-url="edit.do?id=${todo.id}&${pagination.queryString}">
+            <tr data-url="edit?id=${todo.id}&${pagination.queryString}">
               <td class="nowrap">${ todo.userName }</td>
               <td class="nowrap">${ todo.createDate }</td>
               <td class="nowrap">${ todo.dueDate2 }</td>

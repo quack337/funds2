@@ -47,47 +47,47 @@ public class SponsorPaymentController extends BaseController {
     static final String[] orderBy = new String[] { "paymentDate DESC", "paymentDate", "ID DESC", "ID" };
 
     // 정기 납입
-    @RequestMapping("/sponsor/payment/list1.do")
+    @RequestMapping("/sponsor/payment/list1")
     public String list1(@RequestParam("sid") int sid, @ModelAttribute("pagination") PaginationSponsor pagination, Model model) {
-        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
         model.addAttribute("commitments", commitmentMapper.selectBySponsorId(sid));
         addCodesToModel(model, sid);
         return "sponsor/payment/list1";
     }
 
-    @RequestMapping(value="/sponsor/payment/list1ajax.do", method=RequestMethod.POST)
+    @RequestMapping(value="/sponsor/payment/list1ajax", method=RequestMethod.POST)
     public String list1ajax(@RequestParam("sid") int sid, @RequestParam(value="commitmentId", required=false, defaultValue="0") int commitmentId, Model model) {
         model.addAttribute("list", paymentMapper.selectPaymentList1(sid, commitmentId));
         return "sponsor/payment/list1ajax/ajax";
     }
 
-    @RequestMapping(value="/sponsor/payment/list1updateajax.do", method=RequestMethod.POST)
+    @RequestMapping(value="/sponsor/payment/list1updateajax", method=RequestMethod.POST)
     public String list1updateajax(Commitment commitment, Model model) {
         paymentMapper.updateDonationPurposeId(commitment);
         return list1ajax(0, commitment.getId(), model);
     }
 
     // 비정기 납입
-    @RequestMapping(value="/sponsor/payment/list2.do", method=RequestMethod.GET)
+    @RequestMapping(value="/sponsor/payment/list2", method=RequestMethod.GET)
     public String list2(@RequestParam("sid") int sid, @ModelAttribute("pagination") PaginationSponsor pagination, Model model) {
-        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
         model.addAttribute("list", paymentMapper.selectPaymentList2(sid));
         addCodesToModel(model, sid);
         return "sponsor/payment/list2";
     }
 
-    @RequestMapping(value="/sponsor/payment/list2.do", method=RequestMethod.POST)
+    @RequestMapping(value="/sponsor/payment/list2", method=RequestMethod.POST)
     public String list2(@RequestParam("sid") int sid, @ModelAttribute("pagination") PaginationSponsor pagination, Commitment commitment, Model model) {
-        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
         paymentMapper.updateDonationPurposeId2(commitment);
         model.addAttribute("list", paymentMapper.selectPaymentList2(sid));
         addCodesToModel(model, sid);
         return "sponsor/payment/list2";
     }
 
-    @RequestMapping(value="/sponsor/payment/edit2.do", method=RequestMethod.GET)
+    @RequestMapping(value="/sponsor/payment/edit2", method=RequestMethod.GET)
     public String edit2(Model model, @RequestParam("sid") int sid, @RequestParam("id") int id) {
-        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
         model.addAttribute("payment", paymentMapper.selectById(id));
         addCodesToModel(model, sid);
         return "sponsor/payment/edit2";
@@ -112,13 +112,13 @@ public class SponsorPaymentController extends BaseController {
     private String redirectToList2(Model model, int sid) {
         PaginationSponsor pagination = (PaginationSponsor)model.asMap().get("pagination");
         String qs = String.format("sid=%d&%s", sid, pagination.getQueryString());
-        return "redirect:list2.do?" + qs;
+        return "redirect:list2?" + qs;
     }
 
-    @RequestMapping(value="/sponsor/payment/edit2.do", method=RequestMethod.POST, params="cmd=save")
+    @RequestMapping(value="/sponsor/payment/edit2", method=RequestMethod.POST, params="cmd=save")
     public String edit2save(Model model, @RequestParam("sid") int sid, Payment payment) throws Exception {
         try {
-            if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+            if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
             paymentMapper.update(payment);
             return redirectToList2(model, sid);
         } catch (Exception e) {
@@ -127,25 +127,25 @@ public class SponsorPaymentController extends BaseController {
         }
     }
 
-    @RequestMapping(value="/sponsor/payment/edit2.do", method=RequestMethod.POST, params="cmd=delete")
+    @RequestMapping(value="/sponsor/payment/edit2", method=RequestMethod.POST, params="cmd=delete")
     public String edit2delete(Model model, @RequestParam("sid") int sid, @RequestParam("id") int id) throws Exception {
-        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
         paymentMapper.delete(id);
         return redirectToList2(model, sid);
     }
 
-    @RequestMapping(value="/sponsor/payment/create2.do", method=RequestMethod.GET)
+    @RequestMapping(value="/sponsor/payment/create2", method=RequestMethod.GET)
     public String create2(Model model, @RequestParam("sid") int sid) {
-        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
         model.addAttribute("payment", new Payment());
         addCodesToModel(model, sid);
         return "sponsor/payment/edit2";
     }
 
-    @RequestMapping(value="/sponsor/payment/create2.do", method=RequestMethod.POST)
+    @RequestMapping(value="/sponsor/payment/create2", method=RequestMethod.POST)
     public String create2(Model model, @RequestParam("sid") int sid, Payment payment) throws Exception {
         try {
-            if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+            if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
             payment.setSponsorId(sid);
             paymentMapper.insert(payment);
             return redirectToList2(model, sid);
@@ -156,17 +156,17 @@ public class SponsorPaymentController extends BaseController {
     }
 
     // 현물 납입
-    @RequestMapping(value="/sponsor/payment/list3.do", method=RequestMethod.GET)
+    @RequestMapping(value="/sponsor/payment/list3", method=RequestMethod.GET)
     public String list3(@RequestParam("sid") int sid, @ModelAttribute("pagination") PaginationSponsor pagination, Model model) {
-        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
         model.addAttribute("list", paymentMapper.selectPaymentList3(sid));
         addCodesToModel(model, sid);
         return "sponsor/payment/list3";
     }
 
-    @RequestMapping(value="/sponsor/payment/create3.do", method=RequestMethod.GET)
+    @RequestMapping(value="/sponsor/payment/create3", method=RequestMethod.GET)
     public String create3(Model model, @RequestParam("sid") int sid) {
-        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
         model.addAttribute("payment", new Payment());
         addCodesToModel(model, sid);
         return "sponsor/payment/edit3";
@@ -175,28 +175,28 @@ public class SponsorPaymentController extends BaseController {
     private String redirectToList3(Model model, int sid) {
         PaginationSponsor pagination = (PaginationSponsor)model.asMap().get("pagination");
         String qs = String.format("sid=%d&%s", sid, pagination.getQueryString());
-        return "redirect:list3.do?" + qs;
+        return "redirect:list3?" + qs;
     }
 
     private String redirectToEdit3(Model model, int sid, int pid) {
         PaginationSponsor pagination = (PaginationSponsor)model.asMap().get("pagination");
         String qs = String.format("sid=%d&pid=%d&%s", sid, pid, pagination.getQueryString());
-        return "redirect:edit3.do?" + qs;
+        return "redirect:edit3?" + qs;
     }
 
-    @RequestMapping(value="/sponsor/payment/edit3.do", method=RequestMethod.GET)
+    @RequestMapping(value="/sponsor/payment/edit3", method=RequestMethod.GET)
     public String edit3(Model model, @RequestParam("sid") int sid, @RequestParam("id") int id) {
-        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
         model.addAttribute("payment", paymentMapper.selectById(id));
         model.addAttribute("list", paymentInKindMapper.selectByPaymentId(id));
         addCodesToModel(model, sid);
         return "sponsor/payment/edit3";
     }
 
-    @RequestMapping(value="/sponsor/payment/edit3.do", method=RequestMethod.POST, params="cmd=save")
+    @RequestMapping(value="/sponsor/payment/edit3", method=RequestMethod.POST, params="cmd=save")
     public String edit3save(Model model, @RequestParam("sid") int sid, Payment payment) throws Exception {
         try {
-            if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+            if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
             paymentMapper.update(payment);
             return redirectToList3(model, sid);
         } catch (Exception e) {
@@ -205,17 +205,17 @@ public class SponsorPaymentController extends BaseController {
         }
     }
 
-    @RequestMapping(value="/sponsor/payment/edit3.do", method=RequestMethod.POST, params="cmd=delete")
+    @RequestMapping(value="/sponsor/payment/edit3", method=RequestMethod.POST, params="cmd=delete")
     public String edit3delete(Model model, @RequestParam("sid") int sid, @RequestParam("id") int id) throws Exception {
-        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
         paymentMapper.delete(id);
         return redirectToList3(model, sid);
     }
 
-    @RequestMapping(value="/sponsor/payment/create3.do", method=RequestMethod.POST)
+    @RequestMapping(value="/sponsor/payment/create3", method=RequestMethod.POST)
     public String create3(Model model, @RequestParam("sid") int sid, Payment payment, @RequestParam("cmd") String cmd) throws Exception {
         try {
-            if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+            if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
             payment.setSponsorId(sid);
             payment.setPaymentMethodId(C.코드ID_현물);
             paymentMapper.insert(payment);

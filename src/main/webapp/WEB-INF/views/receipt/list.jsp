@@ -5,10 +5,10 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <script>
 function report1() {
-  location.href = "report1.do?" + $("form#receipts").serialize(); 
+  location.href = "report1?" + $("form#receipts").serialize(); 
 }
 function report2() {
-  location.href = "report2.do?" + $("form#receipts").serialize(); 
+  location.href = "report2?" + $("form#receipts").serialize(); 
 }
 </script>
 
@@ -48,7 +48,7 @@ function report2() {
       
       <button type="submit" class="btn btn-primary ml10 btn-sm">조회</button>
       <c:if test="${ not empty pagination.st || not empty pagination.sd }">
-        <a href="list.do" class="btn btn-default btn-sm">조회조건 취소</a>
+        <a href="list" class="btn btn-default btn-sm">조회조건 취소</a>
       </c:if>
 
       <div id="buttons" class="mt10 mb10">
@@ -71,7 +71,7 @@ function report2() {
         </thead>
         <tbody>
           <c:forEach var="receipt" items="${ list }">
-            <tr data-url="detail.do?id=${receipt.id}&${pagination.queryString}">
+            <tr data-url="detail?id=${receipt.id}&${pagination.queryString}">
               <td><input type="checkbox" name="rid" value="${ receipt.id  }"></td>
               <td>${ receipt.no }</td>
               <td>${ receipt.name }</td>

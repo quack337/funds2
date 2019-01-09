@@ -28,17 +28,17 @@ public class SponsorEventController extends BaseController {
         model.addAttribute("sponsor", sponsorMapper.selectById(sid));
     }
 
-    @RequestMapping(value="/sponsor/event/list.do", method=RequestMethod.GET)
+    @RequestMapping(value="/sponsor/event/list", method=RequestMethod.GET)
     public String list2(@RequestParam("sid") int sid, @ModelAttribute("pagination") PaginationSponsor pagination, Model model) {
-        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
         model.addAttribute("sponsor", sponsorMapper.selectById(sid));
         model.addAttribute("list", sponsorEventMapper.selectBySponsorId(sid));
         return "sponsor/event/list";
     }
 
-    @RequestMapping(value="/sponsor/event/edit.do", method=RequestMethod.GET)
+    @RequestMapping(value="/sponsor/event/edit", method=RequestMethod.GET)
     public String edit2(Model model, @RequestParam("sid") int sid, @RequestParam("id") int id) {
-        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
         model.addAttribute("sponsorEvent", sponsorEventMapper.selectById(id));
         return "sponsor/event/edit";
     }
@@ -46,13 +46,13 @@ public class SponsorEventController extends BaseController {
     private String redirectToList(Model model, int sid) {
         PaginationSponsor pagination = (PaginationSponsor)model.asMap().get("pagination");
         String qs = String.format("sid=%d&%s", sid, pagination.getQueryString());
-        return "redirect:list.do?" + qs;
+        return "redirect:list?" + qs;
     }
 
-    @RequestMapping(value="/sponsor/event/edit.do", method=RequestMethod.POST, params="cmd=save")
+    @RequestMapping(value="/sponsor/event/edit", method=RequestMethod.POST, params="cmd=save")
     public String edit2save(Model model, @RequestParam("sid") int sid, SponsorEvent sponsorEvent) throws Exception {
         try {
-            if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+            if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
             sponsorEventMapper.update(sponsorEvent);
             return redirectToList(model, sid);
         } catch (Exception e) {
@@ -60,24 +60,24 @@ public class SponsorEventController extends BaseController {
         }
     }
 
-    @RequestMapping(value="/sponsor/event/edit.do", method=RequestMethod.POST, params="cmd=delete")
+    @RequestMapping(value="/sponsor/event/edit", method=RequestMethod.POST, params="cmd=delete")
     public String edit2delete(Model model, @RequestParam("sid") int sid, @RequestParam("id") int id) throws Exception {
-        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
         sponsorEventMapper.delete(id);
         return redirectToList(model, sid);
     }
 
-    @RequestMapping(value="/sponsor/event/create.do", method=RequestMethod.GET)
+    @RequestMapping(value="/sponsor/event/create", method=RequestMethod.GET)
     public String create2(Model model, @RequestParam("sid") int sid) {
-        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
         model.addAttribute("sponsorEvent", new SponsorEvent());
         return "sponsor/event/edit";
     }
 
-    @RequestMapping(value="/sponsor/event/create.do", method=RequestMethod.POST)
+    @RequestMapping(value="/sponsor/event/create", method=RequestMethod.POST)
     public String create2(Model model, @RequestParam("sid") int sid, SponsorEvent sponsorEvent) throws Exception {
         try {
-            if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout.do";
+            if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
             sponsorEvent.setSponsorId(sid);
             sponsorEvent.setUserId(UserService.getCurrentUser().getId());
             sponsorEventMapper.insert(sponsorEvent);

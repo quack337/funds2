@@ -6,7 +6,7 @@
 <c:url var="R" value="/" />
 
 <div class="navigation-info">
-  &gt; 회원 관리 &gt; <a href="${R}sponsor/list.do?${ pagination.queryString }">회원 목록</a>  
+  &gt; 회원 관리 &gt; <a href="${R}sponsor/list?${ pagination.queryString }">회원 목록</a>  
   &gt; 정기납입 관리 &gt; 정기납입 목록
 </div>
 
@@ -51,7 +51,7 @@ $("select[name=commitmentId]").change(function() {
     else {
         $('#btnChange').show();
         var commitmentNo = $("select[name=commitmentId] option:selected").text();
-        $('#btnSearch').attr("href", "${R}payment/srch1a.do?commitmentNo=" + commitmentNo);        
+        $('#btnSearch').attr("href", "${R}payment/srch1a?commitmentNo=" + commitmentNo);        
         $('#btnSearch').show();        
     }
 });
@@ -59,7 +59,7 @@ $("select[name=commitmentId]").change(function() {
 function searchPayment() {
     var params = { commitmentId: $("select[name=commitmentId]").val(),
                    sid: ${ sponsor.id } };
-    $("#searchResult").load("list1ajax.do", params);
+    $("#searchResult").load("list1ajax", params);
 }
 
 function updateDonationPurpose() {
@@ -68,7 +68,7 @@ function updateDonationPurpose() {
                    endDate: $("input[name=endDate]").val(),
                    donationPurposeId: $("input[name=donationPurposeId]").val(), 
                    sid: ${ sponsor.id } };
-    $("#searchResult").load("list1updateajax.do", params);
+    $("#searchResult").load("list1updateajax", params);
 }
 
 $('#btnChange').hide();

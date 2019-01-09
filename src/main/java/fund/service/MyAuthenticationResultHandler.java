@@ -26,7 +26,7 @@ public class MyAuthenticationResultHandler implements AuthenticationFailureHandl
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException ex)
             throws IOException, ServletException {
-        String url = "/guest/login.do?";
+        String url = "/guest/login?";
         if (ex instanceof LockedException) url += "locked";
         else if (ex instanceof BadCredentialsException) url += "count=" + ex.getMessage();
         else url += "error";

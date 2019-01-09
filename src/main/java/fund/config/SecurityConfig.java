@@ -34,8 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.formLogin()
-            .loginPage("/guest/login.do")
-            .loginProcessingUrl("/guest/login_processing.do")
+            .loginPage("/guest/login")
+            .loginProcessingUrl("/guest/login_processing")
             .defaultSuccessUrl("/")
             .usernameParameter("loginName")
             .passwordParameter("password")
@@ -43,9 +43,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .failureHandler(myAuthenticationResultHandler);
 
         http.logout()
-            .logoutUrl("/home/logout.do")
+            .logoutUrl("/home/logout")
             .logoutSuccessHandler(mylogoutResultHandler)
-            .logoutSuccessUrl("/guest/login.do")
+            .logoutSuccessUrl("/guest/login")
             .invalidateHttpSession(true);
 
         http.authenticationProvider(myAuthenticationProvider);

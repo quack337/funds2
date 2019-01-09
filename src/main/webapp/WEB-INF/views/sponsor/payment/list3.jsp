@@ -10,7 +10,7 @@
 <c:set var="sid" value="${ sponsor.id }" />
 
 <div class="navigation-info">
-  &gt; 회원 관리 &gt; <a href="${R}sponsor/list.do?${ pagination.queryString }">회원 목록</a>  
+  &gt; 회원 관리 &gt; <a href="${R}sponsor/list?${ pagination.queryString }">회원 목록</a>  
   &gt; 현물납입 관리 &gt; 현물납입 목록
 </div>
 
@@ -23,7 +23,7 @@
     <%@include file="../_tab2.jsp" %> 
 
     <div class="right mt10 mb10">
-      <a href="create3.do?sid=${sid}&${pg}" class="btn btn-primary btn-sm">현물납입 등록</a>
+      <a href="create3?sid=${sid}&${pg}" class="btn btn-primary btn-sm">현물납입 등록</a>
     </div>   
 
     <c:set var="sum" value="${ 0 }" />
@@ -40,7 +40,7 @@
         </jsp:attribute>
         <jsp:attribute name="body">
             <c:forEach var="payment" items="${list}">
-	          <tr data-url="edit3.do?id=${payment.id}&sid=${sid}&${pg}">
+	          <tr data-url="edit3?id=${payment.id}&sid=${sid}&${pg}">
 	            <td>${ payment.paymentMethodName }</td>
 	            <td class="right"><fmt:formatNumber value="${ payment.amount}" /></td>
 	            <td>${ payment.paymentDate}</td>

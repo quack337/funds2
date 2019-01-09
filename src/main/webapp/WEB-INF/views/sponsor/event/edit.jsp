@@ -6,8 +6,8 @@
 <c:url var="R" value="/" />
 
 <div class="navigation-info">
-  &gt; 회원 관리 &gt; <a href="${R}sponsor/list.do?${ pagination.queryString }">회원 목록</a>  
-  &gt; 예우 관리 &gt; <a href="${R}sponsor/event/list.do?sid=${sponsor.id}&${ pagination.queryString }">예우 목록</a>  
+  &gt; 회원 관리 &gt; <a href="${R}sponsor/list?${ pagination.queryString }">회원 목록</a>  
+  &gt; 예우 관리 &gt; <a href="${R}sponsor/event/list?sid=${sponsor.id}&${ pagination.queryString }">예우 목록</a>  
   &gt; 예우 ${ sponsorEvent.id == 0 ? '등록' : '수정' }  
 </div>
 
@@ -26,7 +26,7 @@
         <c:if test="${ sponsorEvent.id > 0 }">
           <button type="submit" class="btn btn-danger btn-sm" name="cmd" value="delete" data-confirm-delete>예우 삭제</button>
         </c:if>    
-        <a href="list.do?sid=${ sponsor.id }&${ pagination.queryString }" class="btn btn-gray btn-sm">예우 목록으로</a>
+        <a href="list?sid=${ sponsor.id }&${ pagination.queryString }" class="btn btn-gray btn-sm">예우 목록으로</a>
       </div>
     </div>
 

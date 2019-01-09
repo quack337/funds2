@@ -6,8 +6,8 @@
 <c:url var="R" value="/" />
 
 <div class="navigation-info">
-  &gt; 회원 관리 &gt; <a href="${R}sponsor/list.do?${ pagination.queryString }">회원 목록</a>  
-  &gt; 비정기납입 관리 &gt; <a href="list2.do?sid=${ sponsor.id }&${ pagination.queryString }">비정기납입 목록</a>
+  &gt; 회원 관리 &gt; <a href="${R}sponsor/list?${ pagination.queryString }">회원 목록</a>  
+  &gt; 비정기납입 관리 &gt; <a href="list2?sid=${ sponsor.id }&${ pagination.queryString }">비정기납입 목록</a>
   &gt; 비정기납입 등록 
 </div>
 
@@ -27,7 +27,7 @@
         <c:if test="${ payment.id > 0 }">
           <button type="submit" class="btn btn-danger btn-sm" name="cmd" value="delete" data-confirm-delete>비정기납입 삭제</button>
         </c:if>    
-        <a href="list2.do?sid=${ sponsor.id }&${ pagination.queryString }" class="btn btn-gray btn-sm">비정기납입 목록으로</a>
+        <a href="list2?sid=${ sponsor.id }&${ pagination.queryString }" class="btn btn-gray btn-sm">비정기납입 목록으로</a>
       </div>
 
       <table class="table table-bordered lbw120 mt10 pd4">

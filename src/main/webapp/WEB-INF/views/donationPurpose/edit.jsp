@@ -8,7 +8,7 @@
 <c:set var="mode" value="${ donationPurpose.id > 0 ? '수정' : '등록' }" />
 
 <div class="navigation-info">
-  &gt; 기초정보 관리 &gt; 기부목적 관리 &gt; <a href="list.do">기부목적 목록</a> &gt; 기부목적 ${ mode }
+  &gt; 기초정보 관리 &gt; 기부목적 관리 &gt; <a href="list">기부목적 목록</a> &gt; 기부목적 ${ mode }
 </div>
 
 <div class="panel panel-default shadow w900">
@@ -18,12 +18,12 @@
   <div class="panel-body">
   
     <form:form method="post" modelAttribute="donationPurpose">     
-        <div class="">
+        <div class="right mb4">
           <button type="submit" class="btn btn-primary btn-sm" name="cmd" value="save">기부목적 저장</button>
           <c:if test="${ donationPurpose.id > 0 }">
             <button type="submit" class="btn btn-danger btn-sm" name="cmd" value="delete" data-confirm-delete>기부목적 삭제</button>
           </c:if>    
-          <a href="list.do" class="btn btn-gray btn-sm">기무복적 목록으로</a>
+          <a href="list" class="btn btn-gray btn-sm">기부목적 목록으로</a>
         </div>    
 
 	    <table class="table table-bordered lbw120 pd4" style="margin-bottom: 10px;">
@@ -37,7 +37,13 @@
 	        <td class="lb">기부목적</td>
 	        <td><form:input path="name" class="w400" /></td>
 	        <td class="lb">구분</td>
-	        <td><form:input path="gubun" /></td>
+	        <td><form:select path="gubun" class="w100">
+                    <form:option value="영구" />
+                    <form:option value="일반" />
+                    <form:option value="지정" />
+                    <form:option value="현물" />
+                </form:select>
+          </td>
 	      </tr>
 	      <tr>
 	        <td class="lb">상태</td>
@@ -60,10 +66,12 @@
 	    </table>  
 	
     </form:form>    
-    
+        
     <hr />
-    <my:fileUpload foreignType="donationPurpose" foreignId="${ donationPurpose.id }" 
-                   returnUrl="/donationPurpose/edit.do?id=${ donationPurpose.id }" />
+    <c:if test="${ donationPurpose.id > 0}">
+      <my:fileUpload foreignType="donationPurpose" foreignId="${ donationPurpose.id }" 
+                     returnUrl="/donationPurpose/edit?id=${ donationPurpose.id }" />
+    </c:if>                    
   </div>
 </div>      
 

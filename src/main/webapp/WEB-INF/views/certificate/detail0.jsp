@@ -4,7 +4,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <div class="navigation-info">
-  &gt; 증서 &gt; <a href="list.do">장학증서 목록</a> &gt; 장학증서
+  &gt; 증서 &gt; <a href="list">장학증서 목록</a> &gt; 장학증서
 </div>
 
 <div class="panel panel-default shadow w800">
@@ -13,9 +13,9 @@
   </div>
   <div class="panel-body">  
     <div class="pull-right mb4">
-      <a class="btn btn-primary btn-sm" href="report.do?id=${ certificate.id }">증서 다운로드</a>
-      <a class="btn btn-info btn-sm" href="list.do?${ pagination.queryString }">목록으로</a>
-      <a class="btn btn-danger btn-sm" href="delete.do?id=${ certificate.id }&${ pagination.queryString }" data-confirm-delete>증서 삭제</a>
+      <a class="btn btn-primary btn-sm" href="report?id=${ certificate.id }">증서 다운로드</a>
+      <a class="btn btn-info btn-sm" href="list?${ pagination.queryString }">목록으로</a>
+      <a class="btn btn-danger btn-sm" href="delete?id=${ certificate.id }&${ pagination.queryString }" data-confirm-delete>증서 삭제</a>
     </div>
 
     <table class="table table-bordered lbw120 pd4">  

@@ -24,7 +24,7 @@ public class DataFileController {
 
     @Autowired DataFileMapper dataFileMapper;
 
-    @RequestMapping(value="/dataFile/upload.do", method=RequestMethod.POST)
+    @RequestMapping(value="/dataFile/upload", method=RequestMethod.POST)
     public String upload(@RequestParam("foreignId") int foreignId,
             @RequestParam("foreignType") String foreignType,
             @RequestParam("returnUrl") String url,
@@ -42,7 +42,7 @@ public class DataFileController {
         return "redirect:" + url;
     }
 
-    @RequestMapping("/dataFile/download.do")
+    @RequestMapping("/dataFile/download")
     public void download(@RequestParam("id") int id, HttpServletResponse response) throws IOException {
         DataFile file = dataFileMapper.selectById(id);
         if (file == null) return;
@@ -54,7 +54,7 @@ public class DataFileController {
         }
     }
 
-    @RequestMapping("/dataFile/delete.do")
+    @RequestMapping("/dataFile/delete")
     public String dalete(Model model, @RequestParam("id") int id, @RequestParam("returnUrl") String url) {
         dataFileMapper.delete(id);
         return "redirect:" + url;

@@ -5,7 +5,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <div class="navigation-info">
-  &gt; 영수증 &gt; <a href="list.do">영수증 목록</a> &gt; 영수증
+  &gt; 영수증 &gt; <a href="list">영수증 목록</a> &gt; 영수증
 </div>
 
 <div class="panel panel-default shadow">
@@ -15,10 +15,10 @@
   <div class="panel-body">
 
     <div class="pull-right mb4">
-      <a class="btn btn-primary btn-sm" href="report1.do?rid=${ receipt.id }">영수증 다운로드1</a>
-      <a class="btn btn-primary  btn-sm" href="report2.do?rid=${ receipt.id }">다운로드2</a>
-      <a class="btn btn-danger btn-sm" href="delete.do?id=${ receipt.id }&${ pagination.queryString }" data-confirm-delete>영수증 삭제</a>
-      <a class="btn btn-info btn-sm btn-sm" href="list.do?${ pagination.queryString }">영수증 목록으로</a>
+      <a class="btn btn-primary btn-sm" href="report1?rid=${ receipt.id }">영수증 다운로드1</a>
+      <a class="btn btn-primary  btn-sm" href="report2?rid=${ receipt.id }">다운로드2</a>
+      <a class="btn btn-danger btn-sm" href="delete?id=${ receipt.id }&${ pagination.queryString }" data-confirm-delete>영수증 삭제</a>
+      <a class="btn btn-info btn-sm btn-sm" href="list?${ pagination.queryString }">영수증 목록으로</a>
     </div>
     
     <table class="table table-bordered lbw120">  

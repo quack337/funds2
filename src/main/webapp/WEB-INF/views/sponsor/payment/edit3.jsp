@@ -11,8 +11,8 @@
 <c:set var="mode" value="${ payment.id > 0 ? '수정' : '등록' }" />
 
 <div class="navigation-info">
-  &gt; 회원 관리 &gt; <a href="${R}sponsor/list.do?${ pagination.queryString }">회원 목록</a>  
-  &gt; 현물납입 관리 &gt; <a href="list3.do?sid=${ sponsor.id }&${ pagination.queryString }">현물납입 목록</a>
+  &gt; 회원 관리 &gt; <a href="${R}sponsor/list?${ pagination.queryString }">회원 목록</a>  
+  &gt; 현물납입 관리 &gt; <a href="list3?sid=${ sponsor.id }&${ pagination.queryString }">현물납입 목록</a>
   &gt; 현물납입 ${ mode } 
 </div>
 
@@ -80,7 +80,7 @@
         <c:if test="${ payment.id > 0 }">
           <button type="submit" class="btn btn-danger btn-sm" name="cmd" value="delete" data-confirm-delete>현물납입 삭제</button>
         </c:if>    
-        <a href="list3.do?sid=${ sponsor.id }&${ pagination.queryString }" class="btn btn-gray btn-sm">현물납입 목록으로</a>
+        <a href="list3?sid=${ sponsor.id }&${ pagination.queryString }" class="btn btn-gray btn-sm">현물납입 목록으로</a>
       </div>
     </div>
   </div>

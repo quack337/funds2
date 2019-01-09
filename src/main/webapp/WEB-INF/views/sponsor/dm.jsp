@@ -32,7 +32,7 @@
         </form:select>
         <form:input type="text" class="w100" path="st" placeholder="이름" style="margin-left: 20px; margin-right: 20px;" />
         <button type="submit" class="btn btn-primary btn-sm">조회</button>
-        <a href="dmx.do?${pagination.queryString}" class="btn btn-success btn-sm">엑셀 다운로드</a>
+        <a href="dmx?${pagination.queryString}" class="btn btn-success btn-sm">엑셀 다운로드</a>
       </div>
     
       <table class="table table-bordered" id="table_s">

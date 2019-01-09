@@ -16,7 +16,7 @@
       <input type="hidden" name="pg" value="1" />
     
       <div class="pull-right mb4">
-        <a href="create.do?type=${ type }" class="btn btn-primary btn-sm">장학증서 등록</a>
+        <a href="create?type=${ type }" class="btn btn-primary btn-sm">장학증서 등록</a>
       </div>
     
       <div class="form-inline">    
@@ -29,7 +29,7 @@
     
         <button type="submit" class="btn btn-info btn-sm">조회</button>
         <c:if test="${ pagination.ss != 0 }">
-          <a href="list.do" class="btn btn-default btn-sm">조회조건 취소</a>
+          <a href="list" class="btn btn-default btn-sm">조회조건 취소</a>
         </c:if>
       </div>
     
@@ -46,7 +46,7 @@
         </thead>
         <tbody>
           <c:forEach var="c" items="${list}">
-            <tr data-url="detail.do?id=${c.id}&${pagination.queryString}">
+            <tr data-url="detail?id=${c.id}&${pagination.queryString}">
               <td>${ c.certificateNo }</td>
               <td>${ c.createDate }</td>
               <td>${ c.department }</td>

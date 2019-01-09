@@ -30,17 +30,17 @@ public class SponsorEventUploadController extends BaseController {
     @Autowired LogService logService;
     @Autowired ExcelService excelService;
 
-    @RequestMapping(value="/sponsor/event/upload.do", method=RequestMethod.GET)
+    @RequestMapping(value="/sponsor/event/upload", method=RequestMethod.GET)
     public String upload() {
-        if (!UserService.canAccess(C.메뉴_회원관리_예우업로드)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_회원관리_예우업로드)) return "redirect:/home/logout";
         return "sponsor/event/upload";
     }
 
-    @RequestMapping(value="/sponsor/event/upload.do", method=RequestMethod.POST, params="cmd=upload")
+    @RequestMapping(value="/sponsor/event/upload", method=RequestMethod.POST, params="cmd=upload")
     public String upload(Model model, @RequestParam("file") MultipartFile file, HttpSession session) throws Exception {
-        if (!UserService.canAccess(C.메뉴_회원관리_예우업로드)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_회원관리_예우업로드)) return "redirect:/home/logout";
 
-        String redirect1 = "redirect:upload.do";
+        String redirect1 = "redirect:upload";
         if (file.getSize() <= 0) return redirect1;
         List<SponsorEvent> list = excelService.get예우업로드Result(file.getInputStream());
         for (SponsorEvent e : list) {
@@ -56,9 +56,9 @@ public class SponsorEventUploadController extends BaseController {
         return "sponsor/event/upload_result";
     }
 
-    @RequestMapping(value="/sponsor/event/upload.do", method=RequestMethod.POST, params="cmd=save")
+    @RequestMapping(value="/sponsor/event/upload", method=RequestMethod.POST, params="cmd=save")
     public String upload(Model model, HttpSession session) throws Exception {
-        if (!UserService.canAccess(C.메뉴_회원관리_예우업로드)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_회원관리_예우업로드)) return "redirect:/home/logout";
 
         @SuppressWarnings("unchecked")
         List<SponsorEvent> list = (List<SponsorEvent>)session.getAttribute("list_notSaved");

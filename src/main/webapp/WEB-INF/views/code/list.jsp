@@ -21,8 +21,8 @@
   </div>
   <div class="panel-body">
   
-    <div class="">
-      <a class="btn btn-primary btn-sm" href="create.do?gid=${ codeGroup.id }">${ codeGroup.name } 등록</a>
+    <div class="right mb4">
+      <a class="btn btn-primary btn-sm" href="create?gid=${ codeGroup.id }">${ codeGroup.name } 등록</a>
     </div>
 
     <my:scrollableTable tagId="srch1a">
@@ -37,7 +37,7 @@
       </jsp:attribute>
       <jsp:attribute name="body">
         <c:forEach var="code" items="${list}">
-          <tr data-url="edit.do?id=${code.id}&gid=${codeGroup.id}">
+          <tr data-url="edit?id=${code.id}&gid=${codeGroup.id}">
             <td>${ code.codeName }</td>
             <td>${ code.state ? '사용' : '사용안함' }</td>
             <td style="min-width:30px;">${ code.etc1 }</td>

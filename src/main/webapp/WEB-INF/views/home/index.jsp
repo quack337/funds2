@@ -11,7 +11,11 @@
     <h3>일정목록</h3> 
   </div>
   <div class="panel-body">
-      <a class="btn btn-primary" href="${R}todo/list.do">일정관리</a>
+      <% if (fund.service.UserService.canAccess(fund.service.C.메뉴_기타_일정관리)) { %>
+        <div class="right">
+          <a class="btn btn-primary btn-sm" href="${R}todo/list">일정관리</a>
+        </div>
+      <% } %>
 
 	  <table id="todo" class="table table-bordered mt4 pd6">
 	    <thead>
@@ -24,11 +28,11 @@
 	    </thead>
 	    <tbody>
 	      <c:forEach var="todo" items="${ todos }">
-	        <tr data-url="edit.do?id=${todo.id}&${pagination.queryString}">
+	        <tr data-url="edit?id=${todo.id}&${pagination.queryString}">
 	          <td class="nowrap">${ todo.userName }</td>
 	          <td class="nowrap">${ todo.dueDate2 }</td>
 	          <td>${ todo.message }</td>
-	          <td><a href="${R}home/confirm.do?id=${todo.id}" class="btn btn-default btn-sm">확인</a>
+	          <td><a href="${R}home/confirm?id=${todo.id}" class="btn btn-default btn-sm">확인</a>
 	        </tr>
 	      </c:forEach>
 	      <c:if test="${ todos.size() <= 1 }">

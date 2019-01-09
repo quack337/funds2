@@ -22,14 +22,14 @@
         <td class="right"><fmt:formatNumber value="${ file.fileSize }" groupingUsed="true"/></td>
         <td><fmt:formatDate value="${ file.createDate }" type="date" pattern="yyyy-MM-dd HH:mm"/></td>
         <td>
-            <a class="btn btn-success btn-xs" href="${R}dataFile/download.do?id=${file.id}"> 다운로드</a> 
-            <a class="btn btn-danger btn-xs" href="${R}dataFile/delete.do?id=${file.id}&returnUrl=${ returnUrl }" data-confirm-delete> 삭제</a>            
+            <a class="btn btn-success btn-xs" href="${R}dataFile/download?id=${file.id}"> 다운로드</a> 
+            <a class="btn btn-danger btn-xs" href="${R}dataFile/delete?id=${file.id}&returnUrl=${ returnUrl }" data-confirm-delete> 삭제</a>            
         </td>
       </tr>
     </c:forEach>
      <tr>
        <td colspan="4">
-           <form method="post" action="${R}dataFile/upload.do" enctype="multipart/form-data">
+           <form method="post" action="${R}dataFile/upload" enctype="multipart/form-data">
              <input type="hidden" name="foreignType" value="${ foreignType }" />
              <input type="hidden" name="foreignId" value="${ foreignId }" />
              <input type="hidden" name="returnUrl" value="${returnUrl }" />

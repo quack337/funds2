@@ -58,9 +58,9 @@ public class CmsController extends BaseController {
     @Autowired CMSService cmsService;
 
     //// EB13
-    @RequestMapping(value="/cms/eb13.do", method=RequestMethod.GET)
+    @RequestMapping(value="/cms/eb13", method=RequestMethod.GET)
     public String eb13(Model model) throws Exception {
-        if (!UserService.canAccess(C.메뉴_금융연동_EB13생성)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_금융연동_EB13생성)) return "redirect:/home/logout";
         List<Commitment> list = commitmentMapper.selectEB13Candidate();
         model.addAttribute("list", list);
         model.addAttribute("today", format_yyyyMMdd.format(new Date()));
@@ -68,7 +68,7 @@ public class CmsController extends BaseController {
     }
 
     // TODO: 에러 발생시 EB13 파일 사용 불가 메시지.
-    @RequestMapping(value="/cms/eb13.do", method=RequestMethod.POST)
+    @RequestMapping(value="/cms/eb13", method=RequestMethod.POST)
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void eb13Create(@RequestParam("date") String date, HttpServletResponse response) throws Exception {
         if (!UserService.canAccess(C.메뉴_금융연동_EB13생성)) return;
@@ -142,18 +142,18 @@ public class CmsController extends BaseController {
     }
 
     //// EB14
-    @RequestMapping(value="/cms/eb14.do", method=RequestMethod.GET)
+    @RequestMapping(value="/cms/eb14", method=RequestMethod.GET)
     public String eb14(Model model) {
-        if (!UserService.canAccess(C.메뉴_금융연동_EB14등록)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_금융연동_EB14등록)) return "redirect:/home/logout";
         model.addAttribute("title", "EB14 파일 업로드");
         return "cms/upload";
     }
 
     // TODO: 에러 발생시 EB14 재등록 메시지.
-    @RequestMapping(value="/cms/eb14.do", method=RequestMethod.POST)
+    @RequestMapping(value="/cms/eb14", method=RequestMethod.POST)
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public String eb14(Model model, @RequestParam("file") MultipartFile file) throws Exception {
-        if (!UserService.canAccess(C.메뉴_금융연동_EB14등록)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_금융연동_EB14등록)) return "redirect:/home/logout";
         ByteArrayInputStream stream = new ByteArrayInputStream(file.getBytes());
         String s = IOUtils.toString(stream, "ASCII");
 
@@ -182,7 +182,7 @@ public class CmsController extends BaseController {
                 ++count2;
             }
         logService.actionLog("EB14 등록", "cms eb14", 0, "성공:" + count1 + " 건.  에러:" + count2 + " 건.");
-        return "redirect:eb14result.do";
+        return "redirect:eb14result";
     }
 
     static List<String> split(String s, int size) {
@@ -196,9 +196,9 @@ public class CmsController extends BaseController {
         return list;
     }
 
-    @RequestMapping(value="/cms/eb14result.do", method=RequestMethod.GET)
+    @RequestMapping(value="/cms/eb14result", method=RequestMethod.GET)
     public String eb14Result(Model model) throws Exception {
-        if (!UserService.canAccess(C.메뉴_금융연동_EB1314결과조회)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_금융연동_EB1314결과조회)) return "redirect:/home/logout";
         Wrapper wrapper= new Wrapper();
         Map<String, Object> map = wrapper.getMap();
         Calendar cal = Calendar.getInstance(); cal.add(Calendar.MONTH, -1);
@@ -213,9 +213,9 @@ public class CmsController extends BaseController {
         return "cms/eb14result";
     }
 
-    @RequestMapping(value="/cms/eb14result.do", method=RequestMethod.POST)
+    @RequestMapping(value="/cms/eb14result", method=RequestMethod.POST)
     public String eb14Result(Model model, Wrapper wrapper) throws Exception {
-        if (!UserService.canAccess(C.메뉴_금융연동_EB1314결과조회)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_금융연동_EB1314결과조회)) return "redirect:/home/logout";
         List<Commitment> list = commitmentMapper.selectCmsResult(wrapper.getMap());
         model.addAttribute("wrapper", wrapper);
         model.addAttribute("list", list);
@@ -223,9 +223,9 @@ public class CmsController extends BaseController {
     }
 
     //// EB21
-    @RequestMapping(value="/cms/eb21.do", method=RequestMethod.GET)
+    @RequestMapping(value="/cms/eb21", method=RequestMethod.GET)
     public String eb21(Model model) throws Exception {
-        if (!UserService.canAccess(C.메뉴_금융연동_EB21생성)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_금융연동_EB21생성)) return "redirect:/home/logout";
         Calendar today = Calendar.getInstance();
         int day = today.get(Calendar.DAY_OF_MONTH);
         int paymentDay = day > 20 ? 25 : 20;
@@ -239,9 +239,9 @@ public class CmsController extends BaseController {
         return "cms/eb21";
     }
 
-    @RequestMapping(value="/cms/eb21.do", method=RequestMethod.POST, params="cmd=search")
+    @RequestMapping(value="/cms/eb21", method=RequestMethod.POST, params="cmd=search")
     public String eb21(Model model, Wrapper wrapper) throws Exception {
-        if (!UserService.canAccess(C.메뉴_금융연동_EB21생성)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_금융연동_EB21생성)) return "redirect:/home/logout";
         List<Commitment> list = commitmentMapper.selectEB21Candidate(wrapper.getMap());
         model.addAttribute("list", list);
         return "cms/eb21";
@@ -249,7 +249,7 @@ public class CmsController extends BaseController {
 
     // TODO: 에러 발생 가능한 부분을 조사해서, 최대한 에러가 발생하지 않게 수정하자.
     // 에러가 발생할 상황을 isValid 메소드에서 걸러내자.
-    @RequestMapping(value="/cms/eb21.do", method=RequestMethod.POST, params="cmd=create")
+    @RequestMapping(value="/cms/eb21", method=RequestMethod.POST, params="cmd=create")
     public void eb21Create(Wrapper wrapper, HttpServletResponse response) throws Exception {
         if (!UserService.canAccess(C.메뉴_금융연동_EB21생성)) return;
         Map<String, Object> map = wrapper.getMap();
@@ -332,19 +332,19 @@ public class CmsController extends BaseController {
     }
 
     //// EB22
-    @RequestMapping(value="/cms/eb22.do", method=RequestMethod.GET)
+    @RequestMapping(value="/cms/eb22", method=RequestMethod.GET)
     public String eb22(Model model) {
-        if (!UserService.canAccess(C.메뉴_금융연동_EB22등록)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_금융연동_EB22등록)) return "redirect:/home/logout";
         model.addAttribute("title", "EB22 파일 업로드");
         return "cms/upload";
     }
 
     // TODO: 에러 발생시 EB22 재등록 메시지.
     // 에러가 발생할 상황을 최대한 줄이자.
-    @RequestMapping(value="/cms/eb22.do", method=RequestMethod.POST)
+    @RequestMapping(value="/cms/eb22", method=RequestMethod.POST)
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public String eb22(Model model, @RequestParam("file") MultipartFile file) throws Exception {
-        if (!UserService.canAccess(C.메뉴_금융연동_EB22등록)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_금융연동_EB22등록)) return "redirect:/home/logout";
         ByteArrayInputStream stream = new ByteArrayInputStream(file.getBytes());
         String s = IOUtils.toString(stream, "ASCII");
 
@@ -383,12 +383,12 @@ public class CmsController extends BaseController {
                 ++count2;
             }
         logService.actionLog("EB22 등록", "cms eb22", 0,  "성공:" + count1 + " 건.  에러:" + count2 + " 건.");
-        return "redirect:eb22result.do";
+        return "redirect:eb22result";
     }
 
-    @RequestMapping(value="/cms/eb22result.do", method=RequestMethod.GET)
+    @RequestMapping(value="/cms/eb22result", method=RequestMethod.GET)
     public String eb21Result(Model model) throws Exception {
-        if (!UserService.canAccess(C.메뉴_금융연동_EB2122결과조회)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_금융연동_EB2122결과조회)) return "redirect:/home/logout";
         Wrapper wrapper = new Wrapper();
         Map<String,Object> map = wrapper.getMap();
         Calendar cal = Calendar.getInstance(); cal.add(Calendar.DAY_OF_MONTH, -14);
@@ -403,9 +403,9 @@ public class CmsController extends BaseController {
         return "cms/eb22result";
     }
 
-    @RequestMapping(value="/cms/eb22result.do", method=RequestMethod.POST)
+    @RequestMapping(value="/cms/eb22result", method=RequestMethod.POST)
     public String eb21Result(Model model, Wrapper wrapper) throws Exception {
-        if (!UserService.canAccess(C.메뉴_금융연동_EB2122결과조회)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_금융연동_EB2122결과조회)) return "redirect:/home/logout";
         List<EB21> list = eb21Mapper.selectCmsResult(wrapper.getMap());
         model.addAttribute("wrapper", wrapper);
         model.addAttribute("list", list);
@@ -414,17 +414,17 @@ public class CmsController extends BaseController {
 
 
     //// 자동이체
-    @RequestMapping(value="/cms/xfer.do", method=RequestMethod.GET)
+    @RequestMapping(value="/cms/xfer", method=RequestMethod.GET)
     public String xfer(Model model) {
-        if (!UserService.canAccess(C.메뉴_금융연동_자동이체결과등록)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_금융연동_자동이체결과등록)) return "redirect:/home/logout";
         model.addAttribute("title", "자동이체 결과파일 업로드");
         return "cms/upload";
     }
 
-    @RequestMapping(value="/cms/xfer.do", method=RequestMethod.POST, params="cmd=upload")
+    @RequestMapping(value="/cms/xfer", method=RequestMethod.POST, params="cmd=upload")
     public String xfer(Model model, @RequestParam("file") MultipartFile file, HttpSession session) throws Exception {
-        if (!UserService.canAccess(C.메뉴_금융연동_자동이체결과등록)) return "redirect:/home/logout.do";
-        String redirect1 = "redirect:xfer.do";
+        if (!UserService.canAccess(C.메뉴_금융연동_자동이체결과등록)) return "redirect:/home/logout";
+        String redirect1 = "redirect:xfer";
         if (file.getSize() <= 0) return redirect1;
         List<Xfer> list = excelService.get자동이체Result(file.getInputStream());
         if (list.size() <= 0) return redirect1;
@@ -434,10 +434,10 @@ public class CmsController extends BaseController {
     }
 
     @SuppressWarnings("unchecked")
-    @RequestMapping(value="/cms/xfer.do", method=RequestMethod.POST, params="cmd=save")
+    @RequestMapping(value="/cms/xfer", method=RequestMethod.POST, params="cmd=save")
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public String xfer(Model model, @RequestParam("commitmentNo") String[] commitmentNo, HttpSession session) throws Exception {
-        if (!UserService.canAccess(C.메뉴_금융연동_자동이체결과등록)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_금융연동_자동이체결과등록)) return "redirect:/home/logout";
         List<Xfer> list = (List<Xfer>)session.getAttribute("xfer_notSaved");
         List<Xfer> list_saved = (List<Xfer>)session.getAttribute("xfer_saved");
         if (list_saved == null) list_saved = new ArrayList<Xfer>();
@@ -477,17 +477,17 @@ public class CmsController extends BaseController {
 
 
     //// 급여공제
-    @RequestMapping(value="/cms/sal.do", method=RequestMethod.GET)
+    @RequestMapping(value="/cms/sal", method=RequestMethod.GET)
     public String salary(Model model) {
-        if (!UserService.canAccess(C.메뉴_금융연동_급여공제결과등록)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_금융연동_급여공제결과등록)) return "redirect:/home/logout";
         model.addAttribute("title", "급여공제 결과파일 업로드");
         return "cms/upload";
     }
 
-    @RequestMapping(value="/cms/sal.do", method=RequestMethod.POST, params="cmd=upload")
+    @RequestMapping(value="/cms/sal", method=RequestMethod.POST, params="cmd=upload")
     public String sal(@RequestParam("file") MultipartFile file, HttpSession session) throws Exception {
-        if (!UserService.canAccess(C.메뉴_금융연동_급여공제결과등록)) return "redirect:/home/logout.do";
-        String redirect1 = "redirect:sal.do";
+        if (!UserService.canAccess(C.메뉴_금융연동_급여공제결과등록)) return "redirect:/home/logout";
+        String redirect1 = "redirect:sal";
         if (file.getSize() <= 0) return redirect1;
         List<Sal> list = excelService.get급여공제Result(file.getInputStream());
         if (list.size() <= 0) return redirect1;
@@ -497,10 +497,10 @@ public class CmsController extends BaseController {
     }
 
     @SuppressWarnings("unchecked")
-    @RequestMapping(value="/cms/sal.do", method=RequestMethod.POST, params="cmd=save")
+    @RequestMapping(value="/cms/sal", method=RequestMethod.POST, params="cmd=save")
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public String sal(Model model, @RequestParam("commitmentNo") String[] commitmentNo, HttpSession session) throws Exception {
-        if (!UserService.canAccess(C.메뉴_금융연동_급여공제결과등록)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_금융연동_급여공제결과등록)) return "redirect:/home/logout";
         List<Sal> list = (List<Sal>)session.getAttribute("sal_notSaved");
         List<Sal> list_saved = (List<Sal>)session.getAttribute("sal_saved");
         if (list_saved == null) list_saved = new ArrayList<Sal>();

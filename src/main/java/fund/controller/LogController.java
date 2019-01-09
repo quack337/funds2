@@ -16,32 +16,32 @@ public class LogController extends BaseController {
 
     @Autowired LogMapper logMapper;
 
-    @RequestMapping("/log/list.do")
+    @RequestMapping("/log/list")
     public String list(Model model, Pagination pagination,
         @RequestParam(value="cmd", required=false) String cmd,
         @RequestParam(value="id", required=false) int[] id) {
-        if (!UserService.canAccess(C.메뉴_시스템관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_시스템관리)) return "redirect:/home/logout";
         if ("delete".equals(cmd) && id != null) {
             for (int i : id) logMapper.delete(i);
-            return "redirect:list.do?" + pagination.getQueryString();
+            return "redirect:list?" + pagination.getQueryString();
         }
         pagination.setRecordCount(logMapper.selectCount(pagination));
         model.addAttribute("list", logMapper.selectPage(pagination));
         return "log/list";
     }
 
-    @RequestMapping("/log/detail.do")
+    @RequestMapping("/log/detail")
     public String detail(Model model, @RequestParam("id") int id, Pagination pagination) {
-        if (!UserService.canAccess(C.메뉴_시스템관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_시스템관리)) return "redirect:/home/logout";
         model.addAttribute("log", logMapper.selectById(id));
         return "log/detail";
     }
 
-    @RequestMapping("/log/delete.do")
+    @RequestMapping("/log/delete")
     public String delete(Model model, @RequestParam("id") int id, Pagination pagination) {
-        if (!UserService.canAccess(C.메뉴_시스템관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_시스템관리)) return "redirect:/home/logout";
         logMapper.delete(id);
-        return "redirect:list.do?" + pagination.getQueryString();
+        return "redirect:list?" + pagination.getQueryString();
     }
 
 

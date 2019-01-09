@@ -6,8 +6,8 @@
 <c:url var="R" value="/" />
 
 <div class="navigation-info">
-  &gt; 회원 관리 &gt; <a href="${R}sponsor/list.do?${ pagination.queryString }">회원 목록</a> 
-  &gt; 약정 관리 &gt; <a href="list.do?sid=${ sponsor.id }&${ pagination.queryString }">약정 목록</a> &gt; 약정 등록
+  &gt; 회원 관리 &gt; <a href="${R}sponsor/list?${ pagination.queryString }">회원 목록</a> 
+  &gt; 약정 관리 &gt; <a href="list?sid=${ sponsor.id }&${ pagination.queryString }">약정 목록</a> &gt; 약정 등록
 </div>
 
 <form:form method="post" modelAttribute="commitment">
@@ -23,7 +23,7 @@
 
     <div class="right mt10 mb10">
       <button type="submit" class="btn btn-primary btn-sm" name="cmd" value="save">약정 저장</button>
-      <a href="list.do?sid=${ sponsor.id }&${ pagination.queryString }" class="btn btn-gray btn-sm">약정 목록으로</a>
+      <a href="list?sid=${ sponsor.id }&${ pagination.queryString }" class="btn btn-gray btn-sm">약정 목록으로</a>
     </div>
 
     <table class="table table-bordered lbw120 pd4 mt10">

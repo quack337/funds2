@@ -14,7 +14,7 @@
 </style>
 
 <div class="navigation-info">
-  &gt; 회원 관리 &gt; <a href="${R}sponsor/list.do?${ pagination.queryString }">회원 목록</a>
+  &gt; 회원 관리 &gt; <a href="${R}sponsor/list?${ pagination.queryString }">회원 목록</a>
   <c:if test="${ sponsor.id == 0 }">
     &gt;  회원 신규등록
   </c:if>
@@ -42,7 +42,7 @@
       <c:if test="${ sponsor.id > 0 }">
         <button class="btn btn-danger btn-sm" type="submit" name="cmd" value="delete" data-confirm-delete>회원 삭제</button>
       </c:if>
-      <a href="${R}sponsor/list.do?${ pagination.queryString }" class="btn btn-gray btn-sm">회원 목록으로</a>
+      <a href="${R}sponsor/list?${ pagination.queryString }" class="btn btn-gray btn-sm">회원 목록으로</a>
     </div>
       
     <table class="table table-bordered lbw120 pd4 mt10">
@@ -106,8 +106,8 @@
             <form:option value="가족" />
             <form:option value="지인" />
           </form:select></td>
-        <td class="lb">직위</td>
-        <td><input  type="text" name="position" value="${ sponsor.position}" tabindex="2" /></td>
+        <td class="lb">담당자</td>
+        <td><input  type="text" name="representative" value="${ sponsor.representative }" tabindex="2" placeholder="담당자" /></td>
       </tr>
       <tr>
         <td class="lb">자택 전화번호</td>
@@ -138,11 +138,11 @@
             <label class="clean"><input type="radio" value="2" name="emailReceiving" ${ sponsor.emailReceiving == 2 ? "checked" :"" } tabindex="2" /> 미동의</label></td>        
       </tr>
       <tr>
-        <td class="lb">소속교회</td>
+        <td class="lb">소속</td>
         <td>
             <span id="churchName" style="display:inline-block; min-width: 100px;">${ sponsor.church }</span> 
             <form:hidden path="churchId" value="${ sponsor.churchId } " />
-            <a href="#churchDialog" class="btn btn-flat btn-xs" data-toggle="modal" tabindex="1">교회 찾기</a>
+            <a href="#churchDialog" class="btn btn-flat btn-xs" data-toggle="modal" tabindex="1">소속 찾기</a>
         </td>
         <td class="lb" rowspan="3">개인정보 수집 및 이용</td>
         <td>
@@ -180,8 +180,8 @@
             <c:forEach var="file" items="${ files }">
               <div style="padding: 5px;">
                 <span>${ file.fileName }</span> 
-                <a class="btn btn-gray btn-xs" href="fileDown.do?id=${file.id}"> 다운로드</a> 
-                <a class="btn btn-gray btn-xs" href="fileDel.do?id=${file.id}&sid=${sponsor.id}&${pagination.queryString}" data-confirm-delete> 삭제</a>
+                <a class="btn btn-gray btn-xs" href="fileDown?id=${file.id}"> 다운로드</a> 
+                <a class="btn btn-gray btn-xs" href="fileDel?id=${file.id}&sid=${sponsor.id}&${pagination.queryString}" data-confirm-delete> 삭제</a>
               </div>
             </c:forEach>
           </td>

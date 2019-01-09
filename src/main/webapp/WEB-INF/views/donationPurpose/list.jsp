@@ -12,7 +12,7 @@
   </div>
   <div class="panel-body">
     <div class="pull-right">
-      <a class="btn btn-primary btn-sm" href="create.do">기부목적 등록</a>
+      <a class="btn btn-primary btn-sm" href="create">기부목적 등록</a>
     </div>    
   
     <form:form method="get" modelAttribute="pagination" class="mt4">
@@ -33,7 +33,7 @@
         <form:input path="st" />
         <button type="submit" class="btn btn-sm btn-info btn-sm">조회</button>
         <c:if test="${ pagination.ss != 0 }">
-          <a href="list.do" class="btn btn-small btn-gray btn-sm">조회조건 취소</a>
+          <a href="list" class="btn btn-small btn-gray btn-sm">조회조건 취소</a>
         </c:if>
       </div>
   
@@ -50,7 +50,7 @@
       </thead>
        <tbody>
           <c:forEach var="donationPurpose" items="${ list }">
-              <tr data-url="edit.do?id=${donationPurpose.id}" >
+              <tr data-url="edit?id=${donationPurpose.id}" >
                   <td>${ donationPurpose.corporateName }</td>
                   <td>${ donationPurpose.organizationName }</td>
                   <td>${ donationPurpose.name }</td>

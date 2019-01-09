@@ -39,7 +39,7 @@
         <form:input path="st" />
         <button type="submit" class="btn btn-sm btn-info">조회</button>
         <c:if test="${ pagination.ss != 0 }">
-          <a href="list.do" class="btn btn-small btn-default">조회조건 취소</a>
+          <a href="list" class="btn btn-small btn-default">조회조건 취소</a>
         </c:if>
       </div>
     
@@ -55,7 +55,7 @@
         </thead>
         <tbody>
           <c:forEach var="p" items="${ list }">
-            <tr data-url="detail.do?id=${p.id}&${pagination.queryString}">
+            <tr data-url="detail?id=${p.id}&${pagination.queryString}">
               <td><input type="checkbox" name="id" value="${ p.id }" /></td>
               <td>${ p.currentUser }</td>
               <td><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${ p.writeTime }" /></td>

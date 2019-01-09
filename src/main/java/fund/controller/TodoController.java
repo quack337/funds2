@@ -22,9 +22,9 @@ public class TodoController extends BaseController {
     @Autowired TodoMapper todoMapper;
     @Autowired LogService logService;
 
-    @RequestMapping(value="/todo/list.do", method=RequestMethod.GET)
+    @RequestMapping(value="/todo/list", method=RequestMethod.GET)
     public String index(Model model, Pagination pagination) {
-        if (!UserService.canAccess(C.메뉴_기타_일정관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_기타_일정관리)) return "redirect:/home/logout";
         int userId = UserService.getCurrentUser().getId();
         pagination.setSs(userId);
         pagination.setRecordCount(todoMapper.selectCount(pagination));
@@ -32,17 +32,17 @@ public class TodoController extends BaseController {
         return "todo/list";
     }
 
-    @RequestMapping(value="/todo/edit.do", method=RequestMethod.GET)
+    @RequestMapping(value="/todo/edit", method=RequestMethod.GET)
     public String edit(Model model, Pagination pagination, @RequestParam("id") int id) {
-        if (!UserService.canAccess(C.메뉴_기타_일정관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_기타_일정관리)) return "redirect:/home/logout";
         model.addAttribute("todo", todoMapper.selectById(id));
         return "todo/edit";
     }
 
-    @RequestMapping(value="/todo/edit.do", method=RequestMethod.POST, params="cmd=save")
+    @RequestMapping(value="/todo/edit", method=RequestMethod.POST, params="cmd=save")
     public String save(Model model, Pagination pagination, Todo todo) {
         try {
-            if (!UserService.canAccess(C.메뉴_기타_일정관리)) return "redirect:/home/logout.do";
+            if (!UserService.canAccess(C.메뉴_기타_일정관리)) return "redirect:/home/logout";
             todoMapper.update(todo);
             model.addAttribute("successMsg", "저장했습니다.");
         } catch (Exception e) {
@@ -52,21 +52,21 @@ public class TodoController extends BaseController {
         return "todo/edit";
     }
 
-    @RequestMapping(value="/todo/edit.do", method=RequestMethod.POST, params="cmd=delete")
+    @RequestMapping(value="/todo/edit", method=RequestMethod.POST, params="cmd=delete")
     public String delete(Model model, Pagination pagination, @RequestParam("id") int id) {
         try {
-            if (!UserService.canAccess(C.메뉴_기타_일정관리)) return "redirect:/home/logout.do";
+            if (!UserService.canAccess(C.메뉴_기타_일정관리)) return "redirect:/home/logout";
             todoMapper.delete(id);
         } catch (Exception e) {
             return logService.logErrorAndReturn(model, e, "todo/edit");
         }
-        return "redirect:list.do?" + pagination.getQueryString();
+        return "redirect:list?" + pagination.getQueryString();
     }
 
-    @RequestMapping(value="/todo/edit.do", method=RequestMethod.POST, params="cmd=cancelConfirm")
+    @RequestMapping(value="/todo/edit", method=RequestMethod.POST, params="cmd=cancelConfirm")
     public String cancelConfirm(Model model, Pagination pagination, Todo todo) {
         try {
-            if (!UserService.canAccess(C.메뉴_기타_일정관리)) return "redirect:/home/logout.do";
+            if (!UserService.canAccess(C.메뉴_기타_일정관리)) return "redirect:/home/logout";
             todoMapper.cancelConfirm(todo.getId());
         } catch (Exception e) {
             return logService.logErrorAndReturn(model, e, "todo/edit");
@@ -75,24 +75,24 @@ public class TodoController extends BaseController {
         return "todo/edit";
     }
 
-    @RequestMapping(value="/todo/create.do", method=RequestMethod.GET)
+    @RequestMapping(value="/todo/create", method=RequestMethod.GET)
     public String create(Model model, Pagination pagination) {
-        if (!UserService.canAccess(C.메뉴_기타_일정관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_기타_일정관리)) return "redirect:/home/logout";
         model.addAttribute("todo", new Todo());
         return "todo/edit";
     }
 
-    @RequestMapping(value="/todo/create.do", method=RequestMethod.POST)
+    @RequestMapping(value="/todo/create", method=RequestMethod.POST)
     public String create(Model model, Pagination pagination, Todo todo) {
         try {
-            if (!UserService.canAccess(C.메뉴_기타_일정관리)) return "redirect:/home/logout.do";
+            if (!UserService.canAccess(C.메뉴_기타_일정관리)) return "redirect:/home/logout";
             todo.setUserId(UserService.getCurrentUser().getId());
             todoMapper.insert(todo);
             model.addAttribute("successMsg", "저장했습니다.");
         } catch (Exception e) {
             return logService.logErrorAndReturn(model, e, "todo/edit");
         }
-        return "redirect:list.do";
+        return "redirect:list";
     }
 
 }

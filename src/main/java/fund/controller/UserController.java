@@ -31,7 +31,7 @@ public class UserController extends BaseController{
         model.addAttribute("corporates", corporateMapper.selectAll());
     }
 
-    @RequestMapping(value="/user/myinfo.do", method=RequestMethod.GET)
+    @RequestMapping(value="/user/myinfo", method=RequestMethod.GET)
     public String myinfo(Model model) {
         int id = UserService.getCurrentUser().getId();
         model.addAttribute("user", userMapper.selectById(id));
@@ -40,7 +40,7 @@ public class UserController extends BaseController{
         return "user/myinfo";
     }
 
-    @RequestMapping(value="/user/myinfo.do", method=RequestMethod.POST, params="cmd=saveInfo")
+    @RequestMapping(value="/user/myinfo", method=RequestMethod.POST, params="cmd=saveInfo")
     public String saveMyInfo(Model model, User user) {
         try {
             user.setId(UserService.getCurrentUser().getId());
@@ -60,7 +60,7 @@ public class UserController extends BaseController{
         }
     }
 
-    @RequestMapping(value="/user/myinfo.do", method=RequestMethod.POST, params="cmd=savePassword")
+    @RequestMapping(value="/user/myinfo", method=RequestMethod.POST, params="cmd=savePassword")
     public String saveMyPassword(Model model, User user) {
         try {
             user.setId(UserService.getCurrentUser().getId());
@@ -80,25 +80,25 @@ public class UserController extends BaseController{
         }
     }
 
-    @RequestMapping("/user/list.do")
+    @RequestMapping("/user/list")
     public String list(Model model) {
-        if (!UserService.canAccess(C.메뉴_시스템관리)) return "redirect:/home/logout.do";
+        if (!UserService.canAccess(C.메뉴_시스템관리)) return "redirect:/home/logout";
         model.addAttribute("list", userMapper.selectAll());
         return "user/list";
     }
 
-    @RequestMapping(value="/user/edit.do", method=RequestMethod.GET)
+    @RequestMapping(value="/user/edit", method=RequestMethod.GET)
     public String edit(Model model, @RequestParam("id") int id) {
-        if (UserService.canAccess(C.메뉴_시스템관리) == false) return "redirect:/home/logout.do";
+        if (UserService.canAccess(C.메뉴_시스템관리) == false) return "redirect:/home/logout";
         model.addAttribute("user", userMapper.selectById(id));
         model.addAttribute("menu", userService.selectMenuUserByUserId(id));
         return "user/edit";
     }
 
-    @RequestMapping(value="/user/edit.do", method=RequestMethod.POST, params="cmd=saveInfo")
+    @RequestMapping(value="/user/edit", method=RequestMethod.POST, params="cmd=saveInfo")
     public String saveInfo(Model model, User user) {
         try {
-            if (UserService.canAccess(C.메뉴_시스템관리) == false) return "redirect:/home/logout.do";
+            if (UserService.canAccess(C.메뉴_시스템관리) == false) return "redirect:/home/logout";
             if (user.getUserType() == null) user.setUserType(UserService.getCurrentUser().getUserType());
             if (userService.checkLoginId(user)) {
                 logService.userInfoChange(user);
@@ -115,10 +115,10 @@ public class UserController extends BaseController{
         }
     }
 
-    @RequestMapping(value="/user/edit.do", method=RequestMethod.POST, params="cmd=savePassword")
+    @RequestMapping(value="/user/edit", method=RequestMethod.POST, params="cmd=savePassword")
     public String savePassword(Model model, User user) {
         try {
-            if (UserService.canAccess(C.메뉴_시스템관리) == false) return "redirect:/home/logout.do";
+            if (UserService.canAccess(C.메뉴_시스템관리) == false) return "redirect:/home/logout";
             if (userService.checkPassword(user.getPassword1())) {
                 if (comparePassword(user)) {
                     user.setPassword(UserService.encryptPasswd(user.getPassword1()));
@@ -139,10 +139,10 @@ public class UserController extends BaseController{
         return StringUtils.isBlank(user.getPassword1()) == false && user.getPassword1().equals(user.getPassword2());
     }
 
-    @RequestMapping(value="/user/edit.do", method=RequestMethod.POST, params="cmd=saveMenu")
+    @RequestMapping(value="/user/edit", method=RequestMethod.POST, params="cmd=saveMenu")
     public String saveInfo(Model model, User user, @RequestParam("menuId") Integer[] menuId) {
         try {
-            if (UserService.canAccess(C.메뉴_시스템관리) == false) return "redirect:/home/logout.do";
+            if (UserService.canAccess(C.메뉴_시스템관리) == false) return "redirect:/home/logout";
             if (user.getUserType() == null) user.setUserType(UserService.getCurrentUser().getUserType());
             userService.saveMenuUser(user, menuId);
             model.addAttribute("menu", userService.selectMenuUserByUserId(user.getId()));
@@ -154,32 +154,32 @@ public class UserController extends BaseController{
         }
     }
 
-    @RequestMapping(value="/user/edit.do", method=RequestMethod.POST, params="cmd=delete")
+    @RequestMapping(value="/user/edit", method=RequestMethod.POST, params="cmd=delete")
     public String delete(Model model, @RequestParam("id") int id, Pagination pagination) {
-        if (UserService.canAccess(C.메뉴_시스템관리) == false) return "redirect:/home/logout.do";
+        if (UserService.canAccess(C.메뉴_시스템관리) == false) return "redirect:/home/logout";
         logService.userDelete(id);
         userMapper.delete(id);
-        return "redirect:list.do";
+        return "redirect:list";
     }
 
-    @RequestMapping(value="/user/create.do", method=RequestMethod.GET)
+    @RequestMapping(value="/user/create", method=RequestMethod.GET)
     public String create(Model model) {
-        if (UserService.canAccess(C.메뉴_시스템관리) == false) return "redirect:/home/logout.do";
+        if (UserService.canAccess(C.메뉴_시스템관리) == false) return "redirect:/home/logout";
         model.addAttribute("user", new User());
         return "user/create";
     }
 
-    @RequestMapping(value="/user/create.do", method=RequestMethod.POST)
+    @RequestMapping(value="/user/create", method=RequestMethod.POST)
     public String create(Model model, User user) {
         try {
-            if (UserService.canAccess(C.메뉴_시스템관리) == false) return "redirect:/home/logout.do";
+            if (UserService.canAccess(C.메뉴_시스템관리) == false) return "redirect:/home/logout";
             if (userService.checkPassword(user.getPassword1())) {
                 if (comparePassword(user)) {
                     if (userService.checkLoginId(user)) {
                         user.setPassword(UserService.encryptPasswd(user.getPassword1()));
                         logService.userCreate(user);
                         userMapper.insert(user);
-                        return "redirect:list.do";
+                        return "redirect:list";
                     } else model.addAttribute("errorMsg", "로그인 아이디가 중복됩니다.");
                 } else model.addAttribute("errorMsg", "비밀번호가 일치하지 않습니다.");
             } else model.addAttribute("errorMsg", "비밀번호 작성 규칙에 어긋납니다.");

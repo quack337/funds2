@@ -32,10 +32,10 @@ public class CertificationController extends BaseController {
     @Autowired LogService logService;
     @Autowired UserService userService;
 
-    @RequestMapping("/certificate/{type}/list.do")
+    @RequestMapping("/certificate/{type}/list")
     public String list(Model model, @PathVariable("type") int type, @ModelAttribute("pagination") PaginationReceipt pagination) {
-        if (type == 0 && !UserService.canAccess(C.메뉴_증서_장학증서)) return "redirect:/home/logout.do";
-        if (type == 1 && !UserService.canAccess(C.메뉴_증서_기부증서)) return "redirect:/home/logout.do";
+        if (type == 0 && !UserService.canAccess(C.메뉴_증서_장학증서)) return "redirect:/home/logout";
+        if (type == 1 && !UserService.canAccess(C.메뉴_증서_기부증서)) return "redirect:/home/logout";
         userService.사용자소속제한(model, pagination, null);
         pagination.setOd(type);
         pagination.setRecordCount(certificateMapper.selectCount(pagination));
@@ -43,18 +43,18 @@ public class CertificationController extends BaseController {
         return "certificate/list" + type;
     }
 
-    @RequestMapping("/certificate/{type}/detail.do")
+    @RequestMapping("/certificate/{type}/detail")
     public String edit(Model model, @PathVariable("type") int type, @RequestParam("id") int id, @ModelAttribute("pagination") PaginationReceipt pagination) {
-        if (type == 0 && !UserService.canAccess(C.메뉴_증서_장학증서)) return "redirect:/home/logout.do";
-        if (type == 1 && !UserService.canAccess(C.메뉴_증서_기부증서)) return "redirect:/home/logout.do";
+        if (type == 0 && !UserService.canAccess(C.메뉴_증서_장학증서)) return "redirect:/home/logout";
+        if (type == 1 && !UserService.canAccess(C.메뉴_증서_기부증서)) return "redirect:/home/logout";
         model.addAttribute("certificate", certificateMapper.selectById(id));
         return "certificate/detail" + type;
     }
 
-    @RequestMapping("/certificate/{type}/delete.do")
+    @RequestMapping("/certificate/{type}/delete")
     public String delete(RedirectAttributes ra, @PathVariable("type") int type, @RequestParam("id") int id, @ModelAttribute("pagination") PaginationReceipt pagination) {
-        if (type == 0 && !UserService.canAccess(C.메뉴_증서_장학증서)) return "redirect:/home/logout.do";
-        if (type == 1 && !UserService.canAccess(C.메뉴_증서_기부증서)) return "redirect:/home/logout.do";
+        if (type == 0 && !UserService.canAccess(C.메뉴_증서_장학증서)) return "redirect:/home/logout";
+        if (type == 1 && !UserService.canAccess(C.메뉴_증서_기부증서)) return "redirect:/home/logout";
         User user = UserService.getCurrentUser();
         Certificate cert = certificateMapper.selectById(id);
         if (user.getUserType().contains("관리자") ||
@@ -62,13 +62,13 @@ public class CertificationController extends BaseController {
             certificateMapper.delete(id);
             ra.addFlashAttribute("successMsg", "삭제했습니다.");
         }
-        return "redirect:list.do?" + pagination.getQueryString();
+        return "redirect:list?" + pagination.getQueryString();
     }
 
-    @RequestMapping(value = "/certificate/{type}/create.do", method = RequestMethod.GET)
+    @RequestMapping(value = "/certificate/{type}/create", method = RequestMethod.GET)
     public String insert(Model model, @PathVariable("type") int type, @ModelAttribute("pagination") PaginationReceipt pagination) {
-        if (type == 0 && !UserService.canAccess(C.메뉴_증서_장학증서)) return "redirect:/home/logout.do";
-        if (type == 1 && !UserService.canAccess(C.메뉴_증서_기부증서)) return "redirect:/home/logout.do";
+        if (type == 0 && !UserService.canAccess(C.메뉴_증서_장학증서)) return "redirect:/home/logout";
+        if (type == 1 && !UserService.canAccess(C.메뉴_증서_기부증서)) return "redirect:/home/logout";
         Certificate certificate = new Certificate();
         certificate.setCertificateNo(certificateMapper.generateCertificateNo(type));
         certificate.setUserName(UserService.getCurrentUser().getName());
@@ -77,23 +77,23 @@ public class CertificationController extends BaseController {
         return "certificate/edit" + type;
     }
 
-    @RequestMapping(value = "/certificate/{type}/create.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/certificate/{type}/create", method = RequestMethod.POST)
     public String insert(Model model, @PathVariable("type") int type, Certificate certificate, @ModelAttribute("pagination") PaginationReceipt pagination) {
         try {
-            if (type == 0 && !UserService.canAccess(C.메뉴_증서_장학증서)) return "redirect:/home/logout.do";
-            if (type == 1 && !UserService.canAccess(C.메뉴_증서_기부증서)) return "redirect:/home/logout.do";
+            if (type == 0 && !UserService.canAccess(C.메뉴_증서_장학증서)) return "redirect:/home/logout";
+            if (type == 1 && !UserService.canAccess(C.메뉴_증서_기부증서)) return "redirect:/home/logout";
             certificate.setType(type);
             certificate.setCertificateNo(certificateMapper.generateCertificateNo(type));
             certificate.setUserId(UserService.getCurrentUser().getId());
             certificateMapper.insert(certificate);
-            return "redirect:detail.do?id=" + certificate.getId() + "&" + pagination.getQueryString();
+            return "redirect:detail?id=" + certificate.getId() + "&" + pagination.getQueryString();
         } catch (Exception e) {
             if (type == 1) userService.사용자소속제한(model, pagination, null);
             return logService.logErrorAndReturn(model, e, "certificate/edit" + type);
         }
     }
 
-    @RequestMapping("/certificate/{type}/report.do")
+    @RequestMapping("/certificate/{type}/report")
     public void report(@PathVariable("type") int type, @RequestParam("id") int id,
         HttpServletRequest request, HttpServletResponse response) throws Exception {
         if (type == 0 && !UserService.canAccess(C.메뉴_증서_장학증서)) return;

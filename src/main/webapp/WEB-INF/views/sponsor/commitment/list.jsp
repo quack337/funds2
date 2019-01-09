@@ -8,7 +8,7 @@
 <c:set var="sid" value="${ sponsor.id }" />
 
 <div class="navigation-info">
-  &gt; 회원 관리 &gt; <a href="${R}sponsor/list.do?${ pagination.queryString }">회원 목록</a>  
+  &gt; 회원 관리 &gt; <a href="${R}sponsor/list?${ pagination.queryString }">회원 목록</a>  
   &gt; 약정 관리 &gt; 약정 목록
 </div>
 
@@ -21,7 +21,7 @@
     <%@include file="../_tab2.jsp" %> 
      
     <div class="right">
-      <a href="create.do?sid=${sid}&${pg}" class="btn btn-primary btn-sm">약정 등록</a>
+      <a href="create?sid=${sid}&${pg}" class="btn btn-primary btn-sm">약정 등록</a>
     </div>
 
     <table class="table table-bordered mt10">
@@ -40,7 +40,7 @@
       </thead>
       <tbody>
         <c:forEach var="commitment" items="${ list }">
-          <tr data-url="edit.do?id=${commitment.id}&sid=${sid}&${pg}">
+          <tr data-url="edit?id=${commitment.id}&sid=${sid}&${pg}">
             <td>${ commitment.commitmentNo }</td>
             <td>${ commitment.corporateName }</td>
             <td>${ commitment.donationPurposeName }</td>

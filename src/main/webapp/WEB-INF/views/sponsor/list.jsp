@@ -19,10 +19,10 @@
       <div class="pull-right mb4">
         <button type="submit" class="btn btn-info btn-sm">회원 조회</button>
         <c:if test="${ pagination.notEmpty() }">
-          <a href="list.do" class="btn btn-gray btn-sm">조회조건 취소</a>
+          <a href="list" class="btn btn-gray btn-sm">조회조건 취소</a>
         </c:if>
-        <a href="excel.do" class="btn btn-success btn-sm">엑셀 다운로드</a>
-        <a href="create.do?${pagination.queryString}" class="btn btn-primary btn-sm">회원 등록</a>
+        <a href="excel" class="btn btn-success btn-sm">엑셀 다운로드</a>
+        <a href="create?${pagination.queryString}" class="btn btn-primary btn-sm">회원 등록</a>
       </div>      
 
       <div>
@@ -83,7 +83,7 @@
         </thead>
         <tbody>
           <c:forEach var="sponsor" items="${list}">
-            <tr data-url="edit.do?id=${sponsor.id}&${pagination.queryString}">
+            <tr data-url="edit?id=${sponsor.id}&${pagination.queryString}">
               <td>${sponsor.sponsorNo}</td>
               <td>${sponsor.name}</td>
               <td>${sponsor.sponsorType1}</td>

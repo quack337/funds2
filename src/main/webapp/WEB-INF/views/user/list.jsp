@@ -14,7 +14,7 @@
   </div>
   <div class="panel-body">
     <div class="right mt10 mb10">
-      <a class="btn btn-primary btn-sm" href="create.do">사용자 등록</a>
+      <a class="btn btn-primary btn-sm" href="create">사용자 등록</a>
     </div>
 
     <table class="table table-bordered">
@@ -30,7 +30,7 @@
       </thead>
       <tbody>
         <c:forEach var="u" items="${ list }">
-          <tr data-url="edit.do?id=${u.id}">
+          <tr data-url="edit?id=${u.id}">
             <td>${ u.loginName }</td>
             <td>${ u.name }</td>
             <td>${ u.email }</td>

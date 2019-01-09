@@ -97,7 +97,7 @@ function showWaitMsg() {
    function checkTimeout() { 
          var span = (new Date() - startTime) / 1000;
          if (span > 30 * 60) {
-           location.href = '${R}home/logout.do';
+           location.href = '${R}home/logout';
            alert('30분 동안 작업이 없어서 자동 로그아웃되었습니다.');
          }
        }
