@@ -13,6 +13,11 @@
     <h3>로그기록 상세</h3>
   </div>
   <div class="panel-body">    
+    <div class="">
+      <a class="btn btn-danger btn-sm" href="delete.do?id=${log.id}&${q}" data-confirm-delete>삭제</a>
+      <a class="btn btn-gray btn-sm" href="list.do">목록으로 나가기</a>
+    </div>
+
     <table class="table table-bordered lbw150">
       <tr>
         <td class="lb">카테고리</td>
@@ -39,10 +44,6 @@
       </tr>
     </table>
     <c:set var="q" value="${ pagination.queryString }" />
-    <div class="">
-      <a class="btn btn-danger btn-sm" href="delete.do?id=${log.id}&${q}" data-confirm-delete>삭제</a>
-      <a class="btn btn-gray btn-sm" href="list.do">목록으로 나가기</a>
-    </div>
  </div>
 </div>
 

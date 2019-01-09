@@ -10,6 +10,10 @@
     <h3>기부처</h3>
   </div>
   <div class="panel-body">
+    <div class="">
+      <a class="btn btn-primary btn-sm" href="create.do">기부처 등록</a>
+    </div>
+
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -33,8 +37,5 @@
       </tbody>
     </table>
 
-    <div class="">
-      <a class="btn btn-primary btn-sm" href="create.do">기부처 등록</a>
-    </div>
   </div>
 </div>  

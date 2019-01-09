@@ -57,8 +57,6 @@ public class ReceiptService {
         String createDate = (String)map.get("createDate");
         List<Payment> payments = paymentMapper.selectForReceiptCreation2(map);
 
-        System.out.printf("=== %d %s %s %s\n",  payments.size(), createDate, map.get("startDate"), map.get("endDate"));
-
         for (Payment p : payments) {
             if (sponsorId != p.getSponsorId() || corporateId != p.getCorporateId()) {
                 sponsorId = p.getSponsorId();
@@ -72,6 +70,7 @@ public class ReceiptService {
             p.setReceiptId(receipt.getId());
             paymentMapper.update(p);
         }
+        if (payments.size() == 0) return "조건에 해당하는 납입 건이 없습니다.";
         return null;
     }
 

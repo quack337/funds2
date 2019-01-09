@@ -11,6 +11,7 @@
     <h3>일정목록</h3> 
   </div>
   <div class="panel-body">
+      <a class="btn btn-primary" href="${R}todo/list.do">일정관리</a>
 
 	  <table id="todo" class="table table-bordered mt4 pd6">
 	    <thead>
@@ -37,7 +38,6 @@
 	      </c:if>
 	    </tbody>
 	  </table>
-	  <a class="btn btn-primary" href="${R}todo/list.do">일정관리</a>
   </div>
 </div>
 

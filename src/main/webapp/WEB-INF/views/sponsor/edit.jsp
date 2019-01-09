@@ -34,6 +34,17 @@
     <c:set var="tab1" value="active" />
     <%@include file="_tab2.jsp" %> 
       
+    <div class="right mt10 mb10">
+      <c:if test="${ sponsor.id == 0 }">
+        <button class="btn btn-info btn-sm" type="submit" name="cmd" value="check">회원정보 중복 확인</button>
+      </c:if>
+      <button class="btn btn-primary btn-sm" type="submit" name="cmd" value="save">회원정보 저장</button>
+      <c:if test="${ sponsor.id > 0 }">
+        <button class="btn btn-danger btn-sm" type="submit" name="cmd" value="delete" data-confirm-delete>회원 삭제</button>
+      </c:if>
+      <a href="${R}sponsor/list.do?${ pagination.queryString }" class="btn btn-gray btn-sm">회원 목록으로</a>
+    </div>
+      
     <table class="table table-bordered lbw120 pd4 mt10">
       <tr>
         <td class="lb">회원번호</td>
@@ -200,16 +211,6 @@
       </table>
     </c:if>    
 
-    <div class="">
-      <c:if test="${ sponsor.id == 0 }">
-        <button class="btn btn-info btn-sm" type="submit" name="cmd" value="check">회원정보 중복 확인</button>
-      </c:if>
-      <button class="btn btn-primary btn-sm" type="submit" name="cmd" value="save">회원정보 저장</button>
-      <c:if test="${ sponsor.id > 0 }">
-        <button class="btn btn-danger btn-sm" type="submit" name="cmd" value="delete" data-confirm-delete>회원 삭제</button>
-      </c:if>
-      <a href="${R}sponsor/list.do?${ pagination.queryString }" class="btn btn-gray btn-sm">회원 목록으로</a>
-    </div>
   </div>
 </div>      
 

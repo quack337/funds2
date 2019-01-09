@@ -20,6 +20,15 @@
     <h3>일정 ${ mode }</h3> 
   </div>  
   <div class="panel-body">
+
+    <div class="right mt10 mb10">
+      <button type="submit" class="btn btn-primary btn-sm" name="cmd" value="save">일정 저장</button>
+      <c:if test="${ todo.id > 0 }">
+        <button type="submit" class="btn btn-danger btn-sm" name="cmd" value="delete" data-confirm-delete>일정 삭제</button>
+      </c:if>    
+      <a href="list.do?${ pagination.queryString }" class="btn btn-gray btn-sm">일정 목록으로</a>
+    </div>
+
     <table id="todo" class="table table-bordered lbw120 pd4">
       <tr>
         <td class="lb">일정</td>
@@ -47,13 +56,6 @@
       </tr>
     </table>  
 
-    <div class="">
-      <button type="submit" class="btn btn-primary btn-sm" name="cmd" value="save">일정 저장</button>
-      <c:if test="${ todo.id > 0 }">
-        <button type="submit" class="btn btn-danger btn-sm" name="cmd" value="delete" data-confirm-delete>일정 삭제</button>
-      </c:if>    
-      <a href="list.do?${ pagination.queryString }" class="btn btn-gray btn-sm">일정 목록으로</a>
-    </div>
   </div>
 </div>
 

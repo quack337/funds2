@@ -22,6 +22,14 @@
     <%@include file="../_tab2.jsp" %> 
 
     <div style="width: 800px">
+      <div class="right mt10 mb10">
+        <button type="submit" class="btn btn-primary btn-sm" name="cmd" value="save">비정기납입 저장</button>
+        <c:if test="${ payment.id > 0 }">
+          <button type="submit" class="btn btn-danger btn-sm" name="cmd" value="delete" data-confirm-delete>비정기납입 삭제</button>
+        </c:if>    
+        <a href="list2.do?sid=${ sponsor.id }&${ pagination.queryString }" class="btn btn-gray btn-sm">비정기납입 목록으로</a>
+      </div>
+
       <table class="table table-bordered lbw120 mt10 pd4">
         <tr>
           <td class="lb">납입일</td>
@@ -44,13 +52,6 @@
         </tr>
       </table>  
   
-      <div>
-        <button type="submit" class="btn btn-primary btn-sm" name="cmd" value="save">비정기납입 저장</button>
-        <c:if test="${ payment.id > 0 }">
-          <button type="submit" class="btn btn-danger btn-sm" name="cmd" value="delete" data-confirm-delete>비정기납입 삭제</button>
-        </c:if>    
-        <a href="list2.do?sid=${ sponsor.id }&${ pagination.queryString }" class="btn btn-gray btn-sm">비정기납입 목록으로</a>
-      </div>
     </div>
   </div>
 </div>    

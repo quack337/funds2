@@ -16,6 +16,10 @@
 
       <form method="post">
       
+        <div class="mb4">
+          <button type="submit" class="btn btn-primary btn-sm" name="cmd" value="save">저장</button>
+        </div>        
+
 	    <my:scrollableTable tagId="eventUpload">
 	      <jsp:attribute name="header">
 	         <tr>
@@ -51,9 +55,6 @@
 	      </jsp:attribute>
 	    </my:scrollableTable>
                  
-        <div class="mt4">
-          <button type="submit" class="btn btn-primary btn-sm" name="cmd" value="save">저장</button>
-        </div>        
       </form>
       
     </div>

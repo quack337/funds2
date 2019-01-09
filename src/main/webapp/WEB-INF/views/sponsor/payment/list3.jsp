@@ -22,6 +22,10 @@
     <c:set var="tab5" value="active" />
     <%@include file="../_tab2.jsp" %> 
 
+    <div class="right mt10 mb10">
+      <a href="create3.do?sid=${sid}&${pg}" class="btn btn-primary btn-sm">현물납입 등록</a>
+    </div>   
+
     <c:set var="sum" value="${ 0 }" />
 
     <my:scrollableTable tagId="srch1a">
@@ -52,9 +56,5 @@
       합계: <fmt:formatNumber value="${ sum }" />
     </div>
 
-    <div class="">
-      <a href="create3.do?sid=${sid}&${pg}" class="btn btn-primary btn-sm">현물납입 등록</a>
-    </div>
-    
   </div>
 </div>    

@@ -13,6 +13,10 @@
     <h3>사용자 목록</h3>
   </div>
   <div class="panel-body">
+    <div class="right mt10 mb10">
+      <a class="btn btn-primary btn-sm" href="create.do">사용자 등록</a>
+    </div>
+
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -37,8 +41,5 @@
         </c:forEach>
       </tbody>
     </table>
-    <div class="">
-      <a class="btn btn-primary btn-sm" href="create.do">사용자 등록</a>
-    </div>
   </div>
 </div>  

@@ -16,6 +16,10 @@
     <h3>내 정보</h3>
   </div>
   <div class="panel-body">    
+    <div class="right mt10 mb10">
+      <button class="btn btn-primary btn-sm" type="submit" name="cmd" value="saveInfo">내 정보 저장</button>
+    </div>    
+
     <table class="table table-bordered table-condensed lbw120 pd4">
       <tr>
         <td class="lb">로그인</td>
@@ -37,9 +41,6 @@
       </tr>
     </table>
 
-    <div>
-      <button class="btn btn-primary btn-sm" type="submit" name="cmd" value="saveInfo">내 정보 저장</button>
-    </div>    
   </div>
 </div>  
   

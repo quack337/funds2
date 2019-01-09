@@ -19,6 +19,14 @@
     <h3>기부처 ${ mode }</h3>
   </div>
   <div class="panel-body">    
+    <div class="">
+      <button type="submit" class="btn btn-primary btn-sm" name="cmd" value="save">기부처 저장</button>
+      <c:if test="${ corporate.id > 0 }">
+        <button type="submit" class="btn btn-danger btn-sm" name="cmd" value="delete" data-confirm-delete>기부처 삭제</button>
+      </c:if>    
+      <a href="list.do" class="btn btn-gray btn-sm">기부처 목록으로</a>
+    </div>
+
     <table class="table table-bordered lbw120 pd4">
       <tr>
         <td class="lb">기부처명</td>
@@ -49,13 +57,6 @@
       </tr>
     </table>  
 
-    <div class="">
-      <button type="submit" class="btn btn-primary btn-sm" name="cmd" value="save">기부처 저장</button>
-      <c:if test="${ corporate.id > 0 }">
-        <button type="submit" class="btn btn-danger btn-sm" name="cmd" value="delete" data-confirm-delete>기부처 삭제</button>
-      </c:if>    
-      <a href="list.do" class="btn btn-gray btn-sm">기부처 목록으로</a>
-    </div>
   </div>
 </div>
 

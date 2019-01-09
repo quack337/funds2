@@ -22,8 +22,15 @@
     <c:set var="tab4" value="active" />
     <%@include file="../_tab2.jsp" %> 
 
-    <c:set var="sum" value="${ 0 }" />
 
+    <div class="right mt10 mb10">
+      <a href="create2.do?sid=${sid}&${pg}" class="btn btn-primary btn-sm">비정기납입 등록</a>
+      <a id="btnChange" href="#donationPurposeUpdateDialog" class="btn btn-info btn-sm" data-toggle="modal">기부목적 일괄변경</a>
+      <a id="btnSearch" href="${R}payment/srch1a.do?sponsorNo=${sponsor.sponsorNo}&regular=0" class="btn btn-info btn-sm">납입내역 상세 조회</a>
+    </div>
+    
+    <c:set var="sum" value="${ 0 }" />
+        
     <my:scrollableTable tagId="srch1a">
         <jsp:attribute name="header">
            <tr>
@@ -52,12 +59,6 @@
       합계: <fmt:formatNumber value="${ sum }" />
     </div>
 
-    <div class="">
-      <a href="create2.do?sid=${sid}&${pg}" class="btn btn-primary btn-sm">비정기납입 등록</a>
-      <a id="btnChange" href="#donationPurposeUpdateDialog" class="btn btn-info btn-sm" data-toggle="modal">기부목적 일괄변경</a>
-      <a id="btnSearch" href="${R}payment/srch1a.do?sponsorNo=${sponsor.sponsorNo}&regular=0" class="btn btn-info btn-sm">납입내역 상세 조회</a>
-    </div>
-    
   </div>
 </div>    
 

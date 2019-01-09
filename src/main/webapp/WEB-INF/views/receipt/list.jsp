@@ -50,7 +50,13 @@ function report2() {
       <c:if test="${ not empty pagination.st || not empty pagination.sd }">
         <a href="list.do" class="btn btn-default btn-sm">조회조건 취소</a>
       </c:if>
-      
+
+      <div id="buttons" class="mt10 mb10">
+        <button class="btn btn-info btn-sm" type="button" onclick="report1()">선택한 영수증(건별) 다운로드</button>
+        <button class="btn btn-info btn-sm" type="button" onclick="report2()">선택한 영수증(합산) 다운로드</button>
+        <button class="btn btn-danger btn-sm" type="submit" name="cmd" value="delete" data-confirm-delete >선택한 영수증 삭제</button>
+      </div>
+           
       <table class="table table-bordered mt4 pd6">
         <thead>
           <tr>
@@ -91,12 +97,6 @@ function report2() {
         </c:forEach>
       </ul>
 
-      <div id="buttons" class="mt4">
-        <button class="btn btn-info btn-sm" type="button" onclick="report1()">선택한 영수증(건별) 다운로드</button>
-        <button class="btn btn-info btn-sm" type="button" onclick="report2()">선택한 영수증(합산) 다운로드</button>
-        <button class="btn btn-danger btn-sm" type="submit" name="cmd" value="delete" data-confirm-delete >선택한 영수증 삭제</button>
-      </div>
-      
       </form:form>
 
   </div>

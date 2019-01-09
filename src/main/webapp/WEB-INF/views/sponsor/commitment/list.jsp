@@ -20,6 +20,10 @@
     <c:set var="tab2" value="active" />
     <%@include file="../_tab2.jsp" %> 
      
+    <div class="right">
+      <a href="create.do?sid=${sid}&${pg}" class="btn btn-primary btn-sm">약정 등록</a>
+    </div>
+
     <table class="table table-bordered mt10">
       <thead>
         <tr>
@@ -55,9 +59,6 @@
       </tbody>
     </table>
     
-    <div class="">
-      <a href="create.do?sid=${sid}&${pg}" class="btn btn-primary btn-sm">약정 등록</a>
-    </div>
     
   </div>
 </div>    

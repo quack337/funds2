@@ -9,6 +9,7 @@
 body table#receiptCreaet1 tbody tr td { height: 1.7em; line-height: 1.7em; vertical-align: middle; padding: 4px; }
 body table#receiptCreaet1 td:nth-child(1) { text-align: center; }
 th:nth-child(1), td:nth-child(1) { text-align:center; }
+.createReceipt { margin-top: 10px; margin-bottom: 10px; }
 </style>
 
 <div class="navigation-info">
@@ -39,6 +40,17 @@ th:nth-child(1), td:nth-child(1) { text-align:center; }
     </c:if>
     <button type="submit" class="btn btn-primary btn-sm" name="cmd" value="search">납입내역 조회</button>
     
+    
+    <c:if test="${ list.size() > 0 }">
+      <div class="createReceipt">
+        <span id="sum">금액 합계: 0</span>
+        <span class="block ml30">영수증 발급일:</span>
+        <form:input class="date" path="map[createDate]" />
+        <button type="submit" class="btn btn-info btn-sm" name="cmd" value="createReceipt">선택항목 영수증 발급</button>
+      </div>
+    </c:if>   
+    
+   
     <my:scrollableTable tagId="receiptCreaet1">
       <jsp:attribute name="header">
          <tr>
@@ -71,17 +83,9 @@ th:nth-child(1), td:nth-child(1) { text-align:center; }
         
      <c:if test="${ list.size() <= 0 }">
        <div>조회 결과가 없습니다.</div>
-     </c:if>    
-    
-    <c:if test="${ list.size() > 0 }">
-      <div class="createReceipt">
-        <span id="sum">금액 합계: 0</span>
-        <span class="block ml30">영수증 발급일:</span>
-        <form:input class="date" path="map[createDate]" />
-        <button type="submit" class="btn btn-info btn-sm" name="cmd" value="createReceipt">선택항목 영수증 발급</button>
-      </div>
-    </c:if>
-    
+     </c:if>
+     
+         
     </form:form>
   </div>
 </div>    
@@ -93,8 +97,8 @@ function toggleCreateButton() {
 	  sum += (1 * $(c).parents("tr").find("td.right").text().replace(/,/g, ""));
   });
   $("span#sum").text("금액 합계: " + sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-  if (sum > 0) $("button[value=createReceipt]").show();
-  else $("button[value=createReceipt]").hide();
+  if (sum > 0) $("button[value=createReceipt]").prop("disabled", false);
+  else $("button[value=createReceipt]").prop("disabled", true);
 }
-$("button[value=createReceipt]").hide();
+$("button[value=createReceipt]").prop("disabled", true);
 </script>

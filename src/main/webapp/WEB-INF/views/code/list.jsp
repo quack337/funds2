@@ -21,31 +21,32 @@
   </div>
   <div class="panel-body">
   
-      <my:scrollableTable tagId="srch1a">
-        <jsp:attribute name="header">
-           <tr>
-	          <th>구분</th>
-	          <th>상태</th>
-	          <th>${ codeGroup.etc1 }</th>
-	          <th>${ codeGroup.etc2 }</th>
-	          <th>${ codeGroup.etc3 }</th>
-           </tr>        
-        </jsp:attribute>
-        <jsp:attribute name="body">
-	        <c:forEach var="code" items="${list}">
-	          <tr data-url="edit.do?id=${code.id}&gid=${codeGroup.id}">
-	            <td>${ code.codeName }</td>
-	            <td>${ code.state ? '사용' : '사용안함' }</td>
-	            <td style="min-width:30px;">${ code.etc1 }</td>
-	            <td style="min-width:30px;">${ code.etc2 }</td>
-	            <td style="min-width:30px;">${ code.etc3 }</td>
-	          </tr>
-	        </c:forEach>
-        </jsp:attribute>
-    </my:scrollableTable>
-    
     <div class="">
       <a class="btn btn-primary btn-sm" href="create.do?gid=${ codeGroup.id }">${ codeGroup.name } 등록</a>
     </div>
+
+    <my:scrollableTable tagId="srch1a">
+      <jsp:attribute name="header">
+         <tr>
+          <th>구분</th>
+          <th>상태</th>
+          <th>${ codeGroup.etc1 }</th>
+          <th>${ codeGroup.etc2 }</th>
+          <th>${ codeGroup.etc3 }</th>
+         </tr>        
+      </jsp:attribute>
+      <jsp:attribute name="body">
+        <c:forEach var="code" items="${list}">
+          <tr data-url="edit.do?id=${code.id}&gid=${codeGroup.id}">
+            <td>${ code.codeName }</td>
+            <td>${ code.state ? '사용' : '사용안함' }</td>
+            <td style="min-width:30px;">${ code.etc1 }</td>
+            <td style="min-width:30px;">${ code.etc2 }</td>
+            <td style="min-width:30px;">${ code.etc3 }</td>
+          </tr>
+        </c:forEach>
+      </jsp:attribute>
+    </my:scrollableTable>
+    
   </div>
 </div>  

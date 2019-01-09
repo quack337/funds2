@@ -21,8 +21,17 @@
     <c:set var="tab8" value="active" />
     <%@include file="../_tab2.jsp" %> 
 
+    <div class="right">
+        <button type="submit" class="btn btn-primary btn-sm" name="cmd" value="save">예우 저장</button>
+        <c:if test="${ sponsorEvent.id > 0 }">
+          <button type="submit" class="btn btn-danger btn-sm" name="cmd" value="delete" data-confirm-delete>예우 삭제</button>
+        </c:if>    
+        <a href="list.do?sid=${ sponsor.id }&${ pagination.queryString }" class="btn btn-gray btn-sm">예우 목록으로</a>
+      </div>
+    </div>
+
     <div style="width: 800px">
-      <table class="table table-bordered lbw120 mt10 pd4">
+      <table class="table table-bordered lbw120 pd4">
         <tr>
           <td class="lb">예우 내용</td>
           <td><form:input path="description" class="w600" /></td>
@@ -37,14 +46,6 @@
         </tr>
       </table>  
   
-      <div>
-        <button type="submit" class="btn btn-primary btn-sm" name="cmd" value="save">예우 저장</button>
-        <c:if test="${ sponsorEvent.id > 0 }">
-          <button type="submit" class="btn btn-danger btn-sm" name="cmd" value="delete" data-confirm-delete>예우 삭제</button>
-        </c:if>    
-        <a href="list.do?sid=${ sponsor.id }&${ pagination.queryString }" class="btn btn-gray btn-sm">예우 목록으로</a>
-      </div>
-    </div>
   </div>
 </div>    
     

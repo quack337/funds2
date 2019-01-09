@@ -21,6 +21,11 @@
     <c:set var="tab2" value="active" />
     <%@include file="../_tab2.jsp" %> 
 
+    <div class="right mt10 mb10">
+      <button type="submit" class="btn btn-primary btn-sm" name="cmd" value="save">약정 저장</button>
+      <a href="list.do?sid=${ sponsor.id }&${ pagination.queryString }" class="btn btn-gray btn-sm">약정 목록으로</a>
+    </div>
+
     <table class="table table-bordered lbw120 pd4 mt10">
       <tr>
         <td class="lb">약정번호</td>
@@ -66,10 +71,6 @@
       </tr>
     </table>  
     
-    <div class="">
-      <button type="submit" class="btn btn-primary btn-sm" name="cmd" value="save">약정 저장</button>
-      <a href="list.do?sid=${ sponsor.id }&${ pagination.queryString }" class="btn btn-gray btn-sm">약정 목록으로</a>
-    </div>
   </div>
 </div>    
 

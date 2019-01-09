@@ -14,6 +14,11 @@
     <h3>장학증서 등록</h3>
   </div>
   <div class="panel-body">  
+    <div class="pull-right mb4">
+      <button class="btn btn-primary btn-sm" type="submit">저장</button>
+      <a class="btn btn-info btn-sm" href="list.do?${pagination.queryString}">목록으로</a>
+    </div>
+
     <table class="table table-bordered lbw120 pd4">  
       <tr>
         <td class="lb">증서번호</td>
@@ -39,10 +44,6 @@
       </tr>
     </table>
 
-    <div class="pull-right mb4">
-      <button class="btn btn-primary btn-sm" type="submit">저장</button>
-      <a class="btn btn-info btn-sm" href="list.do?${pagination.queryString}">목록으로</a>
-    </div>
   </div>
 </div>  
 

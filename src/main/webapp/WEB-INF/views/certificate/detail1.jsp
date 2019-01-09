@@ -12,6 +12,12 @@
     <h3>장학증서</h3>
   </div>
   <div class="panel-body">  
+    <div class="pull-right mb4">
+      <a class="btn btn-primary btn-sm" href="report.do?id=${ certificate.id }">증서 다운로드</a>
+      <a class="btn btn-info btn-sm" href="list.do?${ pagination.queryString }">목록으로</a>
+      <a class="btn btn-danger btn-sm" href="delete.do?id=${ certificate.id }&${ pagination.queryString }" data-confirm-delete>증서 삭제</a>
+    </div>
+
     <table class="table table-bordered lbw120 pd4">  
       <tr>
         <td class="lb">증서번호</td>
@@ -41,11 +47,6 @@
       </tr>
     </table>
 
-    <div class="pull-right mb4">
-      <a class="btn btn-primary btn-sm" href="report.do?id=${ certificate.id }">증서 다운로드</a>
-      <a class="btn btn-info btn-sm" href="list.do?${ pagination.queryString }">목록으로</a>
-      <a class="btn btn-danger btn-sm" href="delete.do?id=${ certificate.id }&${ pagination.queryString }" data-confirm-delete>증서 삭제</a>
-    </div>
   </div>    
 </div>
 

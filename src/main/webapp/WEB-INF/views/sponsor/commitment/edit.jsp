@@ -20,6 +20,15 @@
   
     <c:set var="tab2" value="active" />
     <%@include file="../_tab2.jsp" %> 
+    
+    <div class="right mt10 mb10">
+      <button type="submit" class="btn btn-primary btn-sm" name="cmd" value="save">약정 저장</button>
+      <c:if test="${ commitment.eb13State eq null || commitment.eb13State eq '에러' }">
+        <button type="submit" class="btn btn-danger  btn-sm" name="cmd" value="delete" data-confirm-delete>삭제</button>
+      </c:if>
+      <a href="list.do?sid=${ sponsor.id }&${ pagination.queryString }" class="btn btn-gray btn-sm">약정 목록으로</a>
+      <a href="${R}payment/srch1a.do?commitmentNo=${commitment.commitmentNo}" class="btn btn-info btn-sm">납입내역 상세 조회</a>
+    </div>
 
     <table class="table table-bordered lbw120 pd4 mt10">
       <tr>
@@ -78,15 +87,6 @@
         <td colspan="3"><form:textarea path="etc" class="w600 h100" /></td>
       </tr>
     </table>  
-
-    <div class="">
-      <button type="submit" class="btn btn-primary btn-sm" name="cmd" value="save">약정 저장</button>
-      <c:if test="${ commitment.eb13State eq null || commitment.eb13State eq '에러' }">
-        <button type="submit" class="btn btn-danger  btn-sm" name="cmd" value="delete" data-confirm-delete>삭제</button>
-      </c:if>
-      <a href="list.do?sid=${ sponsor.id }&${ pagination.queryString }" class="btn btn-gray btn-sm">약정 목록으로</a>
-      <a href="${R}payment/srch1a.do?commitmentNo=${commitment.commitmentNo}" class="btn btn-info btn-sm">납입내역 상세 조회</a>
-    </div>
 
     </div>
 </div>

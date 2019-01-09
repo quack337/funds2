@@ -18,6 +18,14 @@
   <div class="panel-body">
   
     <form:form method="post" modelAttribute="donationPurpose">     
+        <div class="">
+          <button type="submit" class="btn btn-primary btn-sm" name="cmd" value="save">기부목적 저장</button>
+          <c:if test="${ donationPurpose.id > 0 }">
+            <button type="submit" class="btn btn-danger btn-sm" name="cmd" value="delete" data-confirm-delete>기부목적 삭제</button>
+          </c:if>    
+          <a href="list.do" class="btn btn-gray btn-sm">기무복적 목록으로</a>
+        </div>    
+
 	    <table class="table table-bordered lbw120 pd4" style="margin-bottom: 10px;">
 	      <tr>
 	        <td class="lb">기부처</td>
@@ -51,13 +59,6 @@
 	      </tr>
 	    </table>  
 	
-	    <div class="">
-	      <button type="submit" class="btn btn-primary btn-sm" name="cmd" value="save">기부목적 저장</button>
-	      <c:if test="${ donationPurpose.id > 0 }">
-	        <button type="submit" class="btn btn-danger btn-sm" name="cmd" value="delete" data-confirm-delete>기부목적 삭제</button>
-	      </c:if>    
-	      <a href="list.do" class="btn btn-gray btn-sm">기무복적 목록으로</a>
-	    </div>    
     </form:form>    
     
     <hr />
