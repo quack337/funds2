@@ -26,6 +26,19 @@
           <form:option value="2" label="회원번호" />
         </form:select>
         <form:input path="st" />
+        
+        <span class="block ml10">기부처:</span>
+        <c:if test="${ not empty corporates }">
+          <form:select path="corporateId">
+            <form:option value="0" label="전체" />
+            <form:options itemValue="id" itemLabel="name" items="${ corporates }" />
+          </form:select>
+        </c:if>
+        <c:if test="${ empty corporates }">
+          <form:select path="corporateId">
+            <form:option value="${ corporate.id }" label="${ corporate.name }"/>
+          </form:select>
+        </c:if>
     
         <button type="submit" class="btn btn-info btn-sm">조회</button>
         <c:if test="${ pagination.ss != 0 }">
@@ -41,7 +54,8 @@
             <th>회원번호</th>
             <th>이름</th>
             <th>금액</th>
-            <th>발행인</th>
+            <th>기부처</th>
+            <th>발급인</th>
           </tr>
         </thead>
         <tbody>
@@ -52,12 +66,13 @@
               <td>${ c.personNo }</td>
               <td>${ c.personName }</td>
               <td>${ c.amount }</td>
+              <td>${ c.corporateName }</td>
               <td>${ c.userName }</td>
             </tr>
           </c:forEach>
           <c:if test="${ list.size() == 0 }">
             <tr>
-              <td colspan="6">조회 결과가 없습니다.</td>
+              <td colspan="7">조회 결과가 없습니다.</td>
             </tr>
           </c:if>
         </tbody>

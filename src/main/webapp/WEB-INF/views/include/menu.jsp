@@ -27,7 +27,7 @@
           <ul class="nav navbar-nav">
             <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">기초정보관리<span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <%= menu("기관 관리", "/funds2/corporate/list.do", C.메뉴_기초정보관리)%>
+                <%= menu("기부처 관리", "/funds2/corporate/list.do", C.메뉴_기초정보관리)%>
                 <%= menu("기부목적 관리", "/funds2/donationPurpose/list.do", C.메뉴_기초정보관리)%>
                 <li class="divider"></li>
                 <% if (UserService.canAccess(C.메뉴_기초정보관리)) { %>                

@@ -27,7 +27,7 @@ FROM (
     LEFT JOIN [Sponsor] s ON r.sponsorId = s.id
   WHERE (@nm = '' OR @nm IS NULL OR CHARINDEX(@nm, s.name) = 1) 
   AND (@sd = '' OR @sd IS NULL OR r.createDate BETWEEN @sd AND @ed)
-  AND (@corporateId = 0 OR
+  AND (@corporateId = 0 OR @corporateId IS NULL OR
         (@corporateId = (SELECT corporateId FROM donationPurpose dp WHERE dp.id = 
                           (SELECT TOP 1 donationPurposeId FROM Payment p WHERE p.receiptId = r.id))))
 ) subquery
@@ -50,7 +50,7 @@ FROM [Receipt] r
   LEFT JOIN Sponsor s ON r.sponsorId = s.id
 WHERE (@nm = '' OR @nm IS NULL OR CHARINDEX(@nm, s.name) = 1) 
 AND (@sd = '' OR @sd IS NULL OR r.createDate BETWEEN @sd AND @ed)
-AND (@corporateId = 0 OR
+AND (@corporateId = 0 OR @corporateId IS NULL OR
       (@corporateId = (SELECT corporateId FROM donationPurpose dp WHERE dp.id = 
                         (SELECT TOP 1 donationPurposeId FROM Payment p WHERE p.receiptId = r.id))))
 </select>
@@ -69,10 +69,11 @@ SELECT @year + '-' + REPLACE(STR(@n, 4), ' ', '0')
 
 <select id="selectSum" resultType="hashmap">
 <![CDATA[
-DECLARE @startDate DATE, @endDate DATE, @key1 VARCHAR(50)
+DECLARE @startDate DATE, @endDate DATE, @key1 VARCHAR(50), @corporateId INT
 SET @startDate = CONVERT(DATE, #{startDate})
 SET @endDAte = CONVERT(DATE, #{endDate})
 SET @key1 = ${key1};
+SET @corporateId = #{corporateId};
 
 WITH sponsorDecrypted AS (
     SELECT *,
@@ -94,9 +95,11 @@ FROM receipt r
   JOIN sponsorDecrypted s
     ON s.id = p.sponsorId
 WHERE 
-   @startDate IS NULL
-OR @startDate < '2000-01-01'
-OR createDate BETWEEN @startDate AND @endDate
+(   @startDate IS NULL
+  OR @startDate < '2000-01-01'
+  OR createDate BETWEEN @startDate AND @endDate
+)
+AND (@corporateId IS NULL OR @corporateId = 0 OR @corporateId = 0 OR @corporateId = d.corporateId)
 GROUP BY d.corporateId, s.gubun
 ]]>
 </select>

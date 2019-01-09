@@ -9,19 +9,19 @@
 <c:set var="mode" value="${ corporate.id > 0 ? '수정' : '등록' }" />
 
 <div class="navigation-info">
-  &gt; 기초정보 관리 &gt; 기관 관리 &gt; <a href="list.do">기관 목록</a> &gt; 기관 ${ mode }
+  &gt; 기초정보 관리 &gt; 기부처 관리 &gt; <a href="list.do">기부처 목록</a> &gt; 기부처 ${ mode }
 </div>
 
 <form:form method="post" modelAttribute="corporate">
 
 <div class="panel panel-default shadow w900">
   <div class="panel-heading">
-    <h3>기관 ${ mode }</h3>
+    <h3>기부처 ${ mode }</h3>
   </div>
   <div class="panel-body">    
     <table class="table table-bordered lbw120 pd4">
       <tr>
-        <td class="lb">기관명</td>
+        <td class="lb">기부처명</td>
         <td><form:input path="name" tabindex="1" class="w200" /></td>
         <td class="lb">우편번호</td>
         <td >
@@ -50,11 +50,11 @@
     </table>  
 
     <div class="">
-      <button type="submit" class="btn btn-primary btn-sm" name="cmd" value="save">기관 저장</button>
+      <button type="submit" class="btn btn-primary btn-sm" name="cmd" value="save">기부처 저장</button>
       <c:if test="${ corporate.id > 0 }">
-        <button type="submit" class="btn btn-danger btn-sm" name="cmd" value="delete" data-confirm-delete>기관 삭제</button>
+        <button type="submit" class="btn btn-danger btn-sm" name="cmd" value="delete" data-confirm-delete>기부처 삭제</button>
       </c:if>    
-      <a href="list.do" class="btn btn-gray btn-sm">기관 목록으로</a>
+      <a href="list.do" class="btn btn-gray btn-sm">기부처 목록으로</a>
     </div>
   </div>
 </div>

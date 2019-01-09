@@ -41,6 +41,7 @@
             <th>학과</th>
             <th>학번</th>
             <th>이름</th>
+            <th>발급인</th>
           </tr>
         </thead>
         <tbody>
@@ -51,11 +52,12 @@
               <td>${ c.department }</td>
               <td>${ c.personNo }</td>
               <td>${ c.personName }</td>
+              <td>${ c.userName }</td>
             </tr>
           </c:forEach>
           <c:if test="${ list.size() == 0 }">
             <tr>
-              <td colspan="5">조회 결과가 없습니다.</td>
+              <td colspan="6">조회 결과가 없습니다.</td>
             </tr>
           </c:if>          
         </tbody>

@@ -8,9 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import fund.dto.MenuUser;
 import fund.dto.User;
+import fund.dto.pagination.PaginationReceipt;
+import fund.dto.param.Wrapper;
+import fund.mapper.CorporateMapper;
 import fund.mapper.MenuUserMapper;
 import fund.mapper.UserMapper;
 
@@ -20,6 +24,7 @@ public class UserService {
 	@Autowired UserMapper userMapper;
     @Autowired MenuUserMapper menuUserMapper;
     @Autowired LogService logService;
+    @Autowired CorporateMapper corporateMapper;
 
 	static final String 관리자 = "관리자";
 
@@ -115,5 +120,15 @@ public class UserService {
                 menuUserMapper.insert(m.getMenuId(), user.getId());
             }
         }
+    }
+
+   public void 사용자소속제한(Model model, PaginationReceipt pagination, Wrapper wrapper) {
+        User user = UserService.getCurrentUser();
+        if (UserService.isCurrentUserAdmin() == false && user.getCorporateId() != null) {
+            if (pagination != null) pagination.setCorporateId(user.getCorporateId());
+            if (wrapper != null) wrapper.getMap().put("corporateId", user.getCorporateId());
+            model.addAttribute("corporate", corporateMapper.selectById(user.getCorporateId()));
+        } else
+            model.addAttribute("corporates", corporateMapper.selectAll());
     }
 }

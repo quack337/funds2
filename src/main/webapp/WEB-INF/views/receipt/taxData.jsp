@@ -20,7 +20,7 @@
     <form:input path="map[startDate]" class="startDt" placeholder="필수" /> ~ 
     <form:input path="map[endDate]" class="endDt" placeholder="필수" />
     
-    <span>기부기관:</span>
+    <span>기부처:</span>
     <form:select path="map[corporateId]" itemValue="id" itemLabel="name" items="${ corporates }" />
     <button type="submit" class="btn btn-primary btn-sm">다운로드</button>
     

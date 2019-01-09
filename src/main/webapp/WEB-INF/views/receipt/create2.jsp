@@ -21,7 +21,19 @@
     <form:input path="map[endDate]" class="endDt" placeholder="필수" />
     <span>발급일:</span>
     <form:input path="map[createDate]" class="date" placeholder="필수" />
-    
+    <span>기부처:</span>
+    <c:if test="${ not empty corporates }">
+      <form:select path="map[corporateId]">
+        <form:option value="0" label="전체" />
+        <form:options itemValue="id" itemLabel="name" items="${ corporates }" />
+      </form:select>
+    </c:if>
+    <c:if test="${ empty corporates }">
+      <form:select path="map[corporateId]">
+        <form:option value="${ corporate.id }" label="${ corporate.name }"/>
+      </form:select>
+    </c:if>
+          
     <button type="submit" class="btn btn-primary btn-sm" onclick="showWaitMsg()">영수증 일괄 발급</button>
     
     </form:form>

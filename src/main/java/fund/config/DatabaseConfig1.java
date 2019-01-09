@@ -1,5 +1,7 @@
 package fund.config;
 
+import java.util.Properties;
+
 import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -35,6 +37,9 @@ public class DatabaseConfig1 {
         sqlSessionFactoryBean.setDataSource(db1DataSource);
         sqlSessionFactoryBean.setMapperLocations(
                 applicationContext.getResources("classpath:fund/mapper/*.xml"));
+        Properties props = new Properties();
+        props.setProperty("key1", "'dltmdwls!@#'");
+        sqlSessionFactoryBean.setConfigurationProperties(props);
         return sqlSessionFactoryBean.getObject();
     }
 

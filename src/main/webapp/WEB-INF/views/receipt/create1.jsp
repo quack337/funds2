@@ -27,8 +27,15 @@ body table#receiptCreaet1 td:nth-child(1) { text-align: center; }
     <form:input path="map[endDate]" class="endDt" placeholder="필수" />
     <span>회원명:</span>
     <form:input path="map[srchText]" placeholder="필수" />
-    <span>기부기관:</span>
-    <form:select path="map[corporateId]" itemValue="id" itemLabel="name" items="${ corporates }" />
+    <span>기부처:</span>
+    <c:if test="${ not empty corporates }">
+        <form:select path="map[corporateId]" itemValue="id" itemLabel="name" items="${ corporates }" />
+    </c:if>
+    <c:if test="${ empty corporates }">
+      <form:select path="map[corporateId]">
+        <form:option value="${ corporate.id }" label="${ corporate.name }"/>
+      </form:select>
+    </c:if>
     <button type="submit" class="btn btn-primary btn-sm" name="cmd" value="search">납입내역 조회</button>
     
     <my:scrollableTable tagId="receiptCreaet1">

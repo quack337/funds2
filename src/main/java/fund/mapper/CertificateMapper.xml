@@ -4,19 +4,27 @@
 <mapper namespace="fund.mapper.CertificateMapper">
 
 <select id="selectById" parameterType="int" resultType="fund.dto.Certificate">
-SELECT * FROM [Certificate] WHERE id = #{id}
+SELECT c.*, u.name userName, o.name corporateName
+FROM [Certificate] c
+    LEFT JOIN [user] u ON c.userId = u.id  
+    LEFT JOIN [corporate] o ON c.corporateId = o.id
+WHERE c.id = #{id}
 </select>
 
 <select id="selectPage" resultType="fund.dto.Certificate">
 <![CDATA[
 SELECT *
 FROM
-  ( SELECT *, ROW_NUMBER() OVER (ORDER BY s.id DESC) 행번호
-    FROM [Certificate] s
-    WHERE [type] = #{order} AND
-      ((#{srchType} = 0) OR
-       (#{srchType} = 1 AND CHARINDEX(#{srchText,jdbcType=NVARCHAR}, personName) > 0) OR
-       (#{srchType} = 2 AND CHARINDEX(#{srchText,jdbcType=NVARCHAR}, personNo) > 0)) 
+  ( SELECT c.*, u.name userName, o.name corporateName, 
+           ROW_NUMBER() OVER (ORDER BY c.id DESC) 행번호
+    FROM [Certificate] c
+        LEFT JOIN [user] u ON c.userId = u.id      
+        LEFT JOIN [corporate] o ON c.corporateId = o.id
+    WHERE [type] = #{order}
+    AND (#{corporateId} IS NULL OR #{corporateId} = 0 OR #{corporateId} = c.corporateId) 
+    AND ((#{srchType} = 0) OR
+           (#{srchType} = 1 AND CHARINDEX(#{srchText,jdbcType=NVARCHAR}, personName) > 0) OR
+           (#{srchType} = 2 AND CHARINDEX(#{srchText,jdbcType=NVARCHAR}, personNo) > 0))
   ) subquery
 WHERE 행번호 > (#{currentPage} - 1) * #{pageSize} AND
       행번호 <= #{currentPage} * #{pageSize}
@@ -27,17 +35,18 @@ ORDER BY 행번호
 <select id="selectCount" resultType="int">
 <![CDATA[
 SELECT COUNT(*) 
-FROM [Certificate] s
-WHERE [type] = #{order} AND
-  ((#{srchType} = 0) OR
-   (#{srchType} = 1 AND CHARINDEX(#{srchText,jdbcType=NVARCHAR}, personName) = 1) OR
-   (#{srchType} = 2 AND CHARINDEX(#{srchText,jdbcType=NVARCHAR}, personNo) = 1)) 
+FROM [Certificate] c
+WHERE [type] = #{order}
+AND (#{corporateId} IS NULL OR #{corporateId} = 0 OR #{corporateId} = c.corporateId) 
+AND ((#{srchType} = 0) OR
+       (#{srchType} = 1 AND CHARINDEX(#{srchText,jdbcType=NVARCHAR}, personName) = 1) OR
+       (#{srchType} = 2 AND CHARINDEX(#{srchText,jdbcType=NVARCHAR}, personNo) = 1))
 ]]>
 </select>
 
 <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-INSERT [Certificate] (type, certificateNo, userId, createDate, personNo, personName, department, amount, body)
-VALUES (#{type}, #{certificateNo}, #{userId}, #{createDate}, #{personNo}, #{personName}, #{department}, #{amount}, #{body})
+INSERT [Certificate] (type, certificateNo, userId, createDate, personNo, personName, department, amount, body, corporateId)
+VALUES (#{type}, #{certificateNo}, #{userId}, #{createDate}, #{personNo}, #{personName}, #{department}, #{amount}, #{body}, #{corporateId})
 </insert>
 
 <delete id="delete">

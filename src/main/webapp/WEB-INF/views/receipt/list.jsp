@@ -34,10 +34,17 @@ function report2() {
       <form:input path="ed" class="endDt" />
       
       <span class="block ml10">기부처:</span>
-      <form:select path="corporateId">
-        <form:option value="0" label="전체" />
-        <form:options itemValue="id" itemLabel="name" items="${ corporates }" />
-      </form:select>      
+      <c:if test="${ not empty corporates }">
+        <form:select path="corporateId">
+          <form:option value="0" label="전체" />
+          <form:options itemValue="id" itemLabel="name" items="${ corporates }" />
+        </form:select>
+      </c:if>
+      <c:if test="${ empty corporates }">
+        <form:select path="corporateId">
+          <form:option value="${ corporate.id }" label="${ corporate.name }"/>
+        </form:select>
+      </c:if>
       
       <button type="submit" class="btn btn-primary ml10 btn-sm">조회</button>
       <c:if test="${ not empty pagination.st || not empty pagination.sd }">

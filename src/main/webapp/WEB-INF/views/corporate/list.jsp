@@ -2,20 +2,20 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <div class="navigation-info">
-  &gt; 기초정보 관리 &gt; 기관 관리 &gt; 기관 목록
+  &gt; 기초정보 관리 &gt; 기부처 관리 &gt; 기부처 목록
 </div>
 
 <div class="panel panel-default shadow w1000">
   <div class="panel-heading">
-    <h3>기관</h3>
+    <h3>기부처</h3>
   </div>
   <div class="panel-body">
     <table class="table table-bordered">
       <thead>
         <tr>
-          <th>기관명</th>
+          <th>기부처명</th>
           <th>약칭</th>
-          <th>기관번호</th>
+          <th>사업자등록번호</th>
           <th>대표자명</th>
           <th>주소</th>
         </tr>
@@ -34,7 +34,7 @@
     </table>
 
     <div class="">
-      <a class="btn btn-primary btn-sm" href="create.do">기관 등록</a>
+      <a class="btn btn-primary btn-sm" href="create.do">기부처 등록</a>
     </div>
   </div>
 </div>  
