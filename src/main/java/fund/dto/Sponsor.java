@@ -28,7 +28,7 @@ public class Sponsor {
     String company;
     String department;
     String position;
-    String representative;
+    String liaison;
     String officePhone;
     String officeAddress;
     String officeRoadAddress;

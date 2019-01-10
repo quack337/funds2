@@ -46,6 +46,7 @@ public class PaymentController extends BaseController {
         new OrderBy("약정번호", "ORDER BY commitmentNo, paymentDate")
     };
 
+    //// report2
     final static OrderBy[] report1bOrderBy = new OrderBy[] {
         new OrderBy("회원번호", "ORDER BY sponsorNo"),
         new OrderBy("이름", "ORDER BY name"),
@@ -84,6 +85,7 @@ public class PaymentController extends BaseController {
         model.addAttribute("churchList", codeMapper.selectEnabledByCodeGroupId(C.코드그룹ID_소속교회));
         model.addAttribute("corporates", corporateMapper.selectAll());
         model.addAttribute("report1aOrderBy", report1aOrderBy);
+        model.addAttribute("report1bOrderBy", report1bOrderBy);
     }
 
     @RequestMapping(value="/payment/srch1a", method=RequestMethod.POST, params="cmd=excel")

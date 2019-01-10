@@ -26,7 +26,7 @@
           <span>정렬순서:</span>
           <form:select path="map[orderBy]">
             <form:option value="" labe="" />
-            <form:options itemValue="value" itemLabel="label" items="${ report1aOrderBy }" />
+            <form:options itemValue="value" itemLabel="label" items="${ report1bOrderBy }" />
           </form:select>
         </div>
       
@@ -88,6 +88,7 @@
         </table>
       </form:form>
       
+      <div id="sum" class="mt10 mb10"></div>
       <c:set var="sum" value="${ 0 }" />
       <c:set var="count" value="${ 0 }" />
 
@@ -118,9 +119,11 @@
         </jsp:attribute>
     </my:scrollableTable>
 
-    <div>
-      합계: <fmt:formatNumber value="${ sum }" /> 원 / <fmt:formatNumber value="${ count }" /> 건
-    </div>    
+    <span id="sumTemp">합계: <fmt:formatNumber value="${ sum }" /> 원 / <fmt:formatNumber value="${ count }" /> 건</span>
+    <script>
+       var tag = $("#sumTemp");
+       tag.detach().appendTo("#sum");
+    </script> 
     
   </div>
 </div>    

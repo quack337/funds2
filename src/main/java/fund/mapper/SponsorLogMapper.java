@@ -12,4 +12,5 @@ public interface SponsorLogMapper {
     List<SponsorLog> selectBySponsorId(int sponsorId);
     void insert(SponsorLog log);
     void delete(int id);
+    void deleteBySponsorId(int sponsorId);
 }

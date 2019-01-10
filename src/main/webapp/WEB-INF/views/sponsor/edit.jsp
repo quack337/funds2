@@ -40,11 +40,33 @@
       </c:if>
       <button class="btn btn-primary btn-sm" type="submit" name="cmd" value="save">회원정보 저장</button>
       <c:if test="${ sponsor.id > 0 }">
-        <button class="btn btn-danger btn-sm" type="submit" name="cmd" value="delete" data-confirm-delete>회원 삭제</button>
+        <a href="delete?id=${ sponsor.id }&${ pagination.queryString }" class="btn btn-danger btn-sm" data-confirm-delete>회원 삭제</a>
       </c:if>
       <a href="${R}sponsor/list?${ pagination.queryString }" class="btn btn-gray btn-sm">회원 목록으로</a>
     </div>
-      
+    
+    <c:if test="${ list.size() > 0 }">
+      <span style="font-weight: bold;">회원정보 중복</span>
+      <table class="table table-bordered mt4">
+        <thead>
+          <tr><th>회원번호</th><th>이름</th><th>주민번호</th><th>핸드폰</th><th>집전화</th><th>직장전화</th><th>이메일</th>        
+        </thead>
+        <tbody>
+          <c:forEach var="sponsor" items="${ list }">
+            <tr>
+              <td>${ sponsor.sponsorNo }</td>
+              <td>${ sponsor.name }</td>
+              <td>${ sponsor.juminNo }</td>
+              <td>${ sponsor.mobilePhone }</td>
+              <td>${ sponsor.homePhone }</td>
+              <td>${ sponsor.officePhone }</td>
+              <td>${ sponsor.email }</td>
+            </tr>
+          </c:forEach>
+        </tbody>
+      </table>
+    </c:if>    
+
     <table class="table table-bordered lbw120 pd4 mt10">
       <tr>
         <td class="lb">회원번호</td>
@@ -55,7 +77,7 @@
       </tr>
       <tr>
         <td class="lb">이름</td>
-        <td><form:input  path="name" placeholder="이름을 입력해주세요" tabindex="1" class="w200" /></td>
+        <td><form:input  path="name" placeholder="이름을 입력해주세요" tabindex="1" class="w200" required="true" /></td>
         <td class="lb">우편물 발송여부</td>
         <td><label class="clean"><input type="radio" value="1" name="mailReceiving" ${ sponsor.mailReceiving == 1 ? "checked" :"" } tabindex="2" /> 발송동의</label>
             <label class="clean"><input type="radio" value="2" name="mailReceiving" ${ sponsor.mailReceiving == 2 ? "checked" :"" } tabindex="2" /> 발송미동의</label></td>        
@@ -72,7 +94,7 @@
         <td><form:select path="sponsorType1Id" tabindex="1" >
             <form:options itemValue="id" itemLabel="codeName" items="${ sponsorType1List }" />
           </form:select></td>
-        <td class="lb" rowspan="2">자택주소</td>
+        <td class="lb" rowspan="2">우편물 주소</td>
         <td rowspan="2">
           <input class="address w100" type="text" name="homePostCode" id="homePostCode" placeholder="우편번호" value="${ sponsor.homePostCode }" tabindex="2" /> 
           <input type="button" onclick="postCodeSearch('homePostCode', 'homeRoadAddress')" value="우편번호 찾기" class="btn btn-flat btn-xs" tabindex="2" /><br/>
@@ -106,13 +128,13 @@
             <form:option value="가족" />
             <form:option value="지인" />
           </form:select></td>
-        <td class="lb">담당자</td>
-        <td><input  type="text" name="representative" value="${ sponsor.representative }" tabindex="2" placeholder="담당자" /></td>
+        <td class="lb">법인 담당자</td>
+        <td><input  type="text" name="liaison" value="${ sponsor.liaison }" tabindex="2" placeholder="법인 우편물 담당자" /></td>
       </tr>
       <tr>
         <td class="lb">자택 전화번호</td>
         <td><input  type="text" name="homePhone" placeholder="02-0000-0000" value="${ sponsor.homePhone}" tabindex="1" /></td>
-        <td class="lb" rowspan="2">직장주소</td>
+        <td class="lb" rowspan="2">기부금 영수증 주소</td>
         <td rowspan="2">
           <input class=" address w100" type="text" name="officePostCode" id="officePostCode" placeholder="우편번호" value="${ sponsor.officePostCode}"  tabindex="2" /> 
           <input type="button" onclick="postCodeSearch('officePostCode', 'officeRoadAddress')" value="우편번호 찾기" class="btn btn-flat btn-xs"  tabindex="2" /> <br/>
@@ -189,28 +211,6 @@
       </c:if>    
     </table>
     
-    <c:if test="${ list.size() > 0 }">
-      <span style="font-weight: bold;">회원정보 중복</span>
-      <table class="table table-bordered mt4">
-        <thead>
-          <tr><th>회원번호</th><th>이름</th><th>주민번호</th><th>핸드폰</th><th>집전화</th><th>직장전화</th><th>이메일</th>        
-        </thead>
-        <tbody>
-          <c:forEach var="sponsor" items="${ list }">
-            <tr>
-              <td>${ sponsor.sponsorNo }</td>
-              <td>${ sponsor.name }</td>
-              <td>${ sponsor.juminNo }</td>
-              <td>${ sponsor.mobilePhone }</td>
-              <td>${ sponsor.homePhone }</td>
-              <td>${ sponsor.officePhone }</td>
-              <td>${ sponsor.email }</td>
-            </tr>
-          </c:forEach>
-        </tbody>
-      </table>
-    </c:if>    
-
   </div>
 </div>      
 

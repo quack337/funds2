@@ -26,4 +26,9 @@ VALUES (#{userId}, #{sponsorId}, #{writeTime}, #{field}, #{value1}, #{value2})
 DELETE FROM [sponsorLog] WHERE id = #{id}
 </delete>
 
+<select id="deleteBySponsorId" resultType="fund.dto.SponsorLog">
+DELETE
+FROM [sponsorLog] 
+WHERE sponsorId = #{sponsorId}
+</select>
 </mapper>

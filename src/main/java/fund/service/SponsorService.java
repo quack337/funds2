@@ -69,7 +69,7 @@ public class SponsorService {
         if (Objects.equals(s1.getCompany(), s2.getCompany()) == false) list.add(createLog("회사", s1.getCompany(), s2.getCompany()));
         if (Objects.equals(s1.getDepartment(), s2.getDepartment()) == false) list.add(createLog("부서", s1.getDepartment(), s2.getDepartment()));
         if (Objects.equals(s1.getPosition(), s2.getPosition()) == false) list.add(createLog("직위", s1.getPosition(), s2.getPosition()));
-        if (Objects.equals(s1.getPosition(), s2.getRepresentative()) == false) list.add(createLog("담당자", s1.getRepresentative(), s2.getRepresentative()));
+        if (Objects.equals(s1.getLiaison(), s2.getLiaison()) == false) list.add(createLog("담당자", s1.getLiaison(), s2.getLiaison()));
         if (Objects.equals(s1.getOfficePhone(), s2.getOfficePhone()) == false) list.add(createLog("직장 전화번호", s1.getOfficePhone(), s2.getOfficePhone()));
         if (Objects.equals(s1.getOfficeAddress(), s2.getOfficeAddress()) == false) list.add(createLog("직장주소", s1.getOfficeAddress(), s2.getOfficeAddress()));
         if (Objects.equals(s1.getOfficeRoadAddress(), s2.getOfficeRoadAddress()) == false) list.add(createLog("직장주소", s1.getOfficeRoadAddress(), s2.getOfficeRoadAddress()));

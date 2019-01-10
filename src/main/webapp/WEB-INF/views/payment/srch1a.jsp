@@ -98,6 +98,7 @@
       </table>
     </form:form>
 
+    <div id="sum" class="mt10 mb10"></div>
     <c:set var="sum" value="${ 0 }" />
     <c:set var="count" value="${ 0 }" />
 
@@ -144,9 +145,11 @@
         </jsp:attribute>
     </my:scrollableTable>
     
-    <div>
-      합계: <fmt:formatNumber value="${ sum }" /> 원 / <fmt:formatNumber value="${ count }" /> 건
-    </div>
+    <span id="sumTemp">합계: <fmt:formatNumber value="${ sum }" /> 원 / <fmt:formatNumber value="${ count }" /> 건</span>
+    <script>
+       var tag = $("#sumTemp");
+       tag.detach().appendTo("#sum");
+    </script>
     
   </div>
 </div>    

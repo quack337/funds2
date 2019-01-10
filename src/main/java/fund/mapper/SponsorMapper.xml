@@ -143,7 +143,7 @@ SET
   company = #{company},
   department = #{department},
   position = #{position},
-  representative = #{representative},
+  liaison = #{liaison},
   officePhone = #{officePhone},
   officeRoadAddress = #{officeRoadAddress},
   officeDetailAddress = #{officeDetailAddress},
@@ -170,13 +170,13 @@ SET @encrypted = ENCRYPTBYPASSPHRASE(CONVERT(VARCHAR, ${key1}), CONVERT(VARCHAR,
 INSERT sponsor(sponsorNo, name, sponsorType1Id, sponsorType2Id, sponsorTypeDetail, 
   churchId, signUpDate, mobilePhone, 
   recommender, recommenderRelation, mailTo, homeRoadAddress, homeDetailAddress, homePostCode, homePhone, 
-  email, company, department, position, representative, officePhone, officeRoadAddress, officeDetailAddress, officePostCode, etc, juminNo_encrypted,
+  email, company, department, position, liaison, officePhone, officeRoadAddress, officeDetailAddress, officePostCode, etc, juminNo_encrypted,
   mailReceiving, emailReceiving, smsReceiving, piuaRequiredItem, piuaOptionalItem, piuaIdentification, dmError, dmErrorEtc)
 VALUES (#{sponsorNo}, #{name}, #{sponsorType1Id}, #{sponsorType2Id}, #{sponsorTypeDetail},
   CASE WHEN #{churchId} = 0 THEN null ELSE #{churchId} END, #{signUpDate}, #{mobilePhone}, 
   #{recommender}, #{recommenderRelation}, #{mailTo},  #{homeRoadAddress}, #{homeDetailAddress}, #{homePostCode}, #{homePhone},
-  #{email}, #{company}, #{department}, #{position}, #{representative}, #{officePhone}, #{officeRoadAddress}, #{officeDetailAddress}, #{officePostCode}, #{etc}, @encrypted
-  #{mailReceiving}, #{emailReceiving}, #{smsReceiving}, #{piuaRequiredItem}, #{piuaOtionalItem}, #{piuaIdentification}, #{dmError}, #{dmErrorEtc})
+  #{email}, #{company}, #{department}, #{position}, #{liaison}, #{officePhone}, #{officeRoadAddress}, #{officeDetailAddress}, #{officePostCode}, #{etc}, @encrypted,
+  #{mailReceiving}, #{emailReceiving}, #{smsReceiving}, #{piuaRequiredItem}, #{piuaOptionalItem}, #{piuaIdentification}, #{dmError}, #{dmErrorEtc})
 </insert>
 
 <select id="generateSponsorNo" resultType="java.lang.String">

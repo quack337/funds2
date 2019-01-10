@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fund.dto.Code;
 import fund.dto.Sponsor;
@@ -85,15 +86,18 @@ public class SponsorController extends BaseController {
         }
     }
 
-    @RequestMapping(value="/sponsor/edit", method=RequestMethod.POST, params="cmd=delete")
+    @RequestMapping("/sponsor/delete")
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public String delete(Model model, @RequestParam("id") int id, @ModelAttribute("pagination") PaginationSponsor pagination) throws Exception {
+    public String delete(Model model, @RequestParam("id") int id, @ModelAttribute("pagination") PaginationSponsor pagination, RedirectAttributes ra) throws Exception {
         try {
             if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
+            sponsorLogMapper.deleteBySponsorId(id);
             dataFileMapper.deleteByForeignId("sponsor", id);
             sponsorMapper.delete(id);
+            ra.addFlashAttribute("successMsg", "삭제했습니다.");
         } catch (Exception e) {
-            return logService.logErrorAndReturn(model, e, "sponsor/edit");
+            logService.logError(e);
+            ra.addFlashAttribute("errorMsg", "삭제 실패!");
         }
         return "redirect:list?" + pagination.getQueryString();
     }
