@@ -10,7 +10,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -95,7 +94,6 @@ public class PaymentController extends BaseController {
     @RequestMapping(value="/payment/srch1a", method=RequestMethod.POST, params="cmd=excel")
     public void report1(Model model, Wrapper mapParam, HttpServletRequest req, HttpServletResponse response) throws Exception {
         if (!UserService.canAccess(C.메뉴_납입조회_납입내역조회)) return;
-        //paymentReport(mapParam, req, res,"payment1_list","납입내역.xlsx",1);
 
         List<Map<String,Object>> list = paymentMapper.selectReport1a(mapParam.getMap());
         Workbook workbook = ExcelService.downloadExcel1a(list);
@@ -108,40 +106,18 @@ public class PaymentController extends BaseController {
     }
 
     @RequestMapping(value="/payment/srch1b", method=RequestMethod.POST, params="cmd=excel")
-    public void report1bReport(Model model, Wrapper wrapper, HttpServletRequest req, HttpServletResponse res) throws Exception {
+    public void report1bReport(Model model, Wrapper wrapper, HttpServletRequest req, HttpServletResponse response) throws Exception {
         if (!UserService.canAccess(C.메뉴_납입조회_회원별납입합계)) return;
-    	paymentReport(wrapper, req, res,"payment2_list","납입합계내역.xlsx",2);
-    }
 
-	private void paymentReport(Wrapper wrapper, HttpServletRequest req, HttpServletResponse res,
-			String reportFileName,String fileName, int option)
-			throws Exception {
-		Map<String,Object> map = wrapper.getMap();
-		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
-
-		if(option==1) list = paymentMapper.selectReport1a(map);
-		else list = paymentMapper.selectReport1b(map);
-
-        String id = (String)map.get("paymentMethodId");
-        if (StringUtils.isBlank(id) == false) map.put("paymentMethodName", codeMapper.selectById(Integer.valueOf(id)).getCodeName());
-        id = (String)map.get("sponsorType2Id");
-        if (StringUtils.isBlank(id) == false) map.put("sponsorType2Name", codeMapper.selectById(Integer.valueOf(id)).getCodeName());
-        id = (String)map.get("corporateId");
-        if (StringUtils.isBlank(id) == false) map.put("corporateName", corporateMapper.selectById(Integer.valueOf(id)).getName());
-
-        switch ((String)map.get("regular")) {
-        case "-1": map.put("regularString", "전체"); break;
-        case "1": map.put("regularString", "정기"); break;
-        case "0": map.put("regularString", "비정기"); break;
-        default : map.put("regularString", ""); break;
+        List<Map<String,Object>> list = paymentMapper.selectReport1b(wrapper.getMap());
+        Workbook workbook = ExcelService.downloadExcel1b(list);
+        String fileName = URLEncoder.encode("회원별납입합계.xlsx","UTF-8");
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ";");
+        try (BufferedOutputStream output = new BufferedOutputStream(response.getOutputStream())) {
+            workbook.write(output);
         }
-
-        ReportBuilder reportBuilder = new ReportBuilder(reportFileName, fileName, req, res);
-        reportBuilder.setCollection(list);
-        reportBuilder.setParameter(map);
-        reportBuilder.build(fileName.substring(fileName.length()-4,fileName.length()));
-	}
-
+    }
 
     @RequestMapping(value="/payment/srch1b", method=RequestMethod.GET)
     public String report1b(Model model) {
