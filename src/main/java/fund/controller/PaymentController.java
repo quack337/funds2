@@ -1,5 +1,7 @@
 package fund.controller;
 
+import java.io.BufferedOutputStream;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +27,7 @@ import fund.mapper.CorporateMapper;
 import fund.mapper.DonationPurposeMapper;
 import fund.mapper.PaymentMapper;
 import fund.service.C;
+import fund.service.ExcelService;
 import fund.service.ReportBuilder;
 import fund.service.UserService;
 
@@ -89,9 +93,18 @@ public class PaymentController extends BaseController {
     }
 
     @RequestMapping(value="/payment/srch1a", method=RequestMethod.POST, params="cmd=excel")
-    public void report1(Model model, Wrapper mapParam, HttpServletRequest req, HttpServletResponse res) throws Exception {
+    public void report1(Model model, Wrapper mapParam, HttpServletRequest req, HttpServletResponse response) throws Exception {
         if (!UserService.canAccess(C.메뉴_납입조회_납입내역조회)) return;
-        paymentReport(mapParam, req, res,"payment1_list","납입내역.xlsx",1);
+        //paymentReport(mapParam, req, res,"payment1_list","납입내역.xlsx",1);
+
+        List<Map<String,Object>> list = paymentMapper.selectReport1a(mapParam.getMap());
+        Workbook workbook = ExcelService.downloadExcel1a(list);
+        String fileName = URLEncoder.encode("납입내역.xlsx","UTF-8");
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ";");
+        try (BufferedOutputStream output = new BufferedOutputStream(response.getOutputStream())) {
+            workbook.write(output);
+        }
     }
 
     @RequestMapping(value="/payment/srch1b", method=RequestMethod.POST, params="cmd=excel")

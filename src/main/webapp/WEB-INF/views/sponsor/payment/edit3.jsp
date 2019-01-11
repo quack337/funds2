@@ -43,7 +43,7 @@
         </tr>
         <tr>  
           <td class="lb">비고</td>
-          <td colspan="3"><form:textarea path="etc" class="w600 h100" /></td>
+          <td colspan="3"><form:textarea path="payment.etc" class="w600 h100" /></td>
         </tr>
       </table>
       

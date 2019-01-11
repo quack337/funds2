@@ -6,13 +6,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.DataFormat;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -129,4 +136,98 @@ public class ExcelService {
         }
         return cell.getDateCellValue();
     }
+
+    public static Workbook downloadExcel1a(List<Map<String,Object>> list) {
+        Workbook workbook = new XSSFWorkbook();
+
+        /* CreationHelper helps us create instances of various things like DataFormat,
+           Hyperlink, RichTextString etc, in a format (HSSF, XSSF) independent way */
+        CreationHelper createHelper = workbook.getCreationHelper();
+
+        // Create a Sheet
+        Sheet sheet = workbook.createSheet("납입목록");
+
+        // Create a Font for styling header cells
+        Font headerFont = workbook.createFont();
+        headerFont.setBold(true);
+        headerFont.setFontHeightInPoints((short)12);
+        headerFont.setColor(IndexedColors.BLACK.getIndex());
+        CellStyle headerCellStyle = workbook.createCellStyle();
+        headerCellStyle.setFont(headerFont);
+
+        CellStyle numberStyle = workbook.createCellStyle();
+        DataFormat format = workbook.createDataFormat();
+        numberStyle.setDataFormat(format.getFormat("#,####"));
+
+        // Create a Row
+        Row headerRow = sheet.createRow(0);
+
+        // Create cells
+        String[] columns = new String[] { "회원번호", "회원명", "회원구분", "소속", "정기/비정기", "기부목적", "납입일", "납입액", "납입방법", "약정번호", "상태", "시작일", "종료일", "월납입액" };
+        for(int i = 0; i < columns.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(columns[i]);
+            cell.setCellStyle(headerCellStyle);
+        }
+
+        // Create Cell Style for formatting Date
+        CellStyle dateCellStyle = workbook.createCellStyle();
+        dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("yyyy-MM-dd"));
+
+        // Create Other rows and cells with employees data
+        for (int i = 0; i < list.size(); ++i) {
+            Map<String, Object> map = list.get(i);
+
+            Row row = sheet.createRow(i + 1);
+            createCell(row, 0, (String)map.get("sponsorNo"));
+            createCell(row, 1, (String)map.get("name"));
+            createCell(row, 2, (String)map.get("sponsorType2Name"));
+            createCell(row, 3, (String)map.get("churchName"));
+            createCell(row, 4, (String)map.get("regular"));
+            createCell(row, 5, (String)map.get("corporateName") + "/" + (String)map.get("organizationName") + "/" + (String)map.get("donationPurposeName"));
+            createCell(row, 6, (Date)map.get("paymentDate"), dateCellStyle);
+            createCell(row, 7, (Integer)map.get("amount"), numberStyle);
+            createCell(row, 8, (String)map.get("paymentMethodName"));
+            createCell(row, 9, (String)map.get("commitmentNo"));
+            createCell(row, 10, (String)map.get("state"));
+            createCell(row, 11, (Date)map.get("startDate"), dateCellStyle);
+            createCell(row, 12, (Date)map.get("endDate"), dateCellStyle);
+            createCell(row, 13, (Integer)map.get("amountPerMonth"), numberStyle);
+        }
+
+        // Resize all columns to fit the content size
+        for(int i = 0; i < columns.length; i++) {
+            sheet.autoSizeColumn(i);
+        }
+        return workbook;
+    }
+
+    static void createCell(Row row, int index, String value) {
+        if (value == null) return;
+        row.createCell(index).setCellValue(value);
+    }
+
+    static void createCell(Row row, int index, String value, CellStyle cellStyle) {
+        if (value == null) return;
+        row.createCell(index).setCellValue(value);
+        row.getCell(index).setCellStyle(cellStyle);
+    }
+
+    static void createCell(Row row, int index, Date value, CellStyle cellStyle) {
+        if (value == null) return;
+        row.createCell(index).setCellValue(value);
+        row.getCell(index).setCellStyle(cellStyle);
+    }
+
+    static void createCell(Row row, int index, Integer value) {
+        if (value == null) return;
+        row.createCell(index).setCellValue(value);
+    }
+
+    static void createCell(Row row, int index, Integer value, CellStyle cellStyle) {
+        if (value == null) return;
+        row.createCell(index).setCellValue(value);
+        row.getCell(index).setCellStyle(cellStyle);
+    }
+
 }
