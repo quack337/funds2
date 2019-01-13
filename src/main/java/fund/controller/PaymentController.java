@@ -27,7 +27,6 @@ import fund.mapper.DonationPurposeMapper;
 import fund.mapper.PaymentMapper;
 import fund.service.C;
 import fund.service.ExcelService;
-import fund.service.ReportBuilder;
 import fund.service.UserService;
 
 @Controller
@@ -175,27 +174,32 @@ public class PaymentController extends BaseController {
     }
 
     @RequestMapping(value="/payment/srch2/{i}", method=RequestMethod.POST, params="cmd=excel")
-    public void report2aReport(Model model, Wrapper wrapper, @PathVariable("i") int i, HttpServletRequest req, HttpServletResponse res) throws Exception {
+    public void report2aReport(Model model, Wrapper wrapper, @PathVariable("i") int i, HttpServletRequest req, HttpServletResponse response) throws Exception {
         if (i == 0 && !UserService.canAccess(C.메뉴_납입조회_기부목적별납입합계)) return;
         if (i == 1 && !UserService.canAccess(C.메뉴_납입조회_회원구분별납입합계)) return;
         if (i == 2 && !UserService.canAccess(C.메뉴_납입조회_소속교회별납입합계)) return;
 
         List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
 
-    	switch (i) {
+        switch (i) {
         case 0: list = paymentMapper.selectReport2a(wrapper.getMap()); break;
         case 1: list = paymentMapper.selectReport2b(wrapper.getMap()); break;
         case 2: list = paymentMapper.selectReport2c(wrapper.getMap()); break;
         }
 
         Map<String, Object> map = list.get(list.size()-1);
-        map.put("title", report2Title[i]);
+        String title = report2Title[i];
+        map.put("title", title);
         list.remove(list.size()-1);
 
-        ReportBuilder reportBuilder = new ReportBuilder("paymentByType", report2Title[i]+"별납입내역.xlsx", req, res);
-        reportBuilder.setCollection(list);
-        reportBuilder.setParameter(map);
-        reportBuilder.build("xlsx");
+        Workbook workbook = ExcelService.downloadExcel2(title, list);
+        String fileName = URLEncoder.encode(title + "별납입합계.xlsx","UTF-8");
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ";");
+        try (BufferedOutputStream output = new BufferedOutputStream(response.getOutputStream())) {
+            workbook.write(output);
+        }
     }
+
 
 }
