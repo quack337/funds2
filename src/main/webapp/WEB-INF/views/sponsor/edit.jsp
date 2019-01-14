@@ -166,7 +166,7 @@
             <form:hidden path="churchId" value="${ sponsor.churchId } " />
             <a href="#churchDialog" class="btn btn-flat btn-xs" data-toggle="modal" tabindex="1">소속 찾기</a>
         </td>
-        <td class="lb" rowspan="3">개인정보 수집 및 이용</td>
+        <td class="lb" rowspan="4">개인정보 수집 및 이용</td>
         <td>
             <span style="display:inline-block; margin-right: 34px;">필수항목:</span>
             <label class="clean"><input type="radio" value="1" name="piuaRequiredItem" ${ sponsor.piuaRequiredItem == 1 ? "checked" :"" } tabindex="2" /> 동의</label>
@@ -189,6 +189,15 @@
             <span style="display:inline-block; margin-right: 10px;">고유식별정보:</span>
             <label class="clean"><input type="radio" value="1" name="piuaIdentification" ${ sponsor.piuaIdentification == 1 ? "checked" :"" } tabindex="2" /> 동의</label>
             <label class="clean"><input type="radio" value="2" name="piuaIdentification" ${ sponsor.piuaIdentification == 2 ? "checked" :"" } tabindex="2" /> 미동의</label>
+        </td>           
+      </tr>
+      <tr>
+        <td class="lb"></td>
+        <td></td>
+        <td>
+            <span style="display:inline-block; margin-right: 10px;">제3자정보게공:</span>
+            <label class="clean"><input type="radio" value="1" name="piua3rdParty" ${ sponsor.piua3rdParty == 1 ? "checked" :"" } tabindex="2" /> 동의</label>
+            <label class="clean"><input type="radio" value="2" name="piua3rdParty" ${ sponsor.piua3rdParty == 2 ? "checked" :"" } tabindex="2" /> 미동의</label>
         </td>           
       </tr>
       <tr>     

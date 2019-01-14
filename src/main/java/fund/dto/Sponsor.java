@@ -41,6 +41,7 @@ public class Sponsor {
     int piuaRequiredItem;
     int piuaOptionalItem;
     int piuaIdentification;
+    int piua3rdParty;
 
     String sponsorType1;
     String sponsorType2;

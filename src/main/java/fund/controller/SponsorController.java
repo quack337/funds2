@@ -136,6 +136,7 @@ public class SponsorController extends BaseController {
         if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
         List<Sponsor> list = sponsorMapper.selectDuplicate(sponsor);
         model.addAttribute("list", list);
+        addCodesToModel(0, model);
         return "sponsor/edit";
     }
 
