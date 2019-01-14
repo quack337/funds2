@@ -37,4 +37,11 @@ public class PaymentService {
             paymentInKindMapper.insert(p);
         }
     }
+
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void delete(int id) {
+        paymentInKindMapper.deleteByPaymentId(id);
+        paymentMapper.delete(id);
+    }
+
 }

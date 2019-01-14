@@ -76,7 +76,7 @@
       <div>
         <button type="button" class="btn btn-primary btn-sm" v-on:click="saveAll()">현물납입 저장</button>
         <c:if test="${ payment.id > 0 }">
-          <button type="submit" class="btn btn-danger btn-sm" data-confirm-delete>현물납입 삭제</button>
+          <a href="delete3?sid=${ sponsor.id }&id=${ payment.id }&${ pagination.queryString }" class="btn btn-danger btn-sm" data-confirm-delete>현물납입 삭제</a>
         </c:if>    
         <a href="list3?sid=${ sponsor.id }&${ pagination.queryString }" class="btn btn-gray btn-sm">현물납입 목록으로</a>
       </div>

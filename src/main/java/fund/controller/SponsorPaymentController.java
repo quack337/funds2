@@ -183,6 +183,7 @@ public class SponsorPaymentController extends BaseController {
         if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
         model.addAttribute("payment", new Payment());
         addCodesToModel(model, sid);
+        model.addAttribute("items", "[]");
         return "sponsor/payment/edit3";
     }
 
@@ -193,7 +194,7 @@ public class SponsorPaymentController extends BaseController {
             payment.setSponsorId(sid);
 
             paymentService.insert(payment);
-            return new JSONResult(true, "저장 성공", getList3Url(model, sid));
+            return new JSONResult(true, "저장 성공", servletContextPath + getList3Url(model, sid));
         } catch (Exception e) {
             logService.logError(e);
             return new JSONResult(false, "저장 실패", null);
@@ -203,7 +204,7 @@ public class SponsorPaymentController extends BaseController {
     private String getList3Url(Model model, int sid) {
         PaginationSponsor pagination = (PaginationSponsor)model.asMap().get("pagination");
         String qs = String.format("sid=%d&%s", sid, pagination.getQueryString());
-        return servletContextPath + "/sponsor/payment/list3?" + qs;
+        return "/sponsor/payment/list3?" + qs;
     }
 
     @RequestMapping(value="/sponsor/payment/edit3", method=RequestMethod.GET)
@@ -225,11 +226,18 @@ public class SponsorPaymentController extends BaseController {
             payment.setSponsorId(sid);
 
             paymentService.update(payment);
-            return new JSONResult(true, "저장 성공", getList3Url(model, sid));
+            return new JSONResult(true, "저장 성공", servletContextPath + getList3Url(model, sid));
         } catch (Exception e) {
             logService.logError(e);
             return new JSONResult(false, "저장 실패", null);
         }
+    }
+
+    @RequestMapping("/sponsor/payment/delete3")
+    public String delete3(Model model, @RequestParam("sid") int sid, @RequestParam("id") int id) throws Exception {
+        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
+        paymentService.delete(id);
+        return "redirect:" + getList3Url(model, sid);
     }
 
 }
