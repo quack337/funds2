@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import fund.dto.Code;
 import fund.dto.Commitment;
 import fund.dto.Payment;
+import fund.dto.PaymentJSON;
 import fund.dto.pagination.PaginationSponsor;
 import fund.mapper.CodeMapper;
 import fund.mapper.CommitmentMapper;
@@ -23,6 +25,7 @@ import fund.mapper.SponsorMapper;
 import fund.mapper2.DataFileMapper;
 import fund.service.C;
 import fund.service.LogService;
+import fund.service.PaymentService;
 import fund.service.UserService;
 
 @Controller
@@ -36,6 +39,7 @@ public class SponsorPaymentController extends BaseController {
     @Autowired DonationPurposeMapper donationPurposeMapper;
     @Autowired DataFileMapper dataFileMapper;
     @Autowired LogService logService;
+    @Autowired PaymentService paymentService;
 
     List<Code> 비정기납입방법;
 
@@ -213,16 +217,16 @@ public class SponsorPaymentController extends BaseController {
     }
 
     @RequestMapping(value="/sponsor/payment/create3", method=RequestMethod.POST)
-    public String create3(Model model, @RequestParam("sid") int sid, Payment payment, @RequestParam("cmd") String cmd) throws Exception {
+    public String create3(Model model, @RequestParam("sid") int sid, @RequestBody PaymentJSON payment) throws Exception {
         try {
             if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return "redirect:/home/logout";
             payment.setSponsorId(sid);
-            payment.setPaymentMethodId(C.코드ID_현물);
-            paymentMapper.insert(payment);
-            if ("addItem".equals(cmd))
-                return redirectToEdit3(model, sid, payment.getId());
-            else
-                return redirectToList3(model, sid);
+
+            System.out.println("----------------------------------");
+            System.out.println(payment);
+
+            paymentService.insert(payment);
+            return redirectToList3(model, sid);
         } catch (Exception e) {
             addCodesToModel(model, sid);
             return logService.logErrorAndReturn(model, e, "sponsor/payment/edit3");

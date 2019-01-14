@@ -31,6 +31,7 @@ body span.block { display: inline-block; }
 body .shadow { border-collapse: separate; box-shadow: 2px 2px 5px 0px #bbb; -moz-box-shadow: 2px 2px 5px 0px #bbb;  -webkit-box-shadow: 2px 2px 5px 0px #bbb; }
 body .btn-primary { background: linear-gradient(#8cf, #05c); border: none; color: white;  }
 body .btn-danger { background: linear-gradient(#fbb, #a00); border: none; color: white;  }
+body .btn-warning { background: linear-gradient(#fc0, #a70); border: none; color: white;  }
 body .btn-default { background: linear-gradient(#eee, #666); border: none; color: white; }
 body .btn-gray { background: linear-gradient(#ddd, #666); border: none; color: white; }
 body .btn-info { background: linear-gradient(#8ef, #078); border: none; color: white;  }
