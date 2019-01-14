@@ -1,30 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
-<!-- 2017-02-10T12:10:41 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printDonation" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0da3f88f-aa06-483f-8e6b-303e518ed23f">
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printDonation" pageWidth="595" pageHeight="842" whenNoDataType="NoPages" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0da3f88f-aa06-483f-8e6b-303e518ed23f">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="type" class="java.lang.Boolean"/>
 	<field name="certificateNo" class="java.lang.String"/>
+	<field name="userId" class="java.lang.Integer"/>
+	<field name="personNo" class="java.lang.String"/>
 	<field name="personName" class="java.lang.String"/>
-	<field name="amount" class="java.lang.Integer"/>
+	<field name="department" class="java.lang.String"/>
+	<field name="amountToKorean" class="java.lang.String"/>
 	<field name="body" class="java.lang.String"/>
-	<field name="createDate" class="java.lang.String"/>
+	<field name="corporateId" class="java.lang.Integer"/>
+	<field name="corporateName" class="java.lang.String"/>
+	<field name="representative" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="80" splitType="Stretch">
+		<band height="100" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<staticText>
-				<reportElement x="0" y="0" width="550" height="80" uuid="2589e3d6-f2fe-4410-9e88-e8aa756e8f8b">
+				<reportElement x="0" y="20" width="550" height="80" uuid="2589e3d6-f2fe-4410-9e88-e8aa756e8f8b">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="24" pdfFontName="fonts/NanumGothic.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<font size="48" pdfFontName="fonts/KoPubBatangMedium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[기부증서]]></text>
+				<text><![CDATA[기 부 증 서]]></text>
 			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="-10" width="100" height="30" uuid="27941fb4-8651-4c59-b0b1-00d19ec5fe58"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" pdfFontName="fonts/KoPubDotumMedium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{certificateNo}+'호']]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
@@ -38,53 +53,41 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="375" splitType="Stretch">
+		<band height="393" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement x="30" y="14" width="100" height="30" uuid="27941fb4-8651-4c59-b0b1-00d19ec5fe58"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{certificateNo}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="400" y="14" width="100" height="30" uuid="f7a6617f-e878-423d-8948-690e869e3ad6"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="fonts/NanumGothic.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				<reportElement x="410" y="40" width="100" height="30" uuid="f7a6617f-e878-423d-8948-690e869e3ad6"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="20" pdfFontName="fonts/KoPubBatangMedium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{personName}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="301" y="14" width="100" height="30" uuid="f5239673-c74e-4910-827c-c040ab735a62"/>
+				<reportElement x="310" y="40" width="100" height="30" uuid="f5239673-c74e-4910-827c-c040ab735a62"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="fonts/NanumGothic.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<font size="20" pdfFontName="fonts/KoPubBatangMedium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[후원인명]]></text>
+				<text><![CDATA[기부자 :]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="400" y="44" width="100" height="30" uuid="15727888-1644-4271-8721-81f82e5619a6"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="fonts/NanumGothic.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				<reportElement x="410" y="70" width="100" height="30" uuid="15727888-1644-4271-8721-81f82e5619a6"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="20" pdfFontName="fonts/KoPubBatangMedium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{amountToKorean}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="300" y="44" width="100" height="30" uuid="053bb245-ad36-4fcc-83a3-0e83ce6fa0ea"/>
+				<reportElement x="310" y="70" width="100" height="30" uuid="053bb245-ad36-4fcc-83a3-0e83ce6fa0ea"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="fonts/NanumGothic.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<font size="20" pdfFontName="fonts/KoPubBatangMedium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[약정액]]></text>
+				<text><![CDATA[약정액 :]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="30" y="74" width="471" height="266" uuid="cb67b797-4f37-4b83-bbf9-839deb0b861f"/>
+				<reportElement x="40" y="100" width="471" height="266" uuid="cb67b797-4f37-4b83-bbf9-839deb0b861f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="20" pdfFontName="fonts/NanumGothic.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<font size="20" pdfFontName="fonts/KoPubBatangMedium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{body}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="300" y="340" width="200" height="30" uuid="f1a02775-a26d-484c-aac0-621144f730a8"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{createDate}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -94,17 +97,31 @@
 		</band>
 	</columnFooter>
 	<pageFooter>
-		<band height="88" splitType="Stretch">
-			<staticText>
-				<reportElement x="140" y="0" width="361" height="71" uuid="ea2b403c-cf5a-4fbd-8678-e7c1f5390c23"/>
+		<band height="102" splitType="Stretch">
+			<textField>
+				<reportElement x="310" y="40" width="150" height="41" uuid="eb197528-a05b-496e-a882-d6515cd83587"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="24" pdfFontName="fonts/NanumGothic.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<font size="24" pdfFontName="fonts/KoPubDotumMedium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[성 공 회 대 학 교 총 장 이 정 구]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$F{representative}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy년 M월 dd일" isBlankWhenNull="true">
+				<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToBandHeight" x="170" y="-3" width="200" height="30" uuid="f1a02775-a26d-484c-aac0-621144f730a8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20" pdfFontName="fonts/KoPubBatangLight.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="110" y="40" width="200" height="41" uuid="d61e04e2-2a35-4288-9fb1-6ff2a30ff834"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20" pdfFontName="fonts/KoPubDotumMedium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{corporateName}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="42" splitType="Stretch"/>
+		<band height="3" splitType="Stretch"/>
 	</summary>
 </jasperReport>
