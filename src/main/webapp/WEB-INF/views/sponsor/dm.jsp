@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
@@ -63,8 +63,13 @@
               <td class="nowrap">${s.sponsorNo}</td>
               <td class="nowrap">${s.name}</td>
               <td class="nowrap">${s.sponsorType2}</td>
-              <td class="nowrap">${s.church}</td>
-              <td>${s.postCode} ${s.address}</td>
+              <td class="nowrap">${s.church}</td>              
+              <c:if test="${ s.sponsorType1Id != CodeID_Corporation }">
+                  <td>${s.postCode} ${s.address}</td>
+              </c:if>
+              <c:if test="${ s.sponsorType1Id == CodeID_Corporation }">
+                  <td>${s.postCode} ${s.address} ${ s.department }/${ s.position }/${ s.liaison }</td>
+              </c:if>
               <td class="nowrap">${s.email}</td>
               <td class="nowrap">${s.mobilePhone}</td>
             </tr>

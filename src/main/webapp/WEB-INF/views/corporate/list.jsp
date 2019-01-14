@@ -31,7 +31,7 @@
             <td>${ corporate.shortName }</td>
             <td>${ corporate.corporateNo }</td>
             <td>${ corporate.representative }</td>
-            <td>${ corporate.roadAddress } ${ corporate.detailAddress } ${ corporate.postCode }</td>
+            <td>${ corporate.postCode } ${ corporate.roadAddress } ${ corporate.detailAddress }</td>
           </tr>
         </c:forEach>
       </tbody>

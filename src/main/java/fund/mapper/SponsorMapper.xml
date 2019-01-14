@@ -67,20 +67,6 @@ ORDER BY 행번호
 ]]>
 </select>
 
-<select id="selectAll" resultType="fund.dto.Sponsor">
-<![CDATA[
-SELECT sponsorNo, name, 
-    (SELECT TOP 1 codeName FROM code c WHERE c.id = sponsorType1Id) sponsorType1,
-    (SELECT TOP 1 codeName FROM code c WHERE c.id = sponsorType2Id) sponsorType2,
-    (SELECT TOP 1 codeName FROM code c WHERE c.id = churchId) church,
-    signUpDate,
-    mobilePhone,
-    email
-FROM sponsor s
-ORDER BY sponsorNo DESC
-]]>
-</select>
-
 <select id="selectDuplicate" resultType="fund.dto.Sponsor">
   DECLARE @encrypted VARBINARY(1000), @homePhone VARCHAR(20), @officePhone VARCHAR(20), @mobilePhone VARCHAR(20), @juminNo VARCHAR(20)
   SET @encrypted = ENCRYPTBYPASSPHRASE(CONVERT(VARCHAR, ${key1}), CONVERT(VARCHAR, #{juminNo}))

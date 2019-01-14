@@ -13,6 +13,7 @@ public class C {
     public static final int 코드ID_자동이체 = 11;
     public static final int 코드ID_급여공제 = 12;
     public static final int 코드ID_현물 = 14;
+    public static final int 코드ID_법인 = 4; // 가입구분 = 법인
 
     public static final int 메뉴_기초정보관리 = 1;
     public static final int 메뉴_회원관리_회원관리 = 10;

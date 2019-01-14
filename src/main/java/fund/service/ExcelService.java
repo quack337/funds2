@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fund.dto.Sal;
+import fund.dto.Sponsor;
 import fund.dto.SponsorEvent;
 import fund.dto.Xfer;
 
@@ -173,11 +174,7 @@ public class ExcelService {
 
         Row headerRow = sheet.createRow(0);
         String[] columns = new String[] { "회원번호", "회원명", "회원구분", "소속", "정기/비정기", "기부목적", "납입일", "납입액", "납입방법", "약정번호", "상태", "시작일", "종료일", "월납입액" };
-        for(int i = 0; i < columns.length; i++) {
-            Cell cell = headerRow.createCell(i);
-            cell.setCellValue(columns[i]);
-            cell.setCellStyle(headerCellStyle);
-        }
+        setColumnHeader(headerRow, columns);
 
         for (int i = 0; i < list.size(); ++i) {
             Map<String, Object> map = list.get(i);
@@ -199,8 +196,7 @@ public class ExcelService {
             createCell(row, 13, (Integer)map.get("amountPerMonth"), numberStyle);
         }
 
-        for(int i = 0; i < columns.length; i++)
-            sheet.autoSizeColumn(i);
+        autoSizeColumn(sheet, columns);
         return workbook;
     }
 
@@ -212,11 +208,7 @@ public class ExcelService {
         Row headerRow = sheet.createRow(0);
 
         String[] columns = new String[] { "회원번호", "회원명", "회원구분", "소속", "납입액", "납입건수" };
-        for(int i = 0; i < columns.length; i++) {
-            Cell cell = headerRow.createCell(i);
-            cell.setCellValue(columns[i]);
-            cell.setCellStyle(headerCellStyle);
-        }
+        setColumnHeader(headerRow, columns);
 
         for (int i = 0; i < list.size(); ++i) {
             Map<String, Object> map = list.get(i);
@@ -229,8 +221,7 @@ public class ExcelService {
             createCell(row, 4, (Long)map.get("amount"), numberStyle);
             createCell(row, 5, (Integer)map.get("count"), numberStyle);
         }
-        for(int i = 0; i < columns.length; i++)
-            sheet.autoSizeColumn(i);
+        autoSizeColumn(sheet, columns);
         return workbook;
     }
 
@@ -242,11 +233,7 @@ public class ExcelService {
         Row headerRow = sheet.createRow(0);
 
         String[] columns = new String[] { title, "회원수", "납입수", "금액", "비율" };
-        for(int i = 0; i < columns.length; i++) {
-            Cell cell = headerRow.createCell(i);
-            cell.setCellValue(columns[i]);
-            cell.setCellStyle(headerCellStyle);
-        }
+        setColumnHeader(headerRow, columns);
 
         for (int i = 0; i < list.size(); ++i) {
             Map<String, Object> map = list.get(i);
@@ -261,8 +248,7 @@ public class ExcelService {
             if (value != null)
                 createCell(row, 4, value.doubleValue(), n2Style);
         }
-        for(int i = 0; i < columns.length; i++)
-            sheet.autoSizeColumn(i);
+        autoSizeColumn(sheet, columns);
         return workbook;
     }
 
@@ -315,4 +301,69 @@ public class ExcelService {
         row.createCell(index).setCellValue(value);
         row.getCell(index).setCellStyle(cellStyle);
     }
+
+    public static Workbook downloadDMExcel(List<Sponsor> list) {
+        Workbook workbook = new XSSFWorkbook();
+        createStyle(workbook);
+        Sheet sheet = workbook.createSheet("우편발송");
+
+        String[] columns = new String[] { "회원번호", "이름", "회원구분", "소속", "주소", "이메일", "휴대폰"};
+        Row headerRow = sheet.createRow(0);
+        setColumnHeader(headerRow, columns);
+
+        for (int i = 0; i < list.size(); ++i) {
+            Sponsor sponsor = list.get(i);
+
+            Row row = sheet.createRow(i + 1);
+            createCell(row, 0, sponsor.getSponsorNo());
+            createCell(row, 1, sponsor.getName());
+            createCell(row, 2, sponsor.getSponsorType2());
+            createCell(row, 3, sponsor.getChurch());
+            createCell(row, 4, sponsor.getPostCode() + " " + sponsor.getAddress());
+            createCell(row, 5, sponsor.getEmail());
+            createCell(row, 6, sponsor.getMobilePhone());
+        }
+        autoSizeColumn(sheet, columns);
+        return workbook;
+    }
+
+    public static Workbook downloadSponsorListExcel(List<Sponsor> list) {
+        Workbook workbook = new XSSFWorkbook();
+        createStyle(workbook);
+        Sheet sheet = workbook.createSheet("회원목록");
+
+        String[] columns = new String[] { "회원번호", "이름", "가입구분", "회원구분", "소속", "가입일", "핸드폰번호", "이메일"};
+        Row headerRow = sheet.createRow(0);
+        setColumnHeader(headerRow, columns);
+
+        for (int i = 0; i < list.size(); ++i) {
+            Sponsor sponsor = list.get(i);
+
+            Row row = sheet.createRow(i + 1);
+            createCell(row, 0, sponsor.getSponsorNo());
+            createCell(row, 1, sponsor.getName());
+            createCell(row, 2, sponsor.getSponsorType1());
+            createCell(row, 3, sponsor.getSponsorType2());
+            createCell(row, 4, sponsor.getChurch());
+            createCell(row, 5, sponsor.getSignUpDate(), dateCellStyle);
+            createCell(row, 6, sponsor.getMobilePhone());
+            createCell(row, 7, sponsor.getEmail());
+        }
+        autoSizeColumn(sheet, columns);
+        return workbook;
+    }
+
+    private static void autoSizeColumn(Sheet sheet, String[] columns) {
+        for(int i = 0; i < columns.length; i++)
+            sheet.autoSizeColumn(i);
+    }
+
+    private static void setColumnHeader(Row headerRow, String[] columns) {
+        for(int i = 0; i < columns.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(columns[i]);
+            cell.setCellStyle(headerCellStyle);
+        }
+    }
+
 }

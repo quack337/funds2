@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import fund.dto.Sponsor;
 import fund.dto.pagination.Pagination;
+import fund.dto.pagination.PaginationSponsor;
 
 @Mapper
 public interface SponsorMapper {
@@ -14,8 +15,7 @@ public interface SponsorMapper {
     String selectKey1();
     Sponsor selectById(int id);
     Sponsor selectBySponsorNo(String sponsorNo);
-    List<Sponsor> selectPage(Pagination pagination);
-    List<Sponsor> selectAll();
+    List<Sponsor> selectPage(PaginationSponsor pagination);
     List<Sponsor> selectDuplicate(Sponsor sponsor);
     int selectCount(Pagination pagination);
 

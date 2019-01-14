@@ -1,5 +1,6 @@
 package fund.controller;
 
+import java.io.BufferedOutputStream;
 import java.net.URLEncoder;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Propagation;
@@ -27,8 +29,8 @@ import fund.mapper.SponsorLogMapper;
 import fund.mapper.SponsorMapper;
 import fund.mapper2.DataFileMapper;
 import fund.service.C;
+import fund.service.ExcelService;
 import fund.service.LogService;
-import fund.service.ReportBuilder;
 import fund.service.SponsorService;
 import fund.service.UserService;
 
@@ -54,6 +56,23 @@ public class SponsorController extends BaseController {
         model.addAttribute("sponsorType2Codes", sponsorType2Codes);
         return "sponsor/list";
     }
+
+    @RequestMapping("/sponsor/excel")
+    public void excel(HttpServletRequest req, HttpServletResponse response, @ModelAttribute("pagination") PaginationSponsor pagination) throws Exception {
+        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return;
+        pagination.setPageSize(10000000);
+        pagination.setCurrentPage(1);
+        List<Sponsor> list = sponsorMapper.selectPage(pagination);
+
+        Workbook workbook = ExcelService.downloadSponsorListExcel(list);
+        String fileName = URLEncoder.encode("회원목록.xlsx","UTF-8");
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ";");
+        try (BufferedOutputStream output = new BufferedOutputStream(response.getOutputStream())) {
+            workbook.write(output);
+        }
+    }
+
 
     @RequestMapping(value="/sponsor/edit", method=RequestMethod.GET)
     public String edit(@RequestParam("id") int id, @ModelAttribute("pagination") PaginationSponsor pagination, Model model) throws Exception {
@@ -158,16 +177,6 @@ public class SponsorController extends BaseController {
     }
 
 
-    @RequestMapping("/sponsor/excel")
-    public void excel(HttpServletRequest req, HttpServletResponse res) throws Exception {
-        if (!UserService.canAccess(C.메뉴_회원관리_회원관리)) return;
-        List<Sponsor> list = sponsorMapper.selectAll();
-        String fname = "회원목록.xlsx";
-        ReportBuilder reportBuilder = new ReportBuilder("sponsorList", fname, req, res);
-        reportBuilder.setCollection(list);
-        reportBuilder.build("xlsx");
-    }
-
     @RequestMapping("/sponsor/dm")
     public String sendDM(Model model, @ModelAttribute("pagination") PaginationDM pagination) {
         if (!UserService.canAccess(C.메뉴_회원관리_우편발송)) return "redirect:/home/logout";
@@ -176,23 +185,28 @@ public class SponsorController extends BaseController {
         pagination.setRecordCount(sponsorMapper.selectCountForDM(pagination));
         model.addAttribute("list", sponsorMapper.selectForDM(pagination));
         model.addAttribute("sponsorType2List", codeMapper.selectEnabledByCodeGroupId(C.코드그룹ID_회원구분));
+        model.addAttribute("CodeID_Corporation", C.코드ID_법인);
         return "sponsor/dm";
     }
 
     @RequestMapping("/sponsor/dmx")
-    public void sendDMxlsx(@ModelAttribute("pagination") PaginationDM pagination, HttpServletRequest req, HttpServletResponse res) throws Exception {
+    public void sendDMxlsx(@ModelAttribute("pagination") PaginationDM pagination, HttpServletRequest req, HttpServletResponse response) throws Exception {
         if (!UserService.canAccess(C.메뉴_회원관리_우편발송)) return;
         if (StringUtils.isBlank(pagination.getStartDate()) == false) {
             int count = sponsorMapper.selectCountForDM(pagination);
             pagination.setRecordCount(count);
             pagination.setPageSize(count);
             List<Sponsor> list = sponsorMapper.selectForDM(pagination);
-            String fname = "우편발송_" + pagination.getStartDate() + "_" + pagination.getEndDate() + ".xlsx";
-            ReportBuilder reportBuilder = new ReportBuilder("sendDM", fname, req, res);
-            reportBuilder.setCollection(list);
-            reportBuilder.build("xlsx");
+
+            Workbook workbook = ExcelService.downloadDMExcel(list);
+            String fileName = URLEncoder.encode("우편발송.xlsx","UTF-8");
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ";");
+            try (BufferedOutputStream output = new BufferedOutputStream(response.getOutputStream())) {
+                workbook.write(output);
+            }
         } else
-            res.sendRedirect("dm");
+            response.sendRedirect("dm");
     }
 
 }
