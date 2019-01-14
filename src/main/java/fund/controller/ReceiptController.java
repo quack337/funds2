@@ -126,6 +126,7 @@ public class ReceiptController extends BaseController {
         ReportBuilder reportBuilder = new ReportBuilder("donationReceipt1", "기부금영수증.pdf", req, res);
         reportBuilder.setConnection(dataSource.getConnection());
         reportBuilder.setParameter("whereClause", whereClause);
+        reportBuilder.setParameter("imagesDir", req.getServletContext().getRealPath("res/images/") );
         reportBuilder.addSubReport("paymentList.jasper");
         reportBuilder.setParameter("key1", sponsorMapper.selectKey1());
         reportBuilder.build("pdf");
@@ -141,6 +142,7 @@ public class ReceiptController extends BaseController {
         ReportBuilder reportBuilder = new ReportBuilder("donationReceipt2", "기부금영수증.pdf", req, res);
         reportBuilder.setConnection(dataSource.getConnection());
         reportBuilder.setParameter("whereClause", whereClause);
+        reportBuilder.setParameter("imagesDir", req.getServletContext().getRealPath("res/images/") );
         reportBuilder.setParameter("key1", sponsorMapper.selectKey1());
         reportBuilder.build("pdf");
     }
