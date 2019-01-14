@@ -4,7 +4,7 @@
 <mapper namespace="fund.mapper.CertificateMapper">
 
 <select id="selectById" parameterType="int" resultType="fund.dto.Certificate">
-SELECT c.*, u.name userName, o.name corporateName
+SELECT c.*, u.name userName, o.name corporateName, o.representative
 FROM [Certificate] c
     LEFT JOIN [user] u ON c.userId = u.id  
     LEFT JOIN [corporate] o ON c.corporateId = o.id

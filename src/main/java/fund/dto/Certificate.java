@@ -1,5 +1,6 @@
 package fund.dto;
 
+import fund.utils.NumberUtils;
 import lombok.Data;
 
 @Data
@@ -18,4 +19,9 @@ public class Certificate {
     String userName;
     Integer corporateId;
     String corporateName;
+    String representative;
+    
+    public String getAmountToKorean() {
+    	return NumberUtils.toKoreanNumber(amount, true, true);
+    }
 }
