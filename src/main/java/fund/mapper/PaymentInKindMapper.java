@@ -1,5 +1,7 @@
 package fund.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import fund.dto.PaymentInKind;
@@ -8,10 +10,10 @@ import fund.dto.PaymentInKind;
 public interface PaymentInKindMapper {
 
     PaymentInKind selectById(int id);
-    PaymentInKind selectByPaymentId(int paymentId);
+    List<PaymentInKind> selectByPaymentId(int paymentId);
     void update(PaymentInKind paymentKind);
     void delete(int id);
+    void deleteByPaymentId(int paymentId);
     void insert(PaymentInKind paymentKind);
-
 
 }

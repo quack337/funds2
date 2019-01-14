@@ -20,6 +20,18 @@ public class PaymentService {
     public void insert(PaymentJSON payment) {
         payment.setPaymentMethodId(C.코드ID_현물);
         paymentMapper.insert(payment);
+        paymentInKindMapper.deleteByPaymentId(payment.getId());
+        for (PaymentInKind p : payment.getItems()) {
+            p.setPaymentId(payment.getId());
+            paymentInKindMapper.insert(p);
+        }
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void update(PaymentJSON payment) {
+        payment.setPaymentMethodId(C.코드ID_현물);
+        paymentMapper.update(payment);
+        paymentInKindMapper.deleteByPaymentId(payment.getId());
         for (PaymentInKind p : payment.getItems()) {
             p.setPaymentId(payment.getId());
             paymentInKindMapper.insert(p);

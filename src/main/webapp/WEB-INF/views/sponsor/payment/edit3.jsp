@@ -29,7 +29,7 @@
       <table class="table table-bordered lbw120 mt10 pd4">
         <tr>
           <td class="lb">납입일</td>
-          <td><input type="text" id="paymentDate" vlaue="${ payment.paymentDate }" class="date" /></td>
+          <td><input type="text" id="paymentDate" value="${ payment.paymentDate }" class="date" /></td>
           <td class="lb">납입방법</td>
           <td>현물</td>
         </tr>
@@ -37,7 +37,7 @@
           <td class="lb">납입액</td>
           <td>{{ sum() | number }}</td>
           <td class="lb">기부목적</td>
-          <td>
+          <td id="donationPurposeIdTd">
               <c:set var="paramObj" value="${ payment }" />
               <%@include file="../_donationPurposeInput.jsp" %>
           </td>
@@ -48,7 +48,7 @@
         </tr>
       </table>
 
-      <table class="table table-bordered lbw120 mt10 pd4">
+      <table id="items" class="table table-bordered lbw120 mt10 pd4">
         <thead>
           <tr>
             <th>품목</th><th>수량</th><th>단가</th><th>금액</th><th></th>
@@ -111,7 +111,7 @@
           </table>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" v-on:click="saveItem">저장</button>
+          <button type="button" class="btn btn-primary btn-sm" v-on:click="saveItem">저장</button>
           <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">닫기</button>
         </div>
       </div>
@@ -149,10 +149,12 @@ var app = new Vue({
               this.items.splice(index, 1);
       },
       saveItem: function() {
+          if (!this.checkITem()) return;
           if (this.selectedIndex >= 0) {
               this.items[this.selectedIndex] = this.item;
           } else
               this.items.push(this.item);
+          $("#editModal").modal("hide");
       },
       sum: function() {
           let s = 0;
@@ -163,6 +165,7 @@ var app = new Vue({
           return s;
       },
       saveAll: function() {
+          if (!this.checkPayment()) return;
           this.payment.paymentDate = $("#paymentDate").val();
           this.payment.donationPurposeId = $("#donationPurposeId").val();
           this.payment.etc = $("#etc").val();
@@ -170,12 +173,31 @@ var app = new Vue({
           this.payment.items = this.items;          
           console.log(this.payment);
           axios.post(location.href, this.payment).then(function (response) {
-              console.log(response);
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
+              let result = response.data;
+              if (!result.success)
+                  alert(result.message);
+              location.href = result.successUrl;
+          })
+          .catch(function (error) {
+              alert("저장 실패");
+          });
+      },
+      checkPayment: function() {
+          let tag = $("#paymentDate");
+          if (!tag.val()) { alert("납입일을 입력하세요"); return false; }
+          if ($("#donationPurposeId").val() == 0) { alert("기부목적을 입력하세요"); return false; }
+          if (this.items.length == 0) { alert("현물을 입력하세요"); return false; }
+          return true;
+      },
+      checkITem: function() {
+          if (!this.item.title) { alert("품목을 입력하세요"); return false; }
+          if (!this.item.quantity) { alert("수량을 입력하세요"); return false; }
+          if (!this.item.unitCost) { alert("단가를 입력하세요"); return false; }
+          return true;
       }
+  },
+  beforeMount(){
+     this.items = ${ items };
   }
 })
 
