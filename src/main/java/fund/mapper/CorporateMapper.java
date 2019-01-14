@@ -9,7 +9,7 @@ import fund.dto.Corporate;
 @Mapper
 public interface CorporateMapper {
 	List<Corporate> selectAll();
-	Corporate selectById(int ID);
+	Corporate selectById(int id);
     void insert(Corporate corporate);
     void update(Corporate corporate);
     void delete(int ID);
