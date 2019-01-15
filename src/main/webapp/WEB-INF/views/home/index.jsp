@@ -28,7 +28,8 @@
 	    </thead>
 	    <tbody>
 	      <c:forEach var="todo" items="${ todos }">
-	        <tr data-url="edit?id=${todo.id}&${pagination.queryString}">
+            <c:url var="url" value="/todo/edit?id=${todo.id}&ss=9" />
+	        <tr data-url="${ url }">
 	          <td class="nowrap">${ todo.userName }</td>
 	          <td class="nowrap">${ todo.dueDate2 }</td>
 	          <td>${ todo.message }</td>

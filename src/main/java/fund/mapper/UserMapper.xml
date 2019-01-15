@@ -19,7 +19,7 @@
 
 <insert id="insert" useGeneratedKeys="true" keyProperty="id">
   INSERT [user] (loginName, [password], [name], [email], userType, [enabled], corporateId)
-  VALUES (#{loginName}, #{password}, #{name}, #{email}, #{userType}, #{enabled}, #corporateId)
+  VALUES (#{loginName}, #{password}, #{name}, #{email}, #{userType}, #{enabled}, #{corporateId})
 </insert>
 
 <update id="update">

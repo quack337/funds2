@@ -119,15 +119,16 @@ ORDER BY dueDate2
 </select>
 
 <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-INSERT [Todo] (userId, createDate, dueDate, message)
-VALUES (#{userId}, GETDATE(), #{dueDate2}, #{message})  
+INSERT [Todo] (userId, createDate, dueDate, message, repeat, alertBefore)
+VALUES (#{userId}, GETDATE(), #{dueDate2}, #{message}, #{repeat}, #{alertBefore})  
 </insert>
 
 <update id="update">
 UPDATE [Todo]
 SET message = #{message},
     dueDate = #{dueDate2},
-    repeat = #{repeat}
+    repeat = #{repeat},
+    alertBefore = #{alertBefore}
 WHERE id = #{id}
 </update>
 

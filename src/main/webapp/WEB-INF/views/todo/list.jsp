@@ -44,7 +44,7 @@
             <th class="nowrap">등록일</th>
             <th class="nowrap">일정</th>
             <th class="nowrap">확인</th>
-            <th class="right nowrap">알림</th>
+            <th class="nowrap">알림</th>
             <th class="nowrap">반복</th>
             <th class="nowrap">내용</th>
           </tr>
@@ -56,7 +56,7 @@
               <td class="nowrap">${ todo.createDate }</td>
               <td class="nowrap">${ todo.dueDate2 }</td>
               <td class="nowrap">${ todo.confirmDate }</td>
-              <td class="nowrap right">${ todo.alertBefore }일전</td>
+              <td class="nowrap">${ todo.alertBefore }일전</td>
               <td class="nowrap">${ todo.repeat == 2 ? "매년" : todo.repeat == 1 ? "매월" : "" }</td>
               <td>${ todo.message }</td>
             </tr>

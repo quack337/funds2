@@ -16,20 +16,20 @@
   </div>
   <div class="panel-body">
     <div class="right mt10 mb10">
-      <button class="btn btn-primary" type="submit">사용자 저장</button>
-      <a class="btn btn-gray" href="list">목록으로 나가기</a>
+      <button class="btn btn-primary btn-sm" type="submit">사용자 저장</button>
+      <a class="btn btn-gray btn-sm" href="list">목록으로 나가기</a>
     </div>
 
-    <table class="table table-bordered lbw150">
+    <table class="table table-bordered lbw150 pd4">
       <tr>
         <td class="lb">로그인</td>
-        <td><form:input path="loginName" />
+        <td><form:input path="loginName" /></td>
         <td class="lb">이름</td>
-        <td><form:input path="name" />
+        <td><form:input path="name" /></td>
       </tr>
       <tr>
         <td class="lb">이메일</td>
-        <td><form:input path="email" />
+        <td><form:input path="email" /></td>
         <td class="lb">사용자유형</td>
         <td><form:select path="userType">
             <form:option value="사용자" />
@@ -39,11 +39,26 @@
       </tr>
       <tr>
         <td class="lb">비밀번호</td>
-        <td><form:password path="password1" />
+        <td><form:password path="password1" /></td>
         <td class="lb">비밀번호확인</td>
-        <td><form:password path="password2" />
+        <td><form:password path="password2" /></td>
+      </tr>
+      <tr>
+        <td  class="lb">소속</td>
+        <td>
+            <form:select path="corporateId">
+                <form:option value="" label="" />
+                <form:options items="${ corporates }" itemLabel="name" itemValue="id" />
+            </form:select>
+        <td class="lb">활성화</td>
+        <td><form:checkbox path="enabled" /></td>
       </tr>
     </table>
+    <div class="alert alert-info">
+        <p><i class="glyphicon glyphicon-info-sign"></i> <b>비밀번호 작성 규칙</b></p>
+        <p>정보보안 및 개인정보 보호 규정에 의하여 비밀번호는 7문자 이상이어야 하고,<br/>
+           숫자, 소문자, 대문자를 모두 포함해야 합니다.</p>    
+    </div>
   </div>
 </div>
 

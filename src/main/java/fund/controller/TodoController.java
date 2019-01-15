@@ -48,8 +48,8 @@ public class TodoController extends BaseController {
         } catch (Exception e) {
             return logService.logErrorAndReturn(model, e, "todo/edit");
         }
-        model.addAttribute("todo", todoMapper.selectById(todo.getId()));
-        return "todo/edit";
+        if (pagination.getSs() == 9) return "redirect:/"; // 첫 페이지
+        return "redirect:list?" + pagination.getQueryString();
     }
 
     @RequestMapping(value="/todo/edit", method=RequestMethod.POST, params="cmd=delete")
@@ -60,6 +60,7 @@ public class TodoController extends BaseController {
         } catch (Exception e) {
             return logService.logErrorAndReturn(model, e, "todo/edit");
         }
+        if (pagination.getSs() == 9) return "redirect:/"; // 첫 페이지
         return "redirect:list?" + pagination.getQueryString();
     }
 

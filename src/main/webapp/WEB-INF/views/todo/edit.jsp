@@ -25,8 +25,14 @@
       <button type="submit" class="btn btn-primary btn-sm" name="cmd" value="save">일정 저장</button>
       <c:if test="${ todo.id > 0 }">
         <button type="submit" class="btn btn-danger btn-sm" name="cmd" value="delete" data-confirm-delete>일정 삭제</button>
-      </c:if>    
-      <a href="list?${ pagination.queryString }" class="btn btn-gray btn-sm">일정 목록으로</a>
+      </c:if>
+      <c:if test="${ pagination.ss != 9 }">
+        <a href="list?${ pagination.queryString }" class="btn btn-gray btn-sm">일정 목록으로</a>
+      </c:if>
+      <c:if test="${ pagination.ss == 9 }">
+        <c:url var="url" value="/" />
+        <a href="${ url }"  class="btn btn-gray btn-sm">일정 목록으로</a>
+      </c:if>
     </div>
 
     <table id="todo" class="table table-bordered lbw120 pd4">
