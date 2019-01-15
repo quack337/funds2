@@ -90,7 +90,14 @@
       </ul>
       
     </div>
-</div>          
+</div>
+
+    <div class="alert alert-info">
+        <p><i class="glyphicon glyphicon-info-sign"></i> <b>회원/비회원</b></p>
+        <p>회원의 경우, 조회 기간에 납입 건이 있는 회원만 조회됩니다.<br />
+           납입 건수가 없는 사람은 비회원으로 분류되는데, 조회 기간에 등록된 비회원만 조회됩니다.
+        </p>    
+    </div>        
     
 </form:form>
 

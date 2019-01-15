@@ -48,8 +48,8 @@
           <c:forEach var="p" items="${list}">
             <tr>
               <td>${p.name} </td>
-              <td class="right"><fmt:formatNumber value="${p.sponsorCount}" /></td>
-              <td class="right"><fmt:formatNumber value="${p.paymentCount}" /></td>
+              <td class="right" style="min-width:60px;"><fmt:formatNumber value="${p.sponsorCount}" /></td>
+              <td class="right" style="min-width:60px;"><fmt:formatNumber value="${p.paymentCount}" /></td>
               <td class="right"><fmt:formatNumber value="${p.amount}" /></td>
               <td class="right"><fmt:formatNumber value="${p.ratio }" pattern="##0.00"/></td>
             </tr>
