@@ -34,11 +34,10 @@
           <form:option value="2" label="비회원" />
         </form:select>
         <form:select path="et">
-          <form:option value="0" label="기타 조건" />
+          <form:option value="0" label="우편 발송 동의" />
           <form:option value="1" label="우편 반송" />
-          <form:option value="2" label="우편 발송 동의" />
-          <form:option value="3" label="이메일 수신 동의" />
-          <form:option value="4" label="SMS 수신 동의" />
+          <form:option value="2" label="이메일 수신 동의" />
+          <form:option value="3" label="SMS 수신 동의" />
         </form:select>
         <form:input type="text" class="w100" path="st" placeholder="이름" style="margin-left: 20px; margin-right: 20px;" />
         <button type="submit" class="btn btn-primary btn-sm">조회</button>
@@ -91,7 +90,14 @@
       </ul>
       
     </div>
-</div>          
+</div>
+
+    <div class="alert alert-info">
+        <p><i class="glyphicon glyphicon-info-sign"></i> <b>회원/비회원</b></p>
+        <p>회원의 경우, 조회 기간에 납입 건이 있는 회원만 조회됩니다.<br />
+           납입 건수가 없는 사람은 비회원으로 분류되는데, 조회 기간에 등록된 비회원만 조회됩니다.
+        </p>    
+    </div>        
     
 </form:form>
 

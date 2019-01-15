@@ -241,7 +241,7 @@ public class ExcelService {
             Row row = sheet.createRow(i + 1);
             createCell(row, 0, (String)map.get("name"));
             createCell(row, 1, (Integer)map.get("sponsorCount"), numberStyle);
-            createCell(row, 2, (Integer)map.get("paymentCouynt"), numberStyle);
+            createCell(row, 2, (Integer)map.get("paymentCount"), numberStyle);
             createCell(row, 3, (Long)map.get("amount"), numberStyle);
 
             BigDecimal value = (BigDecimal)map.get("ratio");

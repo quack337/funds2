@@ -195,7 +195,7 @@ public class PaymentController extends BaseController {
         Map<String, Object> map = list.get(list.size()-1);
         String title = report2Title[i];
         map.put("title", title);
-        list.remove(list.size()-1);
+        //list.remove(list.size()-1);
 
         Workbook workbook = ExcelService.downloadExcel2(title, list);
         String fileName = URLEncoder.encode(title + "별납입합계.xlsx","UTF-8");

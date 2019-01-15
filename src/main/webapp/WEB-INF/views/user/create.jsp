@@ -53,12 +53,11 @@
         <td class="lb">활성화</td>
         <td><form:checkbox path="enabled" /></td>
       </tr>
+      <tr>
+        <td colspan="4" style="background-color: #eee; padding: 10px;">
+          비밀번호는 7자 이상이어야 하고, 숫자, 영어소문자, 영어대문자 중 3가지 이상을 조합해야 합니다.</td>
+      </tr>      
     </table>
-    <div class="alert alert-info">
-        <p><i class="glyphicon glyphicon-info-sign"></i> <b>비밀번호 작성 규칙</b></p>
-        <p>정보보안 및 개인정보 보호 규정에 의하여 비밀번호는 7문자 이상이어야 하고,<br/>
-           숫자, 소문자, 대문자를 모두 포함해야 합니다.</p>    
-    </div>
   </div>
 </div>
 
