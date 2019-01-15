@@ -46,8 +46,7 @@ public class UserController extends BaseController{
             user.setId(UserService.getCurrentUser().getId());
             if (user.getUserType() == null) user.setUserType(UserService.getCurrentUser().getUserType());
             if (userService.checkLoginId(user)) {
-                logService.userInfoChange(user);
-                userMapper.update(user);
+                userMapper.updateMyInfo(user);
                 model.addAttribute("successMsg", "저장되었습니다.");
                 if (UserService.getCurrentUser().getId() == user.getId())
                     UserService.setCurrentUser(user);

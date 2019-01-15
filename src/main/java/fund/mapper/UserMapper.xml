@@ -28,6 +28,12 @@
   WHERE id = #{id}
 </update>
 
+<update id="updateMyInfo">
+  UPDATE [user] 
+  SET [loginName] = #{loginName}, [name] = #{name}, email = #{email}
+  WHERE id = #{id}
+</update>
+
 <update id="updatePassword">
   UPDATE [user] 
   SET [password] = #{password}

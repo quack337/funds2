@@ -14,6 +14,7 @@ import fund.dto.User;
      List<User> selectAll();
      void insert(User user);
      void update(User user);
+     void updateMyInfo(User user);
      void updatePassword(User user);
      void updateErrorCount(User user);
      void delete(int id);
