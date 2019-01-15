@@ -134,7 +134,7 @@ $P!{whereClause}]]>
 				<text><![CDATA[주소(소재지)]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="83" y="171" width="208" height="30" uuid="a1ee34a0-7847-4386-b168-1f465e9df3d4"/>
+				<reportElement x="84" y="165" width="208" height="30" uuid="a1ee34a0-7847-4386-b168-1f465e9df3d4"/>
 				<box>
 					<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -147,9 +147,9 @@ $P!{whereClause}]]>
 				<textFieldExpression><![CDATA[$F{corName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="83" y="201" width="208" height="30" uuid="db6ec5c1-63ab-433a-964f-144251c180ed"/>
+				<reportElement x="84" y="195" width="208" height="30" uuid="db6ec5c1-63ab-433a-964f-144251c180ed"/>
 				<box>
-					<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -160,7 +160,7 @@ $P!{whereClause}]]>
 				<textFieldExpression><![CDATA[$F{corAddress}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="1" y="171" width="82" height="30" uuid="666e9e2f-3834-494d-9434-d27fa32deb63"/>
+				<reportElement x="2" y="165" width="82" height="30" uuid="666e9e2f-3834-494d-9434-d27fa32deb63"/>
 				<box leftPadding="2">
 					<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -173,9 +173,9 @@ $P!{whereClause}]]>
 				<text><![CDATA[단 체 명]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="201" width="82" height="30" uuid="6f4a8d27-e31a-46a3-8d8e-1256eec1a3c1"/>
+				<reportElement x="2" y="195" width="82" height="30" uuid="6f4a8d27-e31a-46a3-8d8e-1256eec1a3c1"/>
 				<box leftPadding="2">
-					<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
@@ -186,7 +186,7 @@ $P!{whereClause}]]>
 				<text><![CDATA[소 재 지]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="400" y="171" width="173" height="30" uuid="5e23b9ff-75e0-4316-b4cb-f6d8a900928e"/>
+				<reportElement x="401" y="165" width="173" height="30" uuid="5e23b9ff-75e0-4316-b4cb-f6d8a900928e"/>
 				<box>
 					<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
@@ -199,7 +199,7 @@ $P!{whereClause}]]>
 				<textFieldExpression><![CDATA[$F{corporateNo}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="291" y="201" width="109" height="18" uuid="6d56a3ec-86c4-4d00-99b8-41b4388a7993"/>
+				<reportElement x="292" y="195" width="109" height="18" uuid="6d56a3ec-86c4-4d00-99b8-41b4388a7993"/>
 				<box leftPadding="2">
 					<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
@@ -212,7 +212,7 @@ $P!{whereClause}]]>
 				<text><![CDATA[기부금공제대상]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="399" y="201" width="174" height="30" uuid="a8b59014-42fa-4d8c-b125-a64ee16df924"/>
+				<reportElement x="400" y="195" width="174" height="30" uuid="a8b59014-42fa-4d8c-b125-a64ee16df924"/>
 				<box>
 					<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -320,7 +320,7 @@ $P!{whereClause}]]>
 				<box>
 					<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
@@ -329,7 +329,7 @@ $P!{whereClause}]]>
 				<text><![CDATA[② 기부금 단체]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="291" y="171" width="109" height="15" uuid="7a3f9864-9672-4983-a977-ec457359f280">
+				<reportElement x="292" y="165" width="109" height="15" uuid="7a3f9864-9672-4983-a977-ec457359f280">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box leftPadding="2">
@@ -344,7 +344,7 @@ $P!{whereClause}]]>
 				<text><![CDATA[사업자등록번호]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="291" y="186" width="109" height="15" uuid="73dfc055-7aca-487a-9be0-09114827803b">
+				<reportElement x="292" y="180" width="109" height="15" uuid="73dfc055-7aca-487a-9be0-09114827803b">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box leftPadding="2">
@@ -423,7 +423,7 @@ $P!{whereClause}]]>
 				<box>
 					<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
@@ -469,7 +469,7 @@ $P!{whereClause}]]>
 				<subreportExpression><![CDATA[$P{paymentList.jasper}]]></subreportExpression>
 			</subreport>
 			<staticText>
-				<reportElement x="291" y="219" width="109" height="12" uuid="a4afe0c2-ecb2-4d85-944c-8429c15c09ac">
+				<reportElement x="292" y="213" width="109" height="12" uuid="a4afe0c2-ecb2-4d85-944c-8429c15c09ac">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box leftPadding="2">
@@ -548,7 +548,7 @@ $P!{whereClause}]]>
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" pdfFontName="fonts/NanumGothic.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					<paragraph lineSpacing="Single" leftIndent="20"/>
 				</textElement>
