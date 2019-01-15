@@ -368,4 +368,45 @@ AND s.churchId IS NOT NULL
 ORDER BY churchId
 </select>
 
+<select id="selectReport2d" resultType="hashmap">
+DECLARE @startDate DATE, @endDate DATE, @sum BIGINT, @corporateId INT
+SET @startDate = '2018-01-01'
+SET @endDate = '2018-12-31'
+SET @corporateId = 0
+SET @sum = (SELECT SUM(CONVERT(BIGINT,amount)) 
+            FROM payment p
+              LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
+              LEFT JOIN corporate c ON c.id = d.corporateId
+              LEFT JOIN sponsor s ON s.id = p.sponsorId
+            WHERE paymentDate BETWEEN @startDate AND @endDate
+            AND (@corporateId IS NULL OR @corporateId = 0 OR @corporateId = c.id)
+            AND s.churchId IS NOT NULL)
+
+SELECT paymentMethodId, c.codeName name, 
+  amount, sponsorCount, paymentCount, (amount * 100.0 / @sum) ratio
+FROM (
+  SELECT p.paymentMethodId, SUM(CONVERT(BIGINT,amount)) amount, COUNT(DISTINCT sponsorId) sponsorCount, COUNT(DISTINCT p.id) paymentCount
+  FROM payment p LEFT JOIN sponsor s ON s.id = p.sponsorId
+    LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
+    LEFT JOIN corporate c ON c.id = d.corporateId
+  WHERE paymentDate BETWEEN @startDate AND @endDate
+  AND (@corporateId IS NULL OR @corporateId = 0 OR @corporateId = c.id)
+  AND s.churchId IS NOT NULL
+  GROUP BY p.paymentMethodId
+) t
+  LEFT JOIN code c ON c.id = t.paymentMethodId
+
+UNION ALL
+SELECT 999999999 paymentMethodId, '합계' name,
+  SUM(CONVERT(BIGINT,amount)) amount, COUNT(DISTINCT sponsorId) sponsorCount, COUNT(*) paymentCount, 100.0 ratio
+FROM payment p LEFT JOIN sponsor s ON s.id = p.sponsorId
+    LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
+    LEFT JOIN corporate c ON c.id = d.corporateId
+WHERE paymentDate BETWEEN @startDate AND @endDate
+AND (@corporateId IS NULL OR @corporateId = 0 OR @corporateId = c.id)
+AND s.churchId IS NOT NULL
+
+ORDER BY paymentMethodId
+</select>
+
 </mapper>

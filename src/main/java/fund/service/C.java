@@ -32,6 +32,7 @@ public class C {
     public static final int 메뉴_납입조회_기부목적별납입합계 = 22;
     public static final int 메뉴_납입조회_회원구분별납입합계 = 23;
     public static final int 메뉴_납입조회_소속교회별납입합계 = 24;
+    public static final int 메뉴_납입조회_납입방법별납입합계 = 32;
     public static final int 메뉴_영수증_기부금영수증발급대장 = 25;
     public static final int 메뉴_영수증_영수증개별생성 = 26;
     public static final int 메뉴_영수증_영수증일괄생성 = 27;

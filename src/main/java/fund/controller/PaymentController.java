@@ -138,7 +138,7 @@ public class PaymentController extends BaseController {
         return "payment/srch1b";
     }
 
-    static String[] report2Title = new String[] { "기부목적", "회원구분", "소속" };
+    static String[] report2Title = new String[] { "기부목적", "회원구분", "소속", "납입방법" };
 
     //// report2
     @RequestMapping(value="/payment/srch2/{i}", method=RequestMethod.GET)
@@ -146,6 +146,7 @@ public class PaymentController extends BaseController {
         if (i == 0 && !UserService.canAccess(C.메뉴_납입조회_기부목적별납입합계)) return "redirect:/home/logout";
         if (i == 1 && !UserService.canAccess(C.메뉴_납입조회_회원구분별납입합계)) return "redirect:/home/logout";
         if (i == 2 && !UserService.canAccess(C.메뉴_납입조회_소속교회별납입합계)) return "redirect:/home/logout";
+        if (i == 3 && !UserService.canAccess(C.메뉴_납입조회_소속교회별납입합계)) return "redirect:/home/logout";
 
         Wrapper wrapper = new Wrapper();
         int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -162,11 +163,13 @@ public class PaymentController extends BaseController {
         if (i == 0 && !UserService.canAccess(C.메뉴_납입조회_기부목적별납입합계)) return "redirect:/home/logout";
         if (i == 1 && !UserService.canAccess(C.메뉴_납입조회_회원구분별납입합계)) return "redirect:/home/logout";
         if (i == 2 && !UserService.canAccess(C.메뉴_납입조회_소속교회별납입합계)) return "redirect:/home/logout";
+        if (i == 3 && !UserService.canAccess(C.메뉴_납입조회_소속교회별납입합계)) return "redirect:/home/logout";
 
         switch (i) {
         case 0: model.addAttribute("list", paymentMapper.selectReport2a(wrapper.getMap())); break;
         case 1: model.addAttribute("list", paymentMapper.selectReport2b(wrapper.getMap())); break;
         case 2: model.addAttribute("list", paymentMapper.selectReport2c(wrapper.getMap())); break;
+        case 3: model.addAttribute("list", paymentMapper.selectReport2d(wrapper.getMap())); break;
         }
         model.addAttribute("title", report2Title[i]);
         model.addAttribute("corporates", corporateMapper.selectAll());
@@ -178,6 +181,7 @@ public class PaymentController extends BaseController {
         if (i == 0 && !UserService.canAccess(C.메뉴_납입조회_기부목적별납입합계)) return;
         if (i == 1 && !UserService.canAccess(C.메뉴_납입조회_회원구분별납입합계)) return;
         if (i == 2 && !UserService.canAccess(C.메뉴_납입조회_소속교회별납입합계)) return;
+        if (i == 3 && !UserService.canAccess(C.메뉴_납입조회_소속교회별납입합계)) return;
 
         List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
 
@@ -185,6 +189,7 @@ public class PaymentController extends BaseController {
         case 0: list = paymentMapper.selectReport2a(wrapper.getMap()); break;
         case 1: list = paymentMapper.selectReport2b(wrapper.getMap()); break;
         case 2: list = paymentMapper.selectReport2c(wrapper.getMap()); break;
+        case 3: list = paymentMapper.selectReport2d(wrapper.getMap()); break;
         }
 
         Map<String, Object> map = list.get(list.size()-1);
