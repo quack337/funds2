@@ -82,6 +82,7 @@ public class CertificationController extends BaseController {
         try {
             if (type == 0 && !UserService.canAccess(C.메뉴_증서_장학증서)) return "redirect:/home/logout";
             if (type == 1 && !UserService.canAccess(C.메뉴_증서_기부증서)) return "redirect:/home/logout";
+            if (type == 0) certificate.setCorporateId(1);
             certificate.setType(type);
             certificate.setCertificateNo(certificateMapper.generateCertificateNo(type));
             certificate.setUserId(UserService.getCurrentUser().getId());

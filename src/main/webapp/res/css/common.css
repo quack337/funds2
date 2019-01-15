@@ -131,6 +131,8 @@ body table.pd6 thead tr th { padding: 6px; }
 body table.pd6 tr td { padding: 6px; }
 body table.pd7 thead tr th { padding: 7px; }
 body table.pd7 tr td { padding: 7px; }
+body table.pd8 thead tr th { padding: 8px; }
+body table.pd8 tr td { padding: 8px; }
 body ul.pagination { margin: 0px; }
 
 body { font-size: 9pt; font-family: 굴림체; }

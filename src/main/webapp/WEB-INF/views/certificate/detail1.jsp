@@ -9,7 +9,7 @@
 
 <div class="panel panel-default shadow w800">
   <div class="panel-heading">
-    <h3>장학증서</h3>
+    <h3>기부증서</h3>
   </div>
   <div class="panel-body">  
     <div class="pull-right mb4">
@@ -18,7 +18,7 @@
       <a class="btn btn-danger btn-sm" href="delete?id=${ certificate.id }&${ pagination.queryString }" data-confirm-delete>증서 삭제</a>
     </div>
 
-    <table class="table table-bordered lbw120 pd4">  
+    <table class="table table-bordered lbw120 pd8">  
       <tr>
         <td class="lb">증서번호</td>
         <td>${ certificate.certificateNo }</td>
@@ -33,7 +33,7 @@
       </tr>
       <tr>
         <td class="lb">금액</td>
-        <td>${ certificate.personName }</td>
+        <td><fmt:formatNumber value="${ certificate.amount }" /></td>
         <td class="lb">발급인</td>
         <td>${ certificate.userName }</td>
       </tr>

@@ -18,7 +18,7 @@
       <a class="btn btn-danger btn-sm" href="delete?id=${ certificate.id }&${ pagination.queryString }" data-confirm-delete>증서 삭제</a>
     </div>
 
-    <table class="table table-bordered lbw120 pd4">  
+    <table class="table table-bordered lbw120 pd8">  
       <tr>
         <td class="lb">증서번호</td>
         <td>${ certificate.certificateNo }</td>

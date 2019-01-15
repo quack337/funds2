@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <div class="navigation-info">
   &gt; 증서 &gt; 기부증서
@@ -53,7 +54,7 @@
             <th>날짜</th>
             <th>회원번호</th>
             <th>이름</th>
-            <th>금액</th>
+            <th class="right">금액</th>
             <th>기부처</th>
             <th>발급인</th>
           </tr>
@@ -65,7 +66,7 @@
               <td>${ c.createDate }</td>
               <td>${ c.personNo }</td>
               <td>${ c.personName }</td>
-              <td>${ c.amount }</td>
+              <td class="right"><fmt:formatNumber value="${ c.amount }" /></td>
               <td>${ c.corporateName }</td>
               <td>${ c.userName }</td>
             </tr>
