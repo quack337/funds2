@@ -114,6 +114,7 @@ public class CertificationController extends BaseController {
         }
         ReportBuilder reportBuilder = new ReportBuilder(reportName, downloadName + ".pdf", request, response);
         reportBuilder.setCollection(list);
+        reportBuilder.setParameter("imagesDir", request.getServletContext().getRealPath("/res/images/") );
         reportBuilder.build("pdf");
     }
 }

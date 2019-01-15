@@ -3,6 +3,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printScholarship" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b3247852-8d39-4bdf-a3a0-3af46aeae1a6">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="test1DataAdapter.xml"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="imagesDir" class="java.lang.String" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -130,6 +131,10 @@
 				</textElement>
 				<text><![CDATA[성공회대학교 총장]]></text>
 			</staticText>
+			<image>
+				<reportElement x="460" y="25" width="65" height="65" uuid="3ef1a8aa-90bf-4cf5-9f0b-3d979b716a15"/>
+				<imageExpression><![CDATA[$P{imagesDir} +"corporate" + $F{corporateId}+".jpg"]]></imageExpression>
+			</image>
 		</band>
 	</columnFooter>
 	<pageFooter>
