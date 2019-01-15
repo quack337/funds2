@@ -8,9 +8,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRParameter;
@@ -138,7 +140,7 @@ public class ReportBuilder {
 
     private byte[] getPdfBytes() throws JRException {
         if (connection != null) return JasperRunManager.runReportToPdf(report, params, connection);
-        if (dataSource != null) return JasperRunManager.runReportToPdf(report, null, dataSource);
+        if (dataSource != null) return JasperRunManager.runReportToPdf(report, params, dataSource);
         return null;
     }
 
