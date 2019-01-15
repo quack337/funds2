@@ -23,7 +23,7 @@
 	<queryString>
 		<![CDATA[SELECT t.*,
    c.id AS corId, c.name AS corName, c.corporateNo, c.representative, c.postCode+' '+c.roadAddress+' '+c.detailAddress AS corAddress,
-   isNull(k.title, '') kindTitle, isNull(k.quantity, '') kindQuantity, isNull(k.unitCost, '') kindUnitCost,
+  
    (SELECT SUM(CONVERT(BIGINT,p1.amount)) FROM [Payment] p1 WHERE p1.receiptId = t.id) AS amount,
    (SELECT MIN(p1.paymentDate) FROM [Payment] p1 WHERE p1.receiptId = t.id) AS startDate,
    (SELECT MAX(p1.paymentDate) FROM [Payment] p1 WHERE p1.receiptId = t.id) AS endDate
@@ -38,7 +38,7 @@ FROM (
   LEFT JOIN [Payment] p ON t.paymentId = p.id
   LEFT JOIN [donationPurpose] d ON p.donationPurposeId = d.id
   LEFT JOIN [corporate] c ON d.corporateId = c.id
-  LEFT JOIN [paymentInKind] k ON k.paymentId = p.id
+ 
 $P!{whereClause}]]>
 	</queryString>
 	<field name="id" class="java.lang.Integer"/>
