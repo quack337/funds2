@@ -34,11 +34,10 @@
           <form:option value="2" label="비회원" />
         </form:select>
         <form:select path="et">
-          <form:option value="0" label="기타 조건" />
+          <form:option value="0" label="우편 발송 동의" />
           <form:option value="1" label="우편 반송" />
-          <form:option value="2" label="우편 발송 동의" />
-          <form:option value="3" label="이메일 수신 동의" />
-          <form:option value="4" label="SMS 수신 동의" />
+          <form:option value="2" label="이메일 수신 동의" />
+          <form:option value="3" label="SMS 수신 동의" />
         </form:select>
         <form:input type="text" class="w100" path="st" placeholder="이름" style="margin-left: 20px; margin-right: 20px;" />
         <button type="submit" class="btn btn-primary btn-sm">조회</button>

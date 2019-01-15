@@ -202,7 +202,6 @@ FROM (
             THEN 1 ELSE 2 END) hoewonYn
     FROM sponsor s 
     WHERE 1=1
-    AND s.mailReceiving = 1 AND dmError = 0
     AND (@sponsorType2 = 0 OR @sponsorType2 = s.sponsorType2Id)
     AND (@name IS NULL OR @name = '' OR s.name = @name)
   ) subquery1
@@ -210,8 +209,10 @@ FROM (
   AND (@hoewonYn = 0 OR @hoewonYn = hoewonYn)
   AND ((hoewonYn = 1 AND id IN (SELECT sponsorId FROM payment p WHERE paymentDate BETWEEN @startDate AND @endDate)) OR
        (hoewonYn = 2 AND signUpDate BETWEEN @startDate AND @endDate))
-  AND (@et = 0 OR (@et = 1 AND dmError = 1) OR 
-                  (@et = 2 AND mailReceiving = 1) OR (@et = 3 AND emailReceiving = 1) OR (@et = 4 AND smsReceiving = 1))
+  AND ((@et = 0 AND mailReceiving = 1 AND dmError = 0) OR
+       (@et = 1 AND dmError = 1) OR 
+       (@et = 2 AND emailReceiving = 1) OR 
+       (@et = 3 AND smsReceiving = 1))
 ) subquery2
 WHERE 행번호 > (@currentPage - 1) * @pageSize 
 AND   행번호 <= @currentPage * @pageSize
@@ -238,17 +239,18 @@ SELECT s.*,
             OR EXISTS(SELECT id FROM payment WHERE sponsorId = s.id)
         THEN 1 ELSE 2 END) hoewonYn
 FROM sponsor s 
-WHERE 1=1
-AND s.mailReceiving = 1 AND dmError = 0
-AND (@sponsorType2 = 0 OR @sponsorType2 = s.sponsorType2Id)
-AND (@name IS NULL OR @name = '' OR s.name = @name)
+    WHERE 1=1
+    AND (@sponsorType2 = 0 OR @sponsorType2 = s.sponsorType2Id)
+    AND (@name IS NULL OR @name = '' OR s.name = @name)
 ) subquery1
 WHERE 1= 1
 AND (@hoewonYn = 0 OR @hoewonYn = hoewonYn)
 AND ((hoewonYn = 1 AND id IN (SELECT sponsorId FROM payment p WHERE paymentDate BETWEEN @startDate AND @endDate)) OR
-    (hoewonYn = 2 AND signUpDate BETWEEN @startDate AND @endDate))
-  AND (@et = 0 OR (@et = 1 AND dmError = 1) OR 
-                  (@et = 2 AND mailReceiving = 1) OR (@et = 3 AND emailReceiving = 1) OR (@et = 4 AND smsReceiving = 1))
+     (hoewonYn = 2 AND signUpDate BETWEEN @startDate AND @endDate))
+AND ((@et = 0 AND mailReceiving = 1 AND dmError = 0) OR
+     (@et = 1 AND dmError = 1) OR 
+     (@et = 2 AND emailReceiving = 1) OR 
+     (@et = 3 AND smsReceiving = 1))
 ]]>
 </select>    
    
