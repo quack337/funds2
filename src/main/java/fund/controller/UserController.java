@@ -139,7 +139,7 @@ public class UserController extends BaseController{
     }
 
     @RequestMapping(value="/user/edit", method=RequestMethod.POST, params="cmd=saveMenu")
-    public String saveInfo(Model model, User user, @RequestParam("menuId") Integer[] menuId) {
+    public String saveInfo(Model model, User user, @RequestParam(name="menuId", required=false) Integer[] menuId) {
         try {
             if (UserService.canAccess(C.메뉴_시스템관리) == false) return "redirect:/home/logout";
             if (user.getUserType() == null) user.setUserType(UserService.getCurrentUser().getUserType());

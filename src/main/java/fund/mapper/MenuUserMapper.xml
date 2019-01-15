@@ -15,7 +15,13 @@
 </select>
  
 <delete id="delete">
-  DELETE FROM menuUser WHERE menuId = #{menuId} AND userId = #{userId}
+  DELETE FROM menuUser 
+  WHERE menuId = #{menuId} AND userId = #{userId}
+</delete> 
+
+<delete id="deleteByUserId">
+  DELETE FROM menuUser 
+  WHERE userId = #{userId}
 </delete> 
 
 <insert id="insert">

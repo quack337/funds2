@@ -108,6 +108,10 @@ public class UserService {
 
     public void saveMenuUser(User user, Integer[] menuId) {
         if (isAdmin(user)) return;
+        if (menuId == null) {
+            menuUserMapper.deleteByUserId(user.getId());
+            return;
+        }
         List<MenuUser> list0 = menuUserMapper.selectMenuUserByUserId(user.getId());
         List<Integer> list1 = Arrays.asList(menuId);
         for (MenuUser m : list0) {

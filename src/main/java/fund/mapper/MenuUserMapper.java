@@ -13,6 +13,7 @@ import fund.dto.MenuUser;
      List<Integer> selectMenuIdByUserId(int userId);
      List<MenuUser> selectMenuUserByUserId(int userId);
 
+     void deleteByUserId(int userId);
      void delete(@Param("menuId") int menuId, @Param("userId") int userId);
      void insert(@Param("menuId") int menuId, @Param("userId") int userId);
  }
