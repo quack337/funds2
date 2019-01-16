@@ -24,8 +24,8 @@
 	<queryString>
 		<![CDATA[SELECT  DISTINCT r.*, s.name, c.id AS corId, c.name AS corName, c.corporateNo,
 	CONVERT(VARCHAR,DECRYPTBYPASSPHRASE(CONVERT(VARCHAR, $P{key1}), juminNo_encrypted)) juminNo, representative,
-  s.homePostCode+' '+s.homeRoadAddress+' '+s.homeDetailAddress AS address, 
-  c.postCode+' '+c.roadAddress+' '+c.detailAddress AS corAddress
+  s.homeRoadAddress+' '+s.homeDetailAddress AS address, 
+  c.roadAddress AS corAddress
 FROM [Receipt] r LEFT JOIN [Sponsor] s ON r.sponsorID = s.id 
   LEFT JOIN [Payment] p ON r.id = p.receiptID
   LEFT JOIN [donationPurpose] d ON p.donationPurposeId = d.id
@@ -199,7 +199,7 @@ $P!{whereClause}]]>
 				<textFieldExpression><![CDATA[$F{corporateNo}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="292" y="195" width="109" height="18" uuid="6d56a3ec-86c4-4d00-99b8-41b4388a7993"/>
+				<reportElement x="292" y="195" width="109" height="15" uuid="6d56a3ec-86c4-4d00-99b8-41b4388a7993"/>
 				<box leftPadding="2">
 					<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
@@ -469,7 +469,7 @@ $P!{whereClause}]]>
 				<subreportExpression><![CDATA[$P{paymentList.jasper}]]></subreportExpression>
 			</subreport>
 			<staticText>
-				<reportElement x="292" y="213" width="109" height="12" uuid="a4afe0c2-ecb2-4d85-944c-8429c15c09ac">
+				<reportElement x="292" y="210" width="109" height="15" uuid="a4afe0c2-ecb2-4d85-944c-8429c15c09ac">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box leftPadding="2">
@@ -540,20 +540,6 @@ $P!{whereClause}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{createDate}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement key="" x="229" y="112" width="342" height="21" uuid="41590382-3ff2-4bcc-85cc-ebfbe1a6f5bc"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" pdfFontName="fonts/NanumGothic.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-					<paragraph lineSpacing="Single" leftIndent="20"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{representative}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement key="" x="198" y="49" width="72" height="22" uuid="3fc63770-a5ab-4a20-9c26-1013c368fa1a"/>
 				<box>
@@ -595,9 +581,19 @@ $P!{whereClause}]]>
 				<text><![CDATA[기부금 수령인]]></text>
 			</staticText>
 			<image hAlign="Center" vAlign="Middle">
-				<reportElement x="508" y="77" width="62" height="56" uuid="ce281058-113f-4393-97cf-0aab40274a75"/>
+				<reportElement x="500" y="71" width="70" height="61" uuid="ce281058-113f-4393-97cf-0aab40274a75"/>
 				<imageExpression><![CDATA[$P{imagesDir} +"corporate" + $F{corId}+".jpg"]]></imageExpression>
 			</image>
+			<staticText>
+				<reportElement x="229" y="111" width="342" height="22" uuid="aa4e0790-6bd3-46b6-8a68-9e0f04392f95"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13" pdfFontName="fonts/NanumGothic.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[성공회대학교 총장]]></text>
+			</staticText>
 		</band>
 		<band height="270" splitType="Prevent">
 			<staticText>
