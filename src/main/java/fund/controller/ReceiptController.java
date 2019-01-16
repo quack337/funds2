@@ -121,8 +121,8 @@ public class ReceiptController extends BaseController {
         if (!UserService.canAccess(C.메뉴_영수증_기부금영수증발급대장)) return;
         String s = Arrays.toString(rid);
         s = s.substring(1, s.length()-1);
-        String whereClause = "WHERE r.id IN (" + s + ")";
-
+        String whereClause = "WHERE r.id = (" + s + ")";
+       
         ReportBuilder reportBuilder = new ReportBuilder("donationReceipt1", "기부금영수증.pdf", req, res);
         reportBuilder.setConnection(dataSource.getConnection());
         reportBuilder.setParameter("whereClause", whereClause);
@@ -137,7 +137,7 @@ public class ReceiptController extends BaseController {
         if (!UserService.canAccess(C.메뉴_영수증_기부금영수증발급대장)) return;
         String s = Arrays.toString(rid);
         s = s.substring(1, s.length()-1);
-        String whereClause = "WHERE t.id IN (" + s + ")";
+        String whereClause = "WHERE r.id = " + s + "";
 
         ReportBuilder reportBuilder = new ReportBuilder("donationReceipt2", "기부금영수증.pdf", req, res);
         reportBuilder.setConnection(dataSource.getConnection());
