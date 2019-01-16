@@ -94,7 +94,7 @@
         <td><form:select path="sponsorType1Id" tabindex="1" >
             <form:options itemValue="id" itemLabel="codeName" items="${ sponsorType1List }" />
           </form:select></td>
-        <td class="lb" rowspan="2">우편물 주소</td>
+        <td class="lb" rowspan="2">집(사업장) 주소</td>
         <td rowspan="2">
           <input class="address w100" type="text" name="homePostCode" id="homePostCode" placeholder="우편번호" value="${ sponsor.homePostCode }" tabindex="2" /> 
           <input type="button" onclick="postCodeSearch('homePostCode', 'homeRoadAddress')" value="우편번호 찾기" class="btn btn-flat btn-xs" tabindex="2" /><br/>
@@ -134,10 +134,11 @@
       <tr>
         <td class="lb">자택 전화번호</td>
         <td><input  type="text" name="homePhone" placeholder="02-0000-0000" value="${ sponsor.homePhone}" tabindex="1" /></td>
-        <td class="lb" rowspan="2">기부금 영수증 주소</td>
+        <td class="lb" rowspan="2">직장(법인 담당자) 주소</td>
         <td rowspan="2">
           <input class=" address w100" type="text" name="officePostCode" id="officePostCode" placeholder="우편번호" value="${ sponsor.officePostCode}"  tabindex="2" /> 
-          <input type="button" onclick="postCodeSearch('officePostCode', 'officeRoadAddress')" value="우편번호 찾기" class="btn btn-flat btn-xs"  tabindex="2" /> <br/>
+          <input type="button" onclick="postCodeSearch('officePostCode', 'officeRoadAddress')" value="우편번호 찾기" class="btn btn-flat btn-xs"  tabindex="2" /> 
+          <input type="button" onclick="copyAddress()" value="집 주소 가져오기" class="btn btn-flat btn-xs"  tabindex="2" /> <br/>
           <input class=" address w400" type="text" name="officeRoadAddress" id="officeRoadAddress" placeholder="도로명주소" value="${ sponsor.officeRoadAddress}"  tabindex="2" /> <br/>
           <input class=" address w400" type="text" name="officeDetailAddress" id="officeDetailAddress" placeholder="상세주소" value="${ sponsor.officeDetailAddress}"  tabindex="2" /></td>
       </tr>
@@ -227,3 +228,11 @@
 
 <span id="guide" style="color: #999"></span> <!-- daum_postcode.js 에서 사용함 -->
 <%@include file="_churchDialog.jsp" %> 
+
+<script>
+function copyAddress() {
+    $("[name=officePostCode]").val($("[name=homePostCode]").val());
+    $("[name=officeRoadAddress]").val($("[name=homeRoadAddress]").val());
+    $("[name=officeDetailAddress]").val($("[name=homeDetailAddress]").val());
+}
+</script>

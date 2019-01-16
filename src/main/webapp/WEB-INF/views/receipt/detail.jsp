@@ -15,8 +15,8 @@
   <div class="panel-body">
 
     <div class="pull-right mb4">
-      <a class="btn btn-primary btn-sm" href="report1?rid=${ receipt.id }">영수증 다운로드1</a>
-      <a class="btn btn-primary  btn-sm" href="report2?rid=${ receipt.id }">다운로드2</a>
+      <a class="btn btn-primary btn-sm" href="report1?rid=${ receipt.id }">영수증 (건별)다운로드</a>
+      <a class="btn btn-primary  btn-sm" href="report2?rid=${ receipt.id }">영수증 (합산)다운로드</a>
       <a class="btn btn-danger btn-sm" href="delete?id=${ receipt.id }&${ pagination.queryString }" data-confirm-delete>영수증 삭제</a>
       <a class="btn btn-info btn-sm btn-sm" href="list?${ pagination.queryString }">영수증 목록으로</a>
     </div>
