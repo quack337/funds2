@@ -18,7 +18,7 @@
 	<field name="body" class="java.lang.String"/>
 	<field name="corporateId" class="java.lang.Integer"/>
 	<field name="corporateName" class="java.lang.String"/>
-	<field name="representative" class="java.lang.String"/>
+	<field name="representativeWithBlank" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -54,87 +54,89 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="400" splitType="Stretch">
+		<band height="440" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<textField isBlankWhenNull="true">
-				<reportElement x="400" y="80" width="152" height="30" uuid="0d9a5fb6-a36b-489d-8827-2436e84caefc"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<reportElement x="376" y="80" width="176" height="30" uuid="0d9a5fb6-a36b-489d-8827-2436e84caefc"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="20" pdfFontName="fonts/KoPubBatangMedium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{personName}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="334" y="80" width="66" height="30" uuid="5abd4c5b-abf6-4d9c-8a2b-178316e78f54"/>
+				<reportElement x="310" y="80" width="66" height="30" uuid="5abd4c5b-abf6-4d9c-8a2b-178316e78f54"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="20" pdfFontName="fonts/KoPubBatangMedium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[이름 :]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="400" y="50" width="152" height="30" uuid="f8d7be9c-6c90-48ad-9aa6-c4c19053cafb"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<reportElement x="376" y="50" width="176" height="30" uuid="f8d7be9c-6c90-48ad-9aa6-c4c19053cafb"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="20" pdfFontName="fonts/KoPubBatangMedium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{personNo}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="334" y="50" width="66" height="30" uuid="220de188-ad78-4ef7-96a9-fe1dc70d8f5a"/>
+				<reportElement x="310" y="50" width="66" height="30" uuid="220de188-ad78-4ef7-96a9-fe1dc70d8f5a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="20" pdfFontName="fonts/KoPubBatangMedium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[학번 :]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="400" y="110" width="152" height="30" uuid="0d2c015e-4e00-481c-a59a-0ab0b43c0c76"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<reportElement x="376" y="110" width="176" height="30" uuid="0d2c015e-4e00-481c-a59a-0ab0b43c0c76"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="20" pdfFontName="fonts/KoPubBatangMedium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{department}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="334" y="110" width="66" height="30" uuid="a8d765d2-be24-4c52-873c-edf90b278b09"/>
+				<reportElement x="310" y="110" width="66" height="30" uuid="a8d765d2-be24-4c52-873c-edf90b278b09"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="20" pdfFontName="fonts/KoPubBatangMedium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[학과 :]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="57" y="140" width="440" height="255" uuid="09941514-2838-436d-b69a-5afcd5251a93"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<reportElement stretchType="RelativeToBandHeight" x="80" y="180" width="400" height="260" uuid="09941514-2838-436d-b69a-5afcd5251a93"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="20" pdfFontName="fonts/KoPubBatangMedium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Proportional" lineSpacingSize="2.0"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{body}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="100" splitType="Stretch">
+		<band height="120" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<textField>
-				<reportElement x="320" y="30" width="140" height="60" uuid="fdaabee6-d8c4-4f13-9239-71cda6fbe8e3"/>
+				<reportElement x="280" y="50" width="130" height="41" uuid="fdaabee6-d8c4-4f13-9239-71cda6fbe8e3"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="24" pdfFontName="fonts/KoPubDotumMedium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="5.0"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{representative}]]></textFieldExpression>
-			</textField>
-			<textField pattern="yyyy년 M월 dd일" isBlankWhenNull="true">
-				<reportElement x="170" y="0" width="200" height="30" uuid="60b2fc63-3af5-4fe4-a1ad-4430bee53767"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="20" pdfFontName="fonts/KoPubBatangLight.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{representativeWithBlank}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="100" y="30" width="220" height="60" uuid="7c48bc9c-dd94-4ab6-adcd-b224ae280409"/>
+				<reportElement x="80" y="50" width="200" height="41" uuid="7c48bc9c-dd94-4ab6-adcd-b224ae280409"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="20" pdfFontName="fonts/KoPubDotumMedium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[성공회대학교 총장]]></text>
 			</staticText>
 			<image>
-				<reportElement x="460" y="25" width="65" height="65" uuid="3ef1a8aa-90bf-4cf5-9f0b-3d979b716a15"/>
+				<reportElement x="410" y="27" width="65" height="65" uuid="3ef1a8aa-90bf-4cf5-9f0b-3d979b716a15"/>
 				<imageExpression><![CDATA[$P{imagesDir} +"corporate" + $F{corporateId}+".jpg"]]></imageExpression>
 			</image>
+			<textField pattern="yyyy년 M월 dd일" isBlankWhenNull="true">
+				<reportElement x="177" y="0" width="200" height="30" uuid="60b2fc63-3af5-4fe4-a1ad-4430bee53767"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20" pdfFontName="fonts/KoPubBatangLight.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnFooter>
 	<pageFooter>
