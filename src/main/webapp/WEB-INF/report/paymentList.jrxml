@@ -314,7 +314,7 @@ ORDER BY p.paymentDate]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{kindQuantity} * $F{kindUnitCost}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{kindQuantity} != null ? $F{kindQuantity} * $F{kindUnitCost} : $F{amount}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.##;¤-#,##0.##">
 				<reportElement x="420" y="0" width="56" height="20" uuid="1e7f1945-f1da-48f9-9c76-ec2540ed778b"/>
@@ -325,7 +325,7 @@ ORDER BY p.paymentDate]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{kindQuantity} * $F{kindUnitCost}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{kindQuantity} != null ? $F{kindQuantity} * $F{kindUnitCost} : $F{amount}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="476" y="0" width="50" height="20" uuid="2242e862-520c-42b6-8c26-433fd48182f7"/>
