@@ -24,4 +24,14 @@ public class Certificate {
     public String getAmountToKorean() {
     	return NumberUtils.toKoreanNumber(amount, true, true);
     }
+    
+    public String getRepresentativeWithBlank() {
+    	StringBuilder sb = new StringBuilder();
+    	
+    	for(int i=0; i<representative.length(); i++) {
+    		sb.append(representative.charAt(i));
+    		sb.append(" ");
+    	}
+    	return sb.toString();
+    }
 }
