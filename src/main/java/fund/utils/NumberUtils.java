@@ -29,7 +29,7 @@ public final class NumberUtils {
 				result.append(han2[i % 4]);
 				isLastValueFromHan3 = false;
 			}
-			if (i % 4 == 0) {
+			if (i % 4 == 0 && !isLastValueFromHan3) {
 				result.append(han3[i / 4]);
 				isLastValueFromHan3 = true;
 			}
