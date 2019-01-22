@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import fund.dto.Payment;
 import fund.dto.Receipt;
@@ -13,6 +15,7 @@ import fund.mapper.PaymentMapper;
 import fund.mapper.ReceiptMapper;
 
 @Service
+@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 public class ReceiptService {
 
 	@Autowired PaymentMapper paymentMapper;

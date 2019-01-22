@@ -120,7 +120,7 @@ FROM Payment p
   JOIN sponsor s ON s.id = p.sponsorId
 WHERE p.paymentDate BETWEEN @startDate AND @endDate
 AND p.receiptId IS NULL
-AND LEN(REPLACE(CONVERT(VARCHAR, DECRYPTBYPASSPHRASE(CONVERT(VARCHAR, ${key1}), juminNo_encrypted)), '-', '')) IN (13, 10)
+AND LEN(REPLACE(CONVERT(VARCHAR, DECRYPTBYPASSPHRASE(CONVERT(VARCHAR, ${key1}), juminNo_encrypted)), '-', '')) = 13
 AND (@corporateId IS NULL OR @corporateId = 0 OR d.corporateId = @corporateId)
 ORDER BY p.sponsorId, d.corporateId
 </select>    

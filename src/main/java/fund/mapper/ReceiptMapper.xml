@@ -56,20 +56,21 @@ AND (@corporateId = 0 OR @corporateId IS NULL OR
 </select>
 
 <select id="generateReceiptNo" resultType="java.lang.String">
-DECLARE @n1 CHAR(2), @n2 INT, @year CHAR(4)
-SET @year = SUBSTRING(#{createDate}, 1, 4)
+DECLARE @n1 CHAR(2), @n2 INT, @n3 CHAR(7), @year CHAR(4)
+SET @year = SUBSTRING(#{createDate}, 1, 4);
 SET @n1 = (
   SELECT RIGHT(corporateNo, 2)
   FROM corporate
   WHERE id = #{corporateId}
-)
+);
+SET @n3 = @year + '-' + @n1;
 SET @n2 = (
   SELECT MAX(CONVERT(INT, RIGHT([no],4)))
   FROM receipt
-  WHERE CHARINDEX(@year, [no]) = 1 AND LEN([no]) = 9
-  AND ISNUMERIC(RIGHT([no], 4)) = 1)
-SET @n2 = ISNULL(@n2,0) + 1
-SELECT @year + '-' + @n1 + '-' + REPLACE(STR(@n2, 4), ' ', '0')
+  WHERE CHARINDEX(@n3, [no]) = 1 AND LEN([no]) = 12
+  AND ISNUMERIC(RIGHT([no], 4)) = 1);
+SET @n2 = ISNULL(@n2,0) + 1;
+SELECT @year + '-' + @n1 + '-' + REPLACE(STR(@n2, 4), ' ', '0');
 </select>
 
 <select id="selectSum" resultType="hashmap">
@@ -91,7 +92,7 @@ WITH sponsorDecrypted AS (
 )
 SELECT d.corporateId,
   (SELECT name FROM corporate t WHERE t.id = d.corporateId) name,
-  s.gubun, COUNT(p.id) count, SUM(p.amount) amount
+  s.gubun, COUNT(DISTINCT r.id), SUM(p.amount) amount
 FROM receipt r
   JOIN payment p 
     ON p.receiptId = r.id

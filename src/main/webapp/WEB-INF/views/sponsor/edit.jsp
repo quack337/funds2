@@ -11,6 +11,7 @@
 <style>
   input.address { margin-bottom: 2px; }
   textarea { width: 100%; height: 100px; }
+  table.duplicate tbody tr td { color: blue; }
 </style>
 
 <div class="navigation-info">
@@ -47,7 +48,7 @@
     
     <c:if test="${ list.size() > 0 }">
       <span style="font-weight: bold;">회원정보 중복</span>
-      <table class="table table-bordered mt4">
+      <table class="table table-bordered mt4 duplicate">
         <thead>
           <tr><th>회원번호</th><th>이름</th><th>주민번호</th><th>핸드폰</th><th>집전화</th><th>직장전화</th><th>이메일</th>        
         </thead>
@@ -196,7 +197,7 @@
         <td class="lb"></td>
         <td></td>
         <td>
-            <span style="display:inline-block; margin-right: 10px;">제3자정보게공:</span>
+            <span style="display:inline-block; margin-right: 10px;">제3자정보제공:</span>
             <label class="clean"><input type="radio" value="1" name="piua3rdParty" ${ sponsor.piua3rdParty == 1 ? "checked" :"" } tabindex="2" /> 동의</label>
             <label class="clean"><input type="radio" value="2" name="piua3rdParty" ${ sponsor.piua3rdParty == 2 ? "checked" :"" } tabindex="2" /> 미동의</label>
         </td>           

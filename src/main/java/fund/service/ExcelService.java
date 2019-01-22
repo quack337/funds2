@@ -257,6 +257,19 @@ public class ExcelService {
         row.createCell(index).setCellValue(value);
     }
 
+    static void createCell(Row row, int index, String value1, String value2) {
+        if (value1 == null) value1 = "";
+        if (value2 == null) value2 = "";
+        row.createCell(index).setCellValue(value1 + value2);
+    }
+
+    static void createCell(Row row, int index, String value1, String value2, String value3) {
+        if (value1 == null) value1 = "";
+        if (value2 == null) value2 = "";
+        if (value3 == null) value3 = "";
+        row.createCell(index).setCellValue(value1 + value2 + value3);
+    }
+
     static void createCell(Row row, int index, String value, CellStyle cellStyle) {
         if (value == null) return;
         row.createCell(index).setCellValue(value);
@@ -307,7 +320,7 @@ public class ExcelService {
         createStyle(workbook);
         Sheet sheet = workbook.createSheet("우편발송");
 
-        String[] columns = new String[] { "회원번호", "이름", "회원구분", "소속", "주소", "이메일", "휴대폰"};
+        String[] columns = new String[] { "회원번호", "이름", "회원구분", "소속", "직장명", "부서/직위", "법인담당자", "우편번호", "주소", "상세주소", "이메일", "휴대폰"};
         Row headerRow = sheet.createRow(0);
         setColumnHeader(headerRow, columns);
 
@@ -319,9 +332,14 @@ public class ExcelService {
             createCell(row, 1, sponsor.getName());
             createCell(row, 2, sponsor.getSponsorType2());
             createCell(row, 3, sponsor.getChurch());
-            createCell(row, 4, sponsor.getPostCode() + " " + sponsor.getAddress());
-            createCell(row, 5, sponsor.getEmail());
-            createCell(row, 6, sponsor.getMobilePhone());
+            createCell(row, 4, sponsor.getCompany());
+            createCell(row, 5, sponsor.getDepartment(), " / ", sponsor.getPosition());
+            createCell(row, 6, sponsor.getLiaison());
+            createCell(row, 7, sponsor.getPostCode());
+            createCell(row, 8, sponsor.getRoadAddress());
+            createCell(row, 9, sponsor.getDetailAddress());
+            createCell(row, 10, sponsor.getEmail());
+            createCell(row, 11, sponsor.getMobilePhone());
         }
         autoSizeColumn(sheet, columns);
         return workbook;

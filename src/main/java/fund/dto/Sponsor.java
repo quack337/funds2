@@ -60,6 +60,14 @@ public class Sponsor {
         return (mailTo == 0) ? homePostCode : officePostCode;
     }
 
+    public String getRoadAddress() {
+        return (mailTo == 0) ? homeRoadAddress : officeRoadAddress;
+    }
+
+    public String getDetailAddress() {
+        return (mailTo == 0) ? homeDetailAddress : officeDetailAddress;
+    }
+
     public Sponsor() { // junit 테스트를 위해 초기화
         this.juminNo = "";
         this.mobilePhone = "";

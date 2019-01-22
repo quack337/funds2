@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
-<c:set var="mode" value="${ code.id > 0 ? '수정' : '등록' }" />
+<c:set var="mode" value="${ code.id > 0 ? '관리' : '등록' }" />
 
 <div class="navigation-info">
   &gt; 기초정보 관리 &gt; ${ codeGroup.name } 관리 &gt; <a href="list?gid=${codeGroup.id}">${ codeGroup.name } 목록</a> &gt; ${ codeGroup.name } ${ mode }

@@ -6,7 +6,7 @@
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="${R}res/js/daum_postcode.js"></script>
 
-<c:set var="mode" value="${ corporate.id > 0 ? '수정' : '등록' }" />
+<c:set var="mode" value="${ corporate.id > 0 ? '관리' : '등록' }" />
 
 <div class="navigation-info">
   &gt; 기초정보 관리 &gt; 기부처 관리 &gt; <a href="list">기부처 목록</a> &gt; 기부처 ${ mode }

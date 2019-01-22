@@ -7,7 +7,7 @@
   table#todo label { font-weight: normal; display: inline-block; margin-left: 5px; margin-right: 20px; }
 </style>
 
-<c:set var="mode" value="${ todo.id > 0 ? '수정' : '등록' }" />
+<c:set var="mode" value="${ todo.id > 0 ? '관리' : '등록' }" />
 
 <div class="navigation-info">
   &gt; 기타 &gt; <a href="list?${ pagination.queryString }">일정목록</a> &gt; 일정 ${ mode }

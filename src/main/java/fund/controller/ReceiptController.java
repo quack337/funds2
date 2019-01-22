@@ -12,8 +12,6 @@ import javax.sql.DataSource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -88,7 +86,6 @@ public class ReceiptController extends BaseController {
     }
 
     @RequestMapping(value="/receipt/create1", method=RequestMethod.POST, params="cmd=createReceipt")
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public String create1CreateReceipt(RedirectAttributes ra, @RequestParam("pid") int[] pid, Wrapper wrapper) throws Exception {
         if (!UserService.canAccess(C.메뉴_영수증_영수증개별생성)) return "redirect:/home/logout";
         String createDate = (String)wrapper.getMap().get("createDate");
@@ -122,7 +119,7 @@ public class ReceiptController extends BaseController {
         String s = Arrays.toString(rid);
         s = s.substring(1, s.length()-1);
         String whereClause = "WHERE r.id = (" + s + ")";
-       
+
         ReportBuilder reportBuilder = new ReportBuilder("donationReceipt1", "기부금영수증.pdf", req, res);
         reportBuilder.setConnection(dataSource.getConnection());
         reportBuilder.setParameter("whereClause", whereClause);
@@ -148,7 +145,6 @@ public class ReceiptController extends BaseController {
     }
 
     @RequestMapping("/receipt/delete")
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public String delete(RedirectAttributes ra, @RequestParam("id") int id, @ModelAttribute("pagination") PaginationReceipt pagination) {
         if (!UserService.canAccess(C.메뉴_영수증_기부금영수증발급대장)) return "redirect:/home/logout";
         receiptService.deleteReceipt(id);
@@ -166,7 +162,6 @@ public class ReceiptController extends BaseController {
     }
 
     @RequestMapping(value="/receipt/create2", method=RequestMethod.POST)
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public String create2CreateReceipt(RedirectAttributes ra, Model model, Wrapper wrapper) throws Exception {
         if (!UserService.canAccess(C.메뉴_영수증_영수증일괄생성)) return "redirect:/home/logout";
         Map<String,Object> map = wrapper.getMap();

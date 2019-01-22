@@ -5,7 +5,7 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="my" %>
 <c:url var="R" value="/" />
 
-<c:set var="mode" value="${ donationPurpose.id > 0 ? '수정' : '등록' }" />
+<c:set var="mode" value="${ donationPurpose.id > 0 ? '관리' : '등록' }" />
 
 <div class="navigation-info">
   &gt; 기초정보 관리 &gt; 기부목적 관리 &gt; <a href="list">기부목적 목록</a> &gt; 기부목적 ${ mode }
@@ -38,9 +38,9 @@
 	        <td><form:input path="name" class="w400" /></td>
 	        <td class="lb">구분</td>
 	        <td><form:select path="gubun" class="w100">
-                    <form:option value="영구" />
                     <form:option value="일반" />
                     <form:option value="지정" />
+                    <form:option value="연구" />
                     <form:option value="현물" />
                 </form:select>
           </td>

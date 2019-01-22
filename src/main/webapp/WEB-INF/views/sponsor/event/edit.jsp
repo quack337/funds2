@@ -8,7 +8,7 @@
 <div class="navigation-info">
   &gt; 회원 관리 &gt; <a href="${R}sponsor/list?${ pagination.queryString }">회원 목록</a>  
   &gt; 예우 관리 &gt; <a href="${R}sponsor/event/list?sid=${sponsor.id}&${ pagination.queryString }">예우 목록</a>  
-  &gt; 예우 ${ sponsorEvent.id == 0 ? '등록' : '수정' }  
+  &gt; 예우 ${ sponsorEvent.id == 0 ? '등록' : '관리' }  
 </div>
 
 <form:form method="post" modelAttribute="sponsorEvent">

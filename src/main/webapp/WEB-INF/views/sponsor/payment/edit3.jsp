@@ -9,7 +9,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
 <script src="${R}res/js/vue_mine.js"></script>
 
-<c:set var="mode" value="${ payment.id > 0 ? '수정' : '등록' }" />
+<c:set var="mode" value="${ payment.id > 0 ? '관리' : '등록' }" />
 
 <div class="navigation-info">
   &gt; 회원 관리 &gt; <a href="${R}sponsor/list?${ pagination.queryString }">회원 목록</a>  
