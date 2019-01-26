@@ -27,14 +27,23 @@ public class Certificate {
 
 	public String getCorporateWithBlank() {
 		StringBuilder sb = new StringBuilder();
-
+		//법인 2 산단 3
 		for (int i = 0; i < corporateName.length(); i++) {
 			sb.append(corporateName.charAt(i));
 			sb.append("  ");
+			
+			if (corporateId == 2 && i == 3) {
+				sb.append("  ");
+				sb.append("\n");
+			} else if (corporateId == 3 && i == 5) {
+				sb.append("  ");
+				sb.append("\n");
+			}
 		}
 		return sb.toString();
 	}
 
+	
 	public String getRepresentativeWithBlank() {
 		StringBuilder sb = new StringBuilder();
 
