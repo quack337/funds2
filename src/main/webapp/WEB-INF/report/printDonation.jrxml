@@ -113,8 +113,8 @@
 				<textFieldExpression><![CDATA[$F{representativeWithBlank}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="20" width="250" height="41" uuid="d61e04e2-2a35-4288-9fb1-6ff2a30ff834"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
+				<reportElement x="20" y="0" width="230" height="80" uuid="d61e04e2-2a35-4288-9fb1-6ff2a30ff834"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="22" pdfFontName="fonts/KoPubBatangMedium.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{corporateWithBlank}]]></textFieldExpression>
