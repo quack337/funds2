@@ -89,9 +89,6 @@ public class SponsorService {
 
         if (Objects.equals(s1.getEtc(), s2.getEtc()) == false) list.add(createLog("비고", s1.getEtc(), s2.getEtc()));
 
-        if (s1.isDmError() != s2.isDmError()) list.add(createLog("우편물 반송여부", s1.isDmError() ? "반송" : "", s2.isDmError() ? "반송" : ""));
-        if (Objects.equals(s1.getDmErrorEtc(), s2.getDmErrorEtc()) == false) list.add(createLog("우편물 반송사유", s1.getDmErrorEtc(), s2.getDmErrorEtc()));
-
         Timestamp date = new Timestamp(System.currentTimeMillis());
         for (SponsorLog log : list) {
             log.setUserId(UserService.getCurrentUser().getId());

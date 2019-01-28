@@ -152,7 +152,7 @@ public class CmsController extends BaseController {
     // TODO: 에러 발생시 EB14 재등록 메시지.
     @RequestMapping(value="/cms/eb14", method=RequestMethod.POST)
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public String eb14(Model model, @RequestParam("file") MultipartFile file) throws Exception {
+    public String eb14(Model model, @RequestParam("data") MultipartFile file) throws Exception {
         if (!UserService.canAccess(C.메뉴_금융연동_EB14등록)) return "redirect:/home/logout";
         ByteArrayInputStream stream = new ByteArrayInputStream(file.getBytes());
         String s = IOUtils.toString(stream, "ASCII");
@@ -343,7 +343,7 @@ public class CmsController extends BaseController {
     // 에러가 발생할 상황을 최대한 줄이자.
     @RequestMapping(value="/cms/eb22", method=RequestMethod.POST)
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public String eb22(Model model, @RequestParam("file") MultipartFile file) throws Exception {
+    public String eb22(Model model, @RequestParam("data") MultipartFile file) throws Exception {
         if (!UserService.canAccess(C.메뉴_금융연동_EB22등록)) return "redirect:/home/logout";
         ByteArrayInputStream stream = new ByteArrayInputStream(file.getBytes());
         String s = IOUtils.toString(stream, "ASCII");
@@ -422,7 +422,7 @@ public class CmsController extends BaseController {
     }
 
     @RequestMapping(value="/cms/xfer", method=RequestMethod.POST, params="cmd=upload")
-    public String xfer(Model model, @RequestParam("file") MultipartFile file, HttpSession session) throws Exception {
+    public String xfer(Model model, @RequestParam("data") MultipartFile file, HttpSession session) throws Exception {
         if (!UserService.canAccess(C.메뉴_금융연동_자동이체결과등록)) return "redirect:/home/logout";
         String redirect1 = "redirect:xfer";
         if (file.getSize() <= 0) return redirect1;
@@ -485,7 +485,7 @@ public class CmsController extends BaseController {
     }
 
     @RequestMapping(value="/cms/sal", method=RequestMethod.POST, params="cmd=upload")
-    public String sal(@RequestParam("file") MultipartFile file, HttpSession session) throws Exception {
+    public String sal(@RequestParam("data") MultipartFile file, HttpSession session) throws Exception {
         if (!UserService.canAccess(C.메뉴_금융연동_급여공제결과등록)) return "redirect:/home/logout";
         String redirect1 = "redirect:sal";
         if (file.getSize() <= 0) return redirect1;

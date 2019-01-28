@@ -16,10 +16,6 @@
        
       <button type="submit" class="btn btn-primary btn-sm" name="cmd" value="upload">업로드</button>
     </form>
-
       
     </div>
 </div>          
-   
-
-
