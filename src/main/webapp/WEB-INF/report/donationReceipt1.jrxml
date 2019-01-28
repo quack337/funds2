@@ -484,7 +484,7 @@ $P!{whereClause}]]>
 				<text><![CDATA[기부금단체 근거법령]]></text>
 			</staticText>
 		</band>
-		<band height="136" splitType="Prevent">
+		<band height="139" splitType="Prevent">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<staticText>
 				<reportElement key="" x="1" y="0" width="570" height="29" uuid="ab64bc9a-f5d3-417d-be7f-7045e6ec0d79"/>
@@ -521,7 +521,7 @@ $P!{whereClause}]]>
 				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="" x="0" y="71" width="570" height="19" uuid="af6eb0b4-4035-4cf6-b247-ce677a446b19"/>
+				<reportElement key="" x="0" y="71" width="567" height="19" uuid="af6eb0b4-4035-4cf6-b247-ce677a446b19"/>
 				<box>
 					<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -541,7 +541,7 @@ $P!{whereClause}]]>
 				<textFieldExpression><![CDATA[$F{createDate}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="" x="198" y="49" width="72" height="22" uuid="3fc63770-a5ab-4a20-9c26-1013c368fa1a"/>
+				<reportElement key="" x="190" y="49" width="80" height="22" uuid="3fc63770-a5ab-4a20-9c26-1013c368fa1a"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -567,11 +567,11 @@ $P!{whereClause}]]>
 				<text><![CDATA[(서명 또는 인)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="" x="1" y="111" width="228" height="22" uuid="84c7c4e3-f338-4920-97dc-2163e1877f6e"/>
+				<reportElement key="" x="1" y="111" width="239" height="22" uuid="84c7c4e3-f338-4920-97dc-2163e1877f6e"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -584,16 +584,26 @@ $P!{whereClause}]]>
 				<reportElement x="500" y="71" width="70" height="61" uuid="ce281058-113f-4393-97cf-0aab40274a75"/>
 				<imageExpression><![CDATA[$P{imagesDir} +"corporate" + $F{corId}+".jpg"]]></imageExpression>
 			</image>
-			<staticText>
-				<reportElement x="229" y="111" width="342" height="22" uuid="aa4e0790-6bd3-46b6-8a68-9e0f04392f95"/>
+			<textField>
+				<reportElement key="" x="240" y="112" width="161" height="21" uuid="5933b87e-b7b7-48d4-af16-f3d8a5655b3c"/>
 				<box>
-					<bottomPen lineWidth="1.0"/>
+					<bottomPen lineWidth="0.3"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="13" pdfFontName="fonts/NanumGothic.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[성공회대학교 총장]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$F{corName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="" x="401" y="112" width="166" height="21" uuid="c1159e3d-0d6f-4a91-96eb-dbf52ae1b8dd"/>
+				<box>
+					<bottomPen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="13" pdfFontName="fonts/NanumGothic.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{corId} == 1 ? " 총장" : $F{corId} == 2 ? " 이사장" : " 단장"]]></textFieldExpression>
+			</textField>
 		</band>
 		<band height="270" splitType="Prevent">
 			<staticText>

@@ -869,7 +869,7 @@ FROM [Receipt] r
 				<textFieldExpression><![CDATA[$F{createDate}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="" x="269" y="55" width="238" height="20" uuid="71a6a9ca-11f7-4eba-ad35-d3605e3e1ec1"/>
+				<reportElement key="" x="270" y="55" width="236" height="20" uuid="71a6a9ca-11f7-4eba-ad35-d3605e3e1ec1"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -902,7 +902,7 @@ FROM [Receipt] r
 				<textFieldExpression><![CDATA[$F{createDate}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="" x="197" y="54" width="72" height="22" uuid="3fc63770-a5ab-4a20-9c26-1013c368fa1a"/>
+				<reportElement key="" x="190" y="54" width="80" height="22" uuid="3fc63770-a5ab-4a20-9c26-1013c368fa1a"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -927,12 +927,16 @@ FROM [Receipt] r
 				</textElement>
 				<text><![CDATA[(서명 또는 인)]]></text>
 			</staticText>
+			<image hAlign="Center">
+				<reportElement positionType="FixRelativeToBottom" x="502" y="76" width="70" height="61" uuid="b2dc3e05-3819-4522-afd6-73000ff82d30"/>
+				<imageExpression><![CDATA[$P{imagesDir} +"corporate" + $F{corId}+".jpg"]]></imageExpression>
+			</image>
 			<staticText>
-				<reportElement key="" x="0" y="116" width="228" height="22" uuid="84c7c4e3-f338-4920-97dc-2163e1877f6e"/>
+				<reportElement key="" x="0" y="117" width="239" height="22" uuid="63076163-ed1a-4fcb-82af-50c84912cf4e"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -941,20 +945,26 @@ FROM [Receipt] r
 				</textElement>
 				<text><![CDATA[기부금 수령인]]></text>
 			</staticText>
-			<image hAlign="Center">
-				<reportElement positionType="FixRelativeToBottom" x="502" y="76" width="70" height="61" uuid="b2dc3e05-3819-4522-afd6-73000ff82d30"/>
-				<imageExpression><![CDATA[$P{imagesDir} +"corporate" + $F{corId}+".jpg"]]></imageExpression>
-			</image>
-			<staticText>
-				<reportElement x="228" y="116" width="341" height="22" uuid="bb3af9fe-87f6-41c9-a8f8-3a0777583ea8"/>
+			<textField>
+				<reportElement key="" x="239" y="118" width="161" height="21" uuid="214dd9d0-1c67-438c-b7c6-32a30165b8df"/>
 				<box>
-					<bottomPen lineWidth="1.0"/>
+					<bottomPen lineWidth="0.3"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="13" pdfFontName="fonts/NanumGothic.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[성공회대학교 총장]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$F{corName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="" x="400" y="118" width="166" height="21" uuid="507b1a56-0979-46ef-b413-d86fd697dcc2"/>
+				<box>
+					<bottomPen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="13" pdfFontName="fonts/NanumGothic.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{corId} == 1 ? " 총장" : $F{corId} == 2 ? " 이사장" : " 단장"]]></textFieldExpression>
+			</textField>
 		</band>
 		<band height="270" splitType="Prevent">
 			<staticText>
