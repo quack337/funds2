@@ -25,22 +25,27 @@
 	<queryString>
 		<![CDATA[WITH paymentGroup AS (
     SELECT receiptId, MAX(paymentDate) paymentDateMax, MIN(paymentDate) paymentDateMin, 
-          SUM(CONVERT(BIGINT, amount)) amountSum, MIN(donationPurposeId) donationPurposeId
+          SUM(CONVERT(BIGINT, amount)) amountSum, MIN(donationPurposeId) donationPurposeId,
+        MIN(paymentMethodId) paymentMethodId
    FROM [Payment]
    GROUP BY receiptId
 )
 SELECT r.*,
-    s.name, CONVERT(VARCHAR,DECRYPTBYPASSPHRASE(CONVERT(VARCHAR,  $P{key1}), juminNo_encrypted)) juminNo, 
+    s.name, CONVERT(VARCHAR,DECRYPTBYPASSPHRASE(CONVERT(VARCHAR,  'lsj!@#'), juminNo_encrypted)) juminNo, 
     s.homeRoadAddress+' '+s.homeDetailAddress [address],
     c.id AS corId, c.name AS corName, c.corporateNo, c.representative, c.roadAddress AS corAddress,
     p.amountSum amount,
     DATEADD(DAY, -DAY(paymentDateMin) + 1, paymentDateMin) AS startDate,
-    DATEADD(MONTH, ((YEAR(paymentDateMax) - 1900) * 12) + MONTH(paymentDateMax), -1) AS endDate
+    DATEADD(MONTH, ((YEAR(paymentDateMax) - 1900) * 12) + MONTH(paymentDateMax), -1) AS endDate,
+   CASE d.code WHEN 'BBA' THEN '법정' WHEN 'EAB' THEN '지정' ELSE '' END code1,
+   CASE d.code WHEN 'BBA' THEN '10' WHEN 'EAB' THEN '40' ELSE '' END code2,
+   CASE p.paymentMethodId WHEN 14 THEN '현물' ELSE '금전' END code3
 FROM [Receipt] r 
   LEFT JOIN paymentGroup p ON p.receiptId = r.id
   LEFT JOIN [Sponsor] s ON r.sponsorId = s.id
   LEFT JOIN [donationPurpose] d ON p.donationPurposeId = d.id
   LEFT JOIN [corporate] c ON d.corporateId = c.id AND d.corporateId = c.id
+
  $P!{whereClause}]]>
 	</queryString>
 	<field name="id" class="java.lang.Integer"/>
@@ -58,6 +63,9 @@ FROM [Receipt] r
 	<field name="startDate" class="java.sql.Date"/>
 	<field name="endDate" class="java.sql.Date"/>
 	<field name="corId" class="java.lang.Integer"/>
+	<field name="code1" class="java.lang.String"/>
+	<field name="code2" class="java.lang.String"/>
+	<field name="code3" class="java.lang.String"/>
 	<background>
 		<band height="2" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -688,19 +696,6 @@ FROM [Receipt] r
 				</textElement>
 				<text><![CDATA[]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="22" y="365" width="30" height="20" uuid="d15623e5-d15a-4c72-91e8-3e9ac84239df"/>
-				<box>
-					<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
-				</textElement>
-				<text><![CDATA[10]]></text>
-			</staticText>
 			<textField>
 				<reportElement x="82" y="365" width="115" height="20" uuid="271b9f3f-5651-45f1-9395-83155a6e40a1"/>
 				<box>
@@ -723,7 +718,7 @@ FROM [Receipt] r
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfFontName="fonts/NanumGothic.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[교육,장학]]></text>
+				<text><![CDATA[]]></text>
 			</staticText>
 			<textField pattern="#,##0.##;¤-#,##0.##">
 				<reportElement x="355" y="365" width="62" height="20" uuid="62b6bae9-0408-407f-b84e-6bce7dae70e0"/>
@@ -775,36 +770,6 @@ FROM [Receipt] r
 				</textElement>
 				<text><![CDATA[유 형]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="52" y="365" width="30" height="20" uuid="92298e30-3731-41ca-b31a-2244f20b6f60">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<box>
-					<topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="fonts/NanumGothic.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="-1" y="365" width="23" height="20" uuid="1f71f676-9beb-4e05-a37f-6ef487fe2521">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" pdfFontName="fonts/NanumGothic.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[법정]]></text>
-			</staticText>
 			<textField pattern="#,##0.##;¤-#,##0.##">
 				<reportElement x="417" y="365" width="62" height="20" uuid="a3268082-8316-48de-8f9a-8434b3f74bdb"/>
 				<box>
@@ -844,6 +809,43 @@ FROM [Receipt] r
 				</textElement>
 				<text><![CDATA[기부금단체 근거법령]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="-1" y="365" width="23" height="20" uuid="0b96a57f-5a99-44cd-a176-7648eed886b2"/>
+				<box>
+					<bottomPen lineWidth="0.3"/>
+					<rightPen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="fonts/NanumGothic.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{code1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="22" y="365" width="30" height="20" uuid="83d41fa9-3580-4b4c-a598-32a5de3f4577"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="fonts/NanumGothic.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{code2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="52" y="365" width="30" height="20" uuid="831a0c9d-3512-4f3c-8398-fe4a41ce0791"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="fonts/NanumGothic.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{code3}]]></textFieldExpression>
+			</textField>
 		</band>
 		<band height="139" splitType="Prevent">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
