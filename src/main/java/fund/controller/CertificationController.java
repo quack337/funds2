@@ -87,7 +87,6 @@ public class CertificationController extends BaseController {
             certificate.setCertificateNo(certificateMapper.generateCertificateNo(type));
             certificate.setUserId(UserService.getCurrentUser().getId());
             certificateMapper.insert(certificate);
-            if (type == 1) userService.사용자소속제한(model, pagination, null);
             return "redirect:detail?id=" + certificate.getId() + "&" + pagination.getQueryString();
         } catch (Exception e) {
             if (type == 1) userService.사용자소속제한(model, pagination, null);
