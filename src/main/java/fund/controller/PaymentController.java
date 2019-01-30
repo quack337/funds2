@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import fund.dto.Code;
 import fund.dto.param.OrderBy;
 import fund.dto.param.Wrapper;
 import fund.mapper.CodeMapper;
@@ -83,7 +84,10 @@ public class PaymentController extends BaseController {
     private void addModel1(Model model) {
         model.addAttribute("sponsorType2List", codeMapper.selectEnabledByCodeGroupId(C.코드그룹ID_회원구분));
         model.addAttribute("donationPurposes", donationPurposeMapper.selectNotClosed());
-        model.addAttribute("paymentMethods", codeMapper.selectEnabledByCodeGroupId(C.코드그룹ID_정기납입방법));
+        List<Code> paymentMethods = new ArrayList<Code>();
+        paymentMethods.addAll(codeMapper.selectEnabledByCodeGroupId(C.코드그룹ID_정기납입방법));
+        paymentMethods.addAll(codeMapper.selectEnabledByCodeGroupId(C.코드그룹ID_비정기납입방법));
+        model.addAttribute("paymentMethods", paymentMethods);
         model.addAttribute("churchList", codeMapper.selectEnabledByCodeGroupId(C.코드그룹ID_소속교회));
         model.addAttribute("corporates", corporateMapper.selectAll());
         model.addAttribute("report1aOrderBy", report1aOrderBy);
