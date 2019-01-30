@@ -384,4 +384,29 @@ public class ExcelService {
         }
     }
 
+    public static Workbook downloadTaxDataExcel(List<Map<String,Object>> list) {
+        Workbook workbook = new XSSFWorkbook();
+        createStyle(workbook);
+        Sheet sheet = workbook.createSheet("국세청보고자료");
+
+        Row headerRow = sheet.createRow(0);
+        String[] columns = new String[] { "주민번호", "회원명", "기부내용구분", "기부금단체코드", "납입일", "납입액" };
+        setColumnHeader(headerRow, columns);
+
+        for (int i = 0; i < list.size(); ++i) {
+            Map<String, Object> map = list.get(i);
+
+            Row row = sheet.createRow(i + 1);
+            createCell(row, 0, (String)map.get("juminNo"));
+            createCell(row, 1, (String)map.get("name"));
+            createCell(row, 2, (String)map.get("code1"));
+            createCell(row, 3, (String)map.get("code2"));
+            createCell(row, 4, (Date)map.get("paymentDate"), dateCellStyle);
+            createCell(row, 5, (Integer)map.get("amount"), numberStyle);
+        }
+
+        autoSizeColumn(sheet, columns);
+        return workbook;
+    }
+
 }

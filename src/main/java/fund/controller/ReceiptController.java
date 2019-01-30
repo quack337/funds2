@@ -1,5 +1,7 @@
 package fund.controller;
 
+import java.io.BufferedOutputStream;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +34,7 @@ import fund.mapper.PaymentMapper;
 import fund.mapper.ReceiptMapper;
 import fund.mapper.SponsorMapper;
 import fund.service.C;
+import fund.service.ExcelService;
 import fund.service.ReceiptService;
 import fund.service.ReportBuilder;
 import fund.service.UserService;
@@ -186,12 +190,17 @@ public class ReceiptController extends BaseController {
     }
 
     @RequestMapping(value="/receipt/taxData", method=RequestMethod.POST)
-    public void taxData(Model model, Wrapper wrapper, HttpServletRequest req, HttpServletResponse res) throws Exception {
+    public void taxData(Model model, Wrapper wrapper, HttpServletResponse response) throws Exception {
         if (!UserService.canAccess(C.메뉴_영수증_국세청보고자료)) return;
+
         List<Map<String, Object>> list = paymentMapper.selectForTaxData(wrapper.getMap());
-        ReportBuilder reportBuilder = new ReportBuilder("taxData", "국세청보고자료.xlsx", req, res);
-        reportBuilder.setCollection(list);
-        reportBuilder.build("xlsx");
+        Workbook workbook = ExcelService.downloadTaxDataExcel(list);
+        String fileName = URLEncoder.encode("국세청보고자료.xlsx","UTF-8");
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ";");
+        try (BufferedOutputStream output = new BufferedOutputStream(response.getOutputStream())) {
+            workbook.write(output);
+        }
     }
 
 

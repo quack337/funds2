@@ -144,15 +144,17 @@ SET @corporateId = #{corporateId}
 
 SELECT *
 FROM (
-  SELECT p.*, s.sponsorNo, s.name sponsorName, 
-    CONVERT(VARCHAR, DECRYPTBYPASSPHRASE(CONVERT(VARCHAR, ${key1}), juminNo_encrypted)) juminNo
+  SELECT s.sponsorNo, s.name, 
+    CONVERT(VARCHAR, DECRYPTBYPASSPHRASE(CONVERT(VARCHAR, 'dltmdwls!@#'), juminNo_encrypted)) juminNo,
+    p.paymentDate, p.amount, 
+    CASE WHEN paymentMethodId = 14 THEN '2:현물기부' ELSE '1:금전기부' END code1,
+    code code2  
   FROM payment p 
     LEFT JOIN sponsor s ON s.id = p.sponsorId
     LEFT JOIN donationPurpose d ON d.id = p.donationPurposeId
   WHERE paymentDate BETWEEN @startDate AND @endDate
   AND corporateId = @corporateId
   AND receiptId IS NOT NULL
-  AND p.paymentMethodId <> 14 /*현물제외*/
 ) t
 WHERE LEN(REPLACE(juminNo, '-', '')) = 13
 ]]>
