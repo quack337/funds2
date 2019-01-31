@@ -34,6 +34,10 @@
         </div>  
       </form:form>
       
+    <c:set var="sum" value="${ 0 }" />
+    <c:set var="sponsorCount" value="${ 0 }" />
+    <c:set var="paymentCount" value="${ 0 }" />
+      
     <my:scrollableTable tagId="srch2">
         <jsp:attribute name="header">
           <tr>
@@ -53,7 +57,17 @@
               <td class="right"><fmt:formatNumber value="${p.amount}" /></td>
               <td class="right"><fmt:formatNumber value="${p.ratio }" pattern="##0.00"/></td>
             </tr>
+            <c:set var="sum" value="${ sum + p.amount }" />
+            <c:set var="sponsorCount" value="${ sponsorCount + p.sponsorCount }" />            
+            <c:set var="paymentCount" value="${ paymentCount + p.paymentCount }" />            
           </c:forEach>
+          <tr>
+            <td>합계1</td>
+            <td class="right" style="min-width:60px;"><fmt:formatNumber value="${sponsorCount}" /></td>
+            <td class="right" style="min-width:60px;"><fmt:formatNumber value="${paymentCount}" /></td>
+            <td class="right"><fmt:formatNumber value="${sum}" /></td>
+            <td class="right">100.00</td>
+          </tr>
         </jsp:attribute>
     </my:scrollableTable>
 

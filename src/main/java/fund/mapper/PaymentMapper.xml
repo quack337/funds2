@@ -279,17 +279,6 @@ FROM (
   LEFT JOIN corporate c ON c.id = d.corporateId
   LEFT JOIN code o ON o.id = d.organizationId
 
-UNION ALL
-
-SELECT '합계' name, 
-  SUM(CONVERT(BIGINT,amount)) amount, COUNT(sponsorId) sponsorCount, COUNT(*) paymentCount, 100.0 ratio,
-  999999999 corporateId, 0 organizationId, '' dname
-FROM payment p
-    LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
-    LEFT JOIN corporate c ON c.id = d.corporateId
-WHERE paymentDate BETWEEN @startDate AND @endDate
-AND (@corporateId IS NULL OR @corporateId = 0 OR @corporateId = c.id)
-
 ORDER BY corporateId, organizationId, dname
 </select>
 
@@ -317,15 +306,6 @@ FROM (
   GROUP BY s.sponsorType2Id
 ) t
   LEFT JOIN code c ON c.id = t.sponsorType2Id
-
-UNION ALL
-SELECT 999999999 sponsorType2Id, '합계' name,
-  SUM(CONVERT(BIGINT,amount)) amount, COUNT(sponsorId) sponsorCount, COUNT(*) paymentCount, 100.0 ratio
-FROM payment p
-    LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
-    LEFT JOIN corporate c ON c.id = d.corporateId
-WHERE paymentDate BETWEEN @startDate AND @endDate
-AND (@corporateId IS NULL OR @corporateId = 0 OR @corporateId = c.id)
 
 ORDER BY sponsorType2Id
 </select>
@@ -358,16 +338,6 @@ FROM (
 ) t
   LEFT JOIN code c ON c.id = t.churchId
 
-UNION ALL
-SELECT 999999999 churchId, '합계' name,
-  SUM(CONVERT(BIGINT,amount)) amount, COUNT(sponsorId) sponsorCount, COUNT(*) paymentCount, 100.0 ratio
-FROM payment p LEFT JOIN sponsor s ON s.id = p.sponsorId
-    LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
-    LEFT JOIN corporate c ON c.id = d.corporateId
-WHERE paymentDate BETWEEN @startDate AND @endDate
-AND (@corporateId IS NULL OR @corporateId = 0 OR @corporateId = c.id)
---AND s.churchId IS NOT NULL
-
 ORDER BY churchId
 </select>
 
@@ -397,15 +367,6 @@ FROM (
   GROUP BY p.paymentMethodId
 ) t
   LEFT JOIN code c ON c.id = t.paymentMethodId
-
-UNION ALL
-SELECT 999999999 paymentMethodId, '합계' name,
-  SUM(CONVERT(BIGINT,amount)) amount, COUNT(sponsorId) sponsorCount, COUNT(*) paymentCount, 100.0 ratio
-FROM payment p LEFT JOIN sponsor s ON s.id = p.sponsorId
-    LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
-    LEFT JOIN corporate c ON c.id = d.corporateId
-WHERE paymentDate BETWEEN @startDate AND @endDate
-AND (@corporateId IS NULL OR @corporateId = 0 OR @corporateId = c.id)
 
 ORDER BY paymentMethodId
 </select>
