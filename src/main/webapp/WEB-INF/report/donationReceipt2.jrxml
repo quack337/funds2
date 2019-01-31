@@ -31,7 +31,7 @@
    GROUP BY receiptId
 )
 SELECT r.*,
-    s.name, CONVERT(VARCHAR,DECRYPTBYPASSPHRASE(CONVERT(VARCHAR,  'lsj!@#'), juminNo_encrypted)) juminNo, 
+    s.name, CONVERT(VARCHAR,DECRYPTBYPASSPHRASE(CONVERT(VARCHAR,  $P{key1}), juminNo_encrypted)) juminNo, 
     s.homeRoadAddress+' '+s.homeDetailAddress [address],
     c.id AS corId, c.name AS corName, c.corporateNo, c.representative, c.roadAddress AS corAddress,
     p.amountSum amount,
@@ -239,7 +239,7 @@ FROM [Receipt] r
 					<leftPen lineWidth="0.3"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+					<font size="9" pdfFontName="fonts/NanumGothic.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{juminNo}]]></textFieldExpression>
 			</textField>
