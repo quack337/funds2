@@ -282,7 +282,7 @@ FROM (
 UNION ALL
 
 SELECT '합계' name, 
-  SUM(CONVERT(BIGINT,amount)) amount, COUNT(DISTINCT sponsorId) sponsorCount, COUNT(*) paymentCount, 100.0 ratio,
+  SUM(CONVERT(BIGINT,amount)) amount, COUNT(sponsorId) sponsorCount, COUNT(*) paymentCount, 100.0 ratio,
   999999999 corporateId, 0 organizationId, '' dname
 FROM payment p
     LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
@@ -320,7 +320,7 @@ FROM (
 
 UNION ALL
 SELECT 999999999 sponsorType2Id, '합계' name,
-  SUM(CONVERT(BIGINT,amount)) amount, COUNT(DISTINCT sponsorId) sponsorCount, COUNT(*) paymentCount, 100.0 ratio
+  SUM(CONVERT(BIGINT,amount)) amount, COUNT(sponsorId) sponsorCount, COUNT(*) paymentCount, 100.0 ratio
 FROM payment p
     LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
     LEFT JOIN corporate c ON c.id = d.corporateId
@@ -360,7 +360,7 @@ FROM (
 
 UNION ALL
 SELECT 999999999 churchId, '합계' name,
-  SUM(CONVERT(BIGINT,amount)) amount, COUNT(DISTINCT sponsorId) sponsorCount, COUNT(*) paymentCount, 100.0 ratio
+  SUM(CONVERT(BIGINT,amount)) amount, COUNT(sponsorId) sponsorCount, COUNT(*) paymentCount, 100.0 ratio
 FROM payment p LEFT JOIN sponsor s ON s.id = p.sponsorId
     LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
     LEFT JOIN corporate c ON c.id = d.corporateId
@@ -400,7 +400,7 @@ FROM (
 
 UNION ALL
 SELECT 999999999 paymentMethodId, '합계' name,
-  SUM(CONVERT(BIGINT,amount)) amount, COUNT(DISTINCT sponsorId) sponsorCount, COUNT(*) paymentCount, 100.0 ratio
+  SUM(CONVERT(BIGINT,amount)) amount, COUNT(sponsorId) sponsorCount, COUNT(*) paymentCount, 100.0 ratio
 FROM payment p LEFT JOIN sponsor s ON s.id = p.sponsorId
     LEFT JOIN donationPurpose d ON p.donationPurposeId = d.id 
     LEFT JOIN corporate c ON c.id = d.corporateId
