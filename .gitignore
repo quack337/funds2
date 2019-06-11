@@ -13,3 +13,6 @@
 ### 내 맘대로 ###
 .apt_generated
 .apt_generated_tests
+application.properties
+application-dev.properties
+application-prod.properties
