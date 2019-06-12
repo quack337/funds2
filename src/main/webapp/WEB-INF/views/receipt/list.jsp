@@ -26,7 +26,13 @@ function report2() {
       
       <input type="hidden" name="pg" value="1" />
       
-      <span>회원명:</span>
+      <form:select path="od"  data-auto-submit="true">
+        <form:option value="0" label="정렬순서" />
+        <form:option value="1" label="영수증번호" />
+        <form:option value="2" label="발급일" />
+      </form:select>
+      
+      <span class="block ml10">회원명:</span>
       <form:input path="st" />
       
       <span class="block ml10">발급기간:</span>

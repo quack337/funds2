@@ -10,7 +10,8 @@ SELECT * FROM [Receipt] WHERE id = #{id}
 
 <select id="selectPage" resultType="hashmap">
 <![CDATA[
-DECLARE @nm NVARCHAR(50), @sd VARCHAR(50), @ed VARCHAR(50), @currentPage INT, @pageSize INT, @corporateId INT
+DECLARE @order INT, @nm NVARCHAR(50), @sd VARCHAR(50), @ed VARCHAR(50), @currentPage INT, @pageSize INT, @corporateId INT
+SET @order = #{order}
 SET @nm = #{srchText}
 SET @sd = #{sd}
 SET @ed = #{ed}
@@ -21,7 +22,11 @@ SET @corporateId = #{corporateId}
 SELECT *
 FROM ( 
   SELECT r.*, s.name, s.sponsorNo, s.mobilePhone,
-    ROW_NUMBER() OVER (ORDER BY r.id DESC) 행번호, 
+    CASE @order
+      WHEN 0 THEN ROW_NUMBER() OVER (ORDER BY r.no DESC)
+      WHEN 1 THEN ROW_NUMBER() OVER (ORDER BY r.no DESC)
+      WHEN 2 THEN ROW_NUMBER() OVER (ORDER BY r.createDate DESC)
+    END 행번호,
     (SELECT SUM(CAST(p.amount AS BIGINT)) FROM payment p WHERE p.receiptId = r.id) amount
   FROM Receipt r 
     LEFT JOIN [Sponsor] s ON r.sponsorId = s.id
