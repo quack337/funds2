@@ -55,7 +55,6 @@
 <update id="update">    
   UPDATE Payment
     SET 
-      receiptId = #{receiptId},
       amount = #{amount}, 
       paymentDate = #{paymentDate}, 
       donationPurposeId = #{donationPurposeId}, 
@@ -80,6 +79,13 @@
   WHERE sponsorId = #{sponsorId}
   AND paymentDate BETWEEN #{startDate} AND #{endDate}
   AND (select top 1 codeGroupId FROM code c WHERE c.id = paymentMethodId) = 4  
+</update>
+
+<update id="updateReceiptId">
+  UPDATE Payment
+    SET receiptId = #{receiptId} 
+  FROM Payment
+  WHERE id = #{id}
 </update>
 
 <delete id="delete">

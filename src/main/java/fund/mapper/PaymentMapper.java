@@ -20,6 +20,7 @@ public interface PaymentMapper {
     void update(Payment payment);
     void updateDonationPurposeId(Commitment commitment);  // 정기 납입 변경
     void updateDonationPurposeId2(Commitment commitment); // 비정기 납입 변경
+    void updateReceiptId(Payment payment); // 영수증 생성
     void delete(int id);
     void insert(Payment payment);
 

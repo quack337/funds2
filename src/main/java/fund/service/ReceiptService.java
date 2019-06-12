@@ -39,7 +39,7 @@ public class ReceiptService {
         receiptMapper.insert(receipt);
         for (Payment p : payments) {
             p.setReceiptId(receipt.getId());
-            paymentMapper.update(p);
+            paymentMapper.updateReceiptId(p);
         }
         return null;
 	}
@@ -48,7 +48,7 @@ public class ReceiptService {
 	    List<Payment> list = paymentMapper.selectByReceiptId(id);
 	    for (Payment p : list) {
 	        p.setReceiptId(null);
-	        paymentMapper.update(p);
+	        paymentMapper.updateReceiptId(p);
 	    }
 	    receiptMapper.delete(id);
 	    return null;
