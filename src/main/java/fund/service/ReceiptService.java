@@ -70,8 +70,9 @@ public class ReceiptService {
                 receipt.setNo(receiptMapper.generateReceiptNo(corporateId, createDate));
                 receiptMapper.insert(receipt);
             }
+            System.out.printf("receiptId = %d, paymentId = %d\n", receipt.getId(), p.getId());
             p.setReceiptId(receipt.getId());
-            paymentMapper.update(p);
+            paymentMapper.updateReceiptId(p);
         }
         if (payments.size() == 0) return "조건에 해당하는 납입 건이 없습니다.";
         return null;
