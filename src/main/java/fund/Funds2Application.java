@@ -2,11 +2,25 @@ package fund;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class Funds2Application {
+public class Funds2Application extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
 		SpringApplication.run(Funds2Application.class, args);
 	}
+
 }
+
+
+/* for JAR
+
+@SpringBootApplication
+public class Funds2Application {
+
+    public static void main(String[] args) {
+        SpringApplication.run(Funds2Application.class, args);
+    }
+}
+*/
