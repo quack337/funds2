@@ -1,8 +1,10 @@
 package fund.service;
 
 import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import fund.dto.Commitment;
 import fund.dto.Sponsor;
 import fund.mapper.CommitmentMapper;
@@ -22,7 +24,7 @@ public class CMSService {
     }
 
     public Commitment selectCommitmentByCommitmentNo12(String commitmentNo, Date eb13Date) {
-        if (commitmentNo.substring(10, 2).equals("00")) {
+        if (commitmentNo.substring(10, 12).equals("00")) {
             String cno = commitmentNo.substring(0, 10);
             Commitment commitment = commitmentMapper.selectByCommitmentNo(cno);
             if (commitment != null) return commitment;
