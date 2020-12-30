@@ -22,8 +22,10 @@ public class MyLogoutResultHandler implements LogoutSuccessHandler {
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
-        User user = ((MyAuthenticaion)authentication).getUser();
-        logService.actionLog("로그아웃", "logout", user.getId(), user.getLoginName() + " " + user.getName(), user);
+        if (authentication != null) {
+            User user = ((MyAuthenticaion)authentication).getUser();
+            logService.actionLog("로그아웃", "logout", user.getId(), user.getLoginName() + " " + user.getName(), user);
+        }
         response.sendRedirect(request.getContextPath() + "/guest/login?out");
     }
 }
