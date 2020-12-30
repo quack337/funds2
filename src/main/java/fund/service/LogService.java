@@ -9,6 +9,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -65,12 +66,15 @@ public class LogService {
     }
 
     private void setEtc(Log log, User user) {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        log.setUrl(getFullURL(request));
-        String ip = request.getHeader("X-FORWARDED-FOR");
-        if (ip == null)
-            ip = request.getRemoteAddr();
-        log.setIp(ip);
+        RequestAttributes ras = RequestContextHolder.getRequestAttributes();
+        if (ras != null) {
+            HttpServletRequest request = ((ServletRequestAttributes)ras).getRequest();
+            log.setUrl(getFullURL(request));
+            String ip = request.getHeader("X-FORWARDED-FOR");
+            if (ip == null)
+                ip = request.getRemoteAddr();
+            log.setIp(ip);
+        }
 
         if (user == null)
             user = UserService.getCurrentUser();
