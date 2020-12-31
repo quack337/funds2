@@ -10,6 +10,7 @@ import fund.dto.pagination.Pagination;
 @Mapper
 public interface LogMapper {
     Log selectById(int id);
+    int countDuplicateLogoutLog(String currentUser);
     List<Log> selectPage(Pagination pagination);
     int selectCount(Pagination pagination);
     void insert(Log log);

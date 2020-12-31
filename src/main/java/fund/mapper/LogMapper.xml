@@ -6,6 +6,13 @@
 <select id="selectById" resultType="fund.dto.Log">
 SELECT * FROM [log] WHERE id = #{id}
 </select>
+
+<select id="countDuplicateLogoutLog" resultType="int">
+<![CDATA[
+SELECT COUNT(id) FROM log
+WHERE category = '로그아웃' AND currentUser = #{currentUser} AND DATEDIFF(SECOND, writeTime, GETDATE()) <= 2
+]]>
+</select>
     
 <select id="selectPage" resultType="fund.dto.Log">
 <![CDATA[
