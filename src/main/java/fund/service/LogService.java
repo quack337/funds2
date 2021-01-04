@@ -198,8 +198,6 @@ public class LogService {
     }
 
     public void actionLog(String category, String action, int id, String no, User user) {
-        if (user != null)
-            System.out.println("-=---" + logMapper.countDuplicateLogoutLog(user.getLoginName()));
         if ("로그아웃".equals(category) && user != null && logMapper.countDuplicateLogoutLog(user.getLoginName()) > 0)
             return;
 
