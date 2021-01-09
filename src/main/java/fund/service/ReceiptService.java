@@ -70,7 +70,7 @@ public class ReceiptService {
                 receipt.setNo(receiptMapper.generateReceiptNo(corporateId, createDate));
                 receiptMapper.insert(receipt);
             }
-            System.out.printf("receiptId = %d, paymentId = %d\n", receipt.getId(), p.getId());
+            //System.out.printf("receiptId = %d, paymentId = %d\n", receipt.getId(), p.getId());
             p.setReceiptId(receipt.getId());
             paymentMapper.updateReceiptId(p);
         }

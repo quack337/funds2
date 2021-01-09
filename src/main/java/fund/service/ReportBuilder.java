@@ -3,6 +3,7 @@ package fund.service;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -84,12 +85,13 @@ public class ReportBuilder {
             }
     }
 
-    public void build(String type) throws JRException, IOException {
+    public void build(String type) throws JRException, IOException, SQLException {
         switch (type) {
         case "pdf": buildPDFReport(); break;
         case "xlsx": buildXlsxReport(); break;
         default: buildHtmlReport(); break;
         }
+        if (connection != null) connection.close();
     }
 
     private List<JasperPrint> getJasperPrintList() throws JRException {
@@ -101,7 +103,7 @@ public class ReportBuilder {
         return jasperPrintList;
     }
 
-    public void buildHtmlReport() throws JRException, IOException {
+    private void buildHtmlReport() throws JRException, IOException {
         response.setCharacterEncoding("UTF-8");
         params.put(JRParameter.IS_IGNORE_PAGINATION, true);
         if (subReports != null) addSubReportToParams(params);
@@ -117,7 +119,7 @@ public class ReportBuilder {
         exporter.exportReport();
     }
 
-    public void buildXlsxReport() throws IOException, JRException {
+    private void buildXlsxReport() throws IOException, JRException {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-Disposition", "attachment;filename=" + downloadFileName  + ";");
         params.put(JRParameter.IS_IGNORE_PAGINATION, true);
@@ -144,7 +146,7 @@ public class ReportBuilder {
         return null;
     }
 
-    public void buildPDFReport() throws JRException, IOException {
+    private void buildPDFReport() throws JRException, IOException {
         if (subReports != null) addSubReportToParams(params);
         byte[] bytes = null;
         bytes = getPdfBytes();

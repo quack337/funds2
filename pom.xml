@@ -82,7 +82,7 @@
       <artifactId>commons-lang3</artifactId>
     </dependency>
 
-<!-- ,
+<!-- 로컬에서 실행할 때는 열어야 한다. 
     <dependency>
       <groupId>com.microsoft.sqlserver</groupId>
       <artifactId>sqljdbc4</artifactId>
